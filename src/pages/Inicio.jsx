@@ -3,21 +3,18 @@
 import { useState, useEffect } from "react";
 import {
   Facebook,
-  Twitter,
   Instagram,
   Youtube,
   Mail,
   Phone,
   MapPin,
   ChevronRight,
+  X,
 } from "lucide-react";
 
 const Inicio = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  // Aquí puedes cambiar la URL del video
-  const videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ"; // Cambia por tu video
 
   useEffect(() => {
     setIsVisible(true);
@@ -109,11 +106,11 @@ const Inicio = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "flex-start",
-              justifyContent: "flex-end", // Cambio clave: elementos al final
+              justifyContent: "flex-end",
               maxWidth: "480px",
               width: "100%",
               height: "100%",
-              paddingBottom: "4rem", // Espacio desde abajo
+              paddingBottom: "4rem",
             }}
           >
             {/* Espacio invisible para empujar todo hacia abajo */}
@@ -195,14 +192,32 @@ const Inicio = () => {
             {/* Social Media Icons */}
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
               {[
-                { icon: Facebook, color: "#1877F2", url: "#" },
-                { icon: Twitter, color: "#1DA1F2", url: "#" },
-                { icon: Instagram, color: "#E4405F", url: "#" },
-                { icon: Youtube, color: "#FF0000", url: "#" },
+                {
+                  icon: Facebook,
+                  color: "#1877F2",
+                  url: "https://web.facebook.com/chadorinahe",
+                },
+                {
+                  icon: X,
+                  color: "#000000",
+                  url: "https://x.com/chadorinah?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+                },
+                {
+                  icon: Instagram,
+                  color: "#E4405F",
+                  url: "https://www.instagram.com/chadorinah/?hl=es",
+                },
+                {
+                  icon: Youtube,
+                  color: "#FF0000",
+                  url: "https://www.youtube.com/@chadorina3864",
+                },
               ].map((social, index) => (
                 <a
                   key={index}
                   href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
                     width: "40px",
                     height: "40px",
@@ -575,9 +590,9 @@ const Inicio = () => {
                 }}
               >
                 <iframe
-                  src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook&tabs=timeline&width=300&height=300&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+                  src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb.facebook.com%2Fphoto.php%3Ffbid%3D10021079351332977%26set%3Da.2588583361249317%26type%3D3&show_text=true&width=500"
                   width="100%"
-                  height="300"
+                  height="250"
                   style={{
                     border: "none",
                     overflow: "hidden",
@@ -626,23 +641,292 @@ const Inicio = () => {
                 style={{
                   width: "100%",
                   height: "300px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
                   borderRadius: "8px",
-                  background: "#f8fafc",
-                  border: "1px solid #e2e8f0",
+                  overflow: "hidden",
                 }}
               >
-                <div style={{ textAlign: "center", color: "#64748b" }}>
-                  <Instagram
-                    size={32}
-                    style={{ color: "#E4405F", marginBottom: "8px" }}
-                  />
-                  <p style={{ margin: 0, fontSize: "0.9rem" }}>
-                    Agrega tu código embed de Instagram aquí
-                  </p>
-                </div>
+                <blockquote
+                  className="instagram-media"
+                  data-instgrm-captioned
+                  data-instgrm-permalink="https://www.instagram.com/p/DLLedUUR1LJ/?utm_source=ig_embed&utm_campaign=loading"
+                  data-instgrm-version="14"
+                  style={{
+                    background: "#FFF",
+                    border: 0,
+                    borderRadius: "3px",
+                    boxShadow:
+                      "0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)",
+                    margin: "1px",
+                    maxWidth: "540px",
+                    minWidth: "326px",
+                    padding: 0,
+                    width: "99.375%",
+                  }}
+                >
+                  <div style={{ padding: "16px" }}>
+                    <a
+                      href="https://www.instagram.com/p/DLLedUUR1LJ/?utm_source=ig_embed&utm_campaign=loading"
+                      style={{
+                        background: "#FFFFFF",
+                        lineHeight: 0,
+                        padding: "0 0",
+                        textAlign: "center",
+                        textDecoration: "none",
+                        width: "100%",
+                      }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div
+                          style={{
+                            backgroundColor: "#F4F4F4",
+                            borderRadius: "50%",
+                            flexGrow: 0,
+                            height: "40px",
+                            marginRight: "14px",
+                            width: "40px",
+                          }}
+                        ></div>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            flexGrow: 1,
+                            justifyContent: "center",
+                          }}
+                        >
+                          <div
+                            style={{
+                              backgroundColor: "#F4F4F4",
+                              borderRadius: "4px",
+                              flexGrow: 0,
+                              height: "14px",
+                              marginBottom: "6px",
+                              width: "100px",
+                            }}
+                          ></div>
+                          <div
+                            style={{
+                              backgroundColor: "#F4F4F4",
+                              borderRadius: "4px",
+                              flexGrow: 0,
+                              height: "14px",
+                              width: "60px",
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div style={{ padding: "19% 0" }}></div>
+                      <div
+                        style={{
+                          display: "block",
+                          height: "50px",
+                          margin: "0 auto 12px",
+                          width: "50px",
+                        }}
+                      >
+                        <svg
+                          width="50px"
+                          height="50px"
+                          viewBox="0 0 60 60"
+                          version="1.1"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g
+                            stroke="none"
+                            strokeWidth="1"
+                            fill="none"
+                            fillRule="evenodd"
+                          >
+                            <g
+                              transform="translate(-511.000000, -20.000000)"
+                              fill="#000000"
+                            >
+                              <g>
+                                <path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path>
+                              </g>
+                            </g>
+                          </g>
+                        </svg>
+                      </div>
+                      <div style={{ paddingTop: "8px" }}>
+                        <div
+                          style={{
+                            color: "#3897f0",
+                            fontFamily: "Arial,sans-serif",
+                            fontSize: "14px",
+                            fontStyle: "normal",
+                            fontWeight: "550",
+                            lineHeight: "18px",
+                          }}
+                        >
+                          Ver esta publicación en Instagram
+                        </div>
+                      </div>
+                      <div style={{ padding: "12.5% 0" }}></div>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          marginBottom: "14px",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div>
+                          <div
+                            style={{
+                              backgroundColor: "#F4F4F4",
+                              borderRadius: "50%",
+                              height: "12.5px",
+                              width: "12.5px",
+                              transform: "translateX(0px) translateY(7px)",
+                            }}
+                          ></div>
+                          <div
+                            style={{
+                              backgroundColor: "#F4F4F4",
+                              height: "12.5px",
+                              transform:
+                                "rotate(-45deg) translateX(3px) translateY(1px)",
+                              width: "12.5px",
+                              flexGrow: 0,
+                              marginRight: "14px",
+                              marginLeft: "2px",
+                            }}
+                          ></div>
+                          <div
+                            style={{
+                              backgroundColor: "#F4F4F4",
+                              borderRadius: "50%",
+                              height: "12.5px",
+                              width: "12.5px",
+                              transform: "translateX(9px) translateY(-18px)",
+                            }}
+                          ></div>
+                        </div>
+                        <div style={{ marginLeft: "8px" }}>
+                          <div
+                            style={{
+                              backgroundColor: "#F4F4F4",
+                              borderRadius: "50%",
+                              flexGrow: 0,
+                              height: "20px",
+                              width: "20px",
+                            }}
+                          ></div>
+                          <div
+                            style={{
+                              width: 0,
+                              height: 0,
+                              borderTop: "2px solid transparent",
+                              borderLeft: "6px solid #f4f4f4",
+                              borderBottom: "2px solid transparent",
+                              transform:
+                                "translateX(16px) translateY(-4px) rotate(30deg)",
+                            }}
+                          ></div>
+                        </div>
+                        <div style={{ marginLeft: "auto" }}>
+                          <div
+                            style={{
+                              width: "0px",
+                              borderTop: "8px solid #F4F4F4",
+                              borderRight: "8px solid transparent",
+                              transform: "translateY(16px)",
+                            }}
+                          ></div>
+                          <div
+                            style={{
+                              backgroundColor: "#F4F4F4",
+                              flexGrow: 0,
+                              height: "12px",
+                              width: "16px",
+                              transform: "translateY(-4px)",
+                            }}
+                          ></div>
+                          <div
+                            style={{
+                              width: 0,
+                              height: 0,
+                              borderTop: "8px solid #F4F4F4",
+                              borderLeft: "8px solid transparent",
+                              transform: "translateY(-4px) translateX(8px)",
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          flexGrow: 1,
+                          justifyContent: "center",
+                          marginBottom: "24px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            backgroundColor: "#F4F4F4",
+                            borderRadius: "4px",
+                            flexGrow: 0,
+                            height: "14px",
+                            marginBottom: "6px",
+                            width: "224px",
+                          }}
+                        ></div>
+                        <div
+                          style={{
+                            backgroundColor: "#F4F4F4",
+                            borderRadius: "4px",
+                            flexGrow: 0,
+                            height: "14px",
+                            width: "144px",
+                          }}
+                        ></div>
+                      </div>
+                    </a>
+                    <p
+                      style={{
+                        color: "#c9c8cd",
+                        fontFamily: "Arial,sans-serif",
+                        fontSize: "14px",
+                        lineHeight: "17px",
+                        marginBottom: 0,
+                        marginTop: "8px",
+                        overflow: "hidden",
+                        padding: "8px 0 7px",
+                        textAlign: "center",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <a
+                        href="https://www.instagram.com/p/DLLedUUR1LJ/?utm_source=ig_embed&utm_campaign=loading"
+                        style={{
+                          color: "#c9c8cd",
+                          fontFamily: "Arial,sans-serif",
+                          fontSize: "14px",
+                          fontStyle: "normal",
+                          fontWeight: "normal",
+                          lineHeight: "17px",
+                          textDecoration: "none",
+                        }}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Una publicación compartida por Cha Dorina Hernández
+                        (@chadorinah)
+                      </a>
+                    </p>
+                  </div>
+                </blockquote>
               </div>
             </div>
           </div>
@@ -670,10 +954,10 @@ const Inicio = () => {
                 display: "inline-block",
                 background: "linear-gradient(135deg, #F89C1E, #E8890B)",
                 color: "white",
-                padding: "8px 20px",
+                padding: "10px 24px",
                 borderRadius: "6px",
-                fontSize: "12px",
-                fontWeight: "600",
+                fontSize: "14px",
+                fontWeight: "700",
                 marginBottom: "1rem",
                 textTransform: "uppercase",
                 letterSpacing: "1px",
@@ -683,7 +967,7 @@ const Inicio = () => {
             </div>
             <h2
               style={{
-                fontSize: "clamp(1.8rem, 3vw, 2.2rem)",
+                fontSize: "clamp(2rem, 3.5vw, 2.5rem)",
                 fontWeight: "600",
                 color: "#007C88",
                 marginBottom: "0.5rem",
@@ -712,34 +996,34 @@ const Inicio = () => {
           >
             {[
               {
-                title: "Derechos Afrocolombianos",
-                description: "Defendiendo nuestra comunidad",
-                videoId: "dQw4w9WgXcQ", // Cambia por IDs reales
+                title: "Frente a Frente",
+                description: "Cámara de Representantes",
+                videoId: "U1N-QPqgQuY",
               },
               {
-                title: "Propuestas Sociales",
-                description: "Trabajando por la equidad",
-                videoId: "dQw4w9WgXcQ", // Cambia por IDs reales
+                title: "Soy porque Somos es un reconocimiento a la lucha afro",
+                description: "W Radio Colombia",
+                videoId: "KRDlE6PIBWE",
               },
               {
-                title: "Gestión Parlamentaria",
-                description: "Resultados concretos",
-                videoId: "dQw4w9WgXcQ", // Cambia por IDs reales
+                title: "Algunos logros legislativos del 2022",
+                description: "Cha Dorina",
+                videoId: "SivSNzUD2qc",
               },
               {
-                title: "Palenque en el Congreso",
-                description: "Representando nuestras raíces",
-                videoId: "dQw4w9WgXcQ", // Cambia por IDs reales
+                title: "Entre-Vistas con Alma de País",
+                description: "Presidencia de la República",
+                videoId: "RJ-jOuB1grs",
               },
               {
-                title: "Educación y Cultura",
-                description: "Preservando nuestras tradiciones",
-                videoId: "dQw4w9WgXcQ", // Cambia por IDs reales
+                title: "Pido la palabra",
+                description: "Canal Congreso Colombia",
+                videoId: "tFKjlfyGIU4",
               },
               {
-                title: "Desarrollo Comunitario",
-                description: "Proyectos para el progreso",
-                videoId: "dQw4w9WgXcQ", // Cambia por IDs reales
+                title: "Rueda de Prensa",
+                description: "Canal Congreso Colombia",
+                videoId: "e9me2bDYXz4",
               },
             ].map((video, index) => (
               <div
@@ -750,10 +1034,10 @@ const Inicio = () => {
                   overflow: "hidden",
                   boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
                   border: "1px solid #e2e8f0",
-                  transition: "all 0.3s ease",
+                  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.transform = "translateY(-4px)";
+                  e.target.style.transform = "translateY(-6px)";
                   e.target.style.boxShadow = "0 8px 25px rgba(0,0,0,0.12)";
                 }}
                 onMouseLeave={(e) => {
@@ -778,24 +1062,26 @@ const Inicio = () => {
                     allowFullScreen
                   />
                 </div>
-                <div style={{ padding: "1rem" }}>
+                <div style={{ padding: "1rem", textAlign: "center" }}>
                   <h3
                     style={{
-                      fontSize: "1rem",
+                      fontSize: "1.05rem",
                       fontWeight: "600",
                       color: "#007C88",
-                      marginBottom: "0.5rem",
+                      marginBottom: "0.75rem",
                       fontFamily: "'Poppins', sans-serif",
+                      textAlign: "center",
                     }}
                   >
                     {video.title}
                   </h3>
                   <p
                     style={{
-                      fontSize: "0.85rem",
+                      fontSize: "0.9rem",
                       color: "#64748b",
                       margin: 0,
                       lineHeight: "1.4",
+                      textAlign: "center",
                     }}
                   >
                     {video.description}
@@ -892,14 +1178,32 @@ const Inicio = () => {
               </h3>
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
                 {[
-                  { icon: Facebook, color: "#1877F2", url: "#" },
-                  { icon: Twitter, color: "#1DA1F2", url: "#" },
-                  { icon: Instagram, color: "#E4405F", url: "#" },
-                  { icon: Youtube, color: "#FF0000", url: "#" },
+                  {
+                    icon: Facebook,
+                    color: "#1877F2",
+                    url: "https://web.facebook.com/chadorinahe",
+                  },
+                  {
+                    icon: X,
+                    color: "#000000",
+                    url: "https://x.com/chadorinah?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+                  },
+                  {
+                    icon: Instagram,
+                    color: "#E4405F",
+                    url: "https://www.instagram.com/chadorinah/?hl=es",
+                  },
+                  {
+                    icon: Youtube,
+                    color: "#FF0000",
+                    url: "https://www.youtube.com/@chadorina3864",
+                  },
                 ].map((social, index) => (
                   <a
                     key={index}
                     href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       width: "40px",
                       height: "40px",
@@ -1030,6 +1334,9 @@ const Inicio = () => {
           }
         }
       `}</style>
+
+      {/* Instagram Embed Script */}
+      <script async src="//www.instagram.com/embed.js"></script>
     </div>
   );
 };

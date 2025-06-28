@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Home,
   User,
@@ -20,6 +21,7 @@ import {
 
 const HeaderMenu = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const navigate = useNavigate();
 
   const menuItems = [
     {
@@ -33,8 +35,18 @@ const HeaderMenu = () => {
       label: "Sobre mí",
       icon: User,
       submenu: [
-        { key: "biografia", label: "Biografía", icon: BookOpen },
-        { key: "cultura", label: "Tierra y Cultura", icon: Globe },
+        {
+          key: "biografia",
+          label: "Biografía",
+          icon: BookOpen,
+          href: "/biografia",
+        },
+        {
+          key: "cultura",
+          label: "Tierra y Cultura",
+          icon: Globe,
+          href: "/cultura",
+        },
       ],
     },
     {
@@ -42,8 +54,18 @@ const HeaderMenu = () => {
       label: "Gestión Pública",
       icon: Users,
       submenu: [
-        { key: "congreso", label: "En el Congreso", icon: Building },
-        { key: "territorio", label: "En el Territorio", icon: MapPin },
+        {
+          key: "congreso",
+          label: "En el Congreso",
+          icon: Building,
+          href: "/congreso",
+        },
+        {
+          key: "territorio",
+          label: "En el Territorio",
+          icon: MapPin,
+          href: "/territorio",
+        },
       ],
     },
     {
@@ -51,8 +73,18 @@ const HeaderMenu = () => {
       label: "Transparencia",
       icon: FileSearch,
       submenu: [
-        { key: "documentos", label: "Documentos", icon: FileText },
-        { key: "finanzas", label: "Informes Financieros", icon: DollarSign },
+        {
+          key: "documentos",
+          label: "Documentos",
+          icon: FileText,
+          href: "/documentos",
+        },
+        {
+          key: "finanzas",
+          label: "Informes Financieros",
+          icon: DollarSign,
+          href: "/finanzas",
+        },
       ],
     },
     {
@@ -64,8 +96,14 @@ const HeaderMenu = () => {
           key: "noticias",
           label: "Noticias y Comunicaciones",
           icon: Newspaper,
+          href: "/noticias",
         },
-        { key: "contacto", label: "Participa / Contacto", icon: Phone },
+        {
+          key: "contacto",
+          label: "Participa / Contacto",
+          icon: Phone,
+          href: "/contacto",
+        },
       ],
     },
   ];
@@ -199,6 +237,19 @@ const HeaderMenu = () => {
     borderRadius: "3px",
   };
 
+  const handleMainNavigation = (item) => {
+    if (item.href) {
+      navigate(item.href);
+    }
+  };
+
+  const handleSubNavigation = (subItem) => {
+    if (subItem.href) {
+      navigate(subItem.href);
+      setActiveDropdown(null);
+    }
+  };
+
   return (
     <header style={headerStyle}>
       <div style={overlayStyle}></div>
@@ -207,7 +258,7 @@ const HeaderMenu = () => {
         {/* Logo Space */}
         <div style={logoContainerStyle}>
           <img
-            src="media/logo.png?height=60&width=180"
+            src="/media/logo.png"
             alt="Logo Dorina Hernández"
             style={{
               width: "180px",
@@ -215,7 +266,9 @@ const HeaderMenu = () => {
               objectFit: "contain",
               filter: "brightness(0) invert(1)",
               transition: "all 0.3s ease",
+              cursor: "pointer",
             }}
+            onClick={() => navigate("/")}
             onMouseEnter={(e) => {
               e.target.style.filter =
                 "brightness(0) invert(1) drop-shadow(0 0 10px rgba(234,217,197,0.8))";
@@ -239,6 +292,7 @@ const HeaderMenu = () => {
             >
               <button
                 style={buttonStyle}
+                onClick={() => handleMainNavigation(item)}
                 onMouseEnter={(e) => {
                   Object.assign(e.target.style, buttonHoverStyle);
                 }}
@@ -287,6 +341,7 @@ const HeaderMenu = () => {
                     {item.submenu.map((subItem, index) => (
                       <button
                         key={subItem.key}
+                        onClick={() => handleSubNavigation(subItem)}
                         style={{
                           ...subItemStyle,
                           borderRadius:
