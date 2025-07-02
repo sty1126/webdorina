@@ -22,9 +22,12 @@ const Inicio = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     setIsVisible(true);
+
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % 3);
     }, 4000);
@@ -32,15 +35,30 @@ const Inicio = () => {
   }, []);
 
   useEffect(() => {
+    if (!isClient) return;
+
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      // Detección más robusta para móviles
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      const mobileRegex =
+        /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
+      const isMobileUserAgent = mobileRegex.test(userAgent.toLowerCase());
+      const isSmallScreen = window.innerWidth <= 768;
+      const isTouchDevice =
+        "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+      setIsMobile(isMobileUserAgent || (isSmallScreen && isTouchDevice));
     };
 
     checkIsMobile();
     window.addEventListener("resize", checkIsMobile);
+    window.addEventListener("orientationchange", checkIsMobile);
 
-    return () => window.removeEventListener("resize", checkIsMobile);
-  }, []);
+    return () => {
+      window.removeEventListener("resize", checkIsMobile);
+      window.removeEventListener("orientationchange", checkIsMobile);
+    };
+  }, [isClient]);
 
   const achievements = [
     {
@@ -94,6 +112,11 @@ const Inicio = () => {
     },
   ];
 
+  // Evitar problemas de hidratación
+  if (!isClient) {
+    return <div style={{ minHeight: "100vh", background: "#f8fafc" }} />;
+  }
+
   return (
     <div
       style={{
@@ -105,18 +128,32 @@ const Inicio = () => {
         position: "relative",
       }}
     >
+      {/* Meta viewport para móviles */}
+      <style jsx global>{`
+        @media screen and (max-width: 768px) {
+          html {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+          }
+
+          body {
+            -webkit-overflow-scrolling: touch;
+            overflow-x: hidden;
+          }
+        }
+      `}</style>
+
       {/* Hero Section - OPTIMIZADO PARA MÓVILES */}
       <section
+        className="hero-section"
         style={{
           background: `url('${
-            isMobile
-              ? "media/dorina-banner-mobile4.png"
-              : "media/dorina-hero2.png"
+            isMobile ? "media/dorina-hero-mobile.png" : "media/dorina-hero2.png"
           }')`,
-          backgroundSize: isMobile ? "100%" : "cover",
+          backgroundSize: isMobile ? "100% auto" : "cover",
           backgroundPosition: isMobile ? "center top" : "center center",
           backgroundRepeat: "no-repeat",
-          minHeight: isMobile ? "70vh" : "85vh",
+          minHeight: isMobile ? "100vh" : "70vh",
           display: "flex",
           alignItems: isMobile ? "flex-end" : "center",
           justifyContent: "center",
@@ -167,9 +204,7 @@ const Inicio = () => {
             }}
           >
             {/* Espaciador solo para móvil para empujar los botones más abajo */}
-            {!isMobile && <div style={{ height: "50vh", width: "100%" }} />}
-
-            {isMobile && <div style={{ height: "50vh", width: "100%" }} />}
+            {isMobile && <div style={{ height: "60vh", width: "100%" }} />}
 
             <div
               style={{
@@ -397,6 +432,7 @@ const Inicio = () => {
         </div>
       </section>
 
+      {/* Resto de las secciones permanecen igual... */}
       {/* SOBRE LA REPRESENTANTE - OPTIMIZADO PARA MÓVILES */}
       <section
         id="sobre-mi"
@@ -513,7 +549,7 @@ const Inicio = () => {
               }}
             >
               <img
-                src="media/sobremi-inicio.avif"
+                src="media/dorina-hero2.png"
                 alt="Dorina Hernández Palomino"
                 style={{
                   width: "100%",
@@ -529,7 +565,7 @@ const Inicio = () => {
       {/* BANDERAS POLÍTICAS - OPTIMIZADO PARA MÓVILES */}
       <section
         style={{
-          padding: isMobile ? "2rem 1rem" : "4rem 2rem",
+          padding: isClient && isMobile ? "2rem 1rem" : "4rem 2rem",
           background: "#24354b",
         }}
       >
@@ -537,7 +573,7 @@ const Inicio = () => {
           <div
             style={{
               textAlign: "center",
-              marginBottom: isMobile ? "2rem" : "3rem",
+              marginBottom: isClient && isMobile ? "2rem" : "3rem",
             }}
           >
             <div
@@ -545,9 +581,9 @@ const Inicio = () => {
                 display: "inline-block",
                 background: "#f9b91d",
                 color: "white",
-                padding: isMobile ? "6px 16px" : "8px 20px",
+                padding: isClient && isMobile ? "6px 16px" : "8px 20px",
                 borderRadius: "6px",
-                fontSize: isMobile ? "11px" : "12px",
+                fontSize: isClient && isMobile ? "11px" : "12px",
                 fontWeight: "700",
                 marginBottom: "1.5rem",
                 textTransform: "uppercase",
@@ -559,7 +595,8 @@ const Inicio = () => {
 
             <h2
               style={{
-                fontSize: isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
+                fontSize:
+                  isClient && isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
                 fontWeight: "700",
                 color: "white",
                 marginBottom: "1rem",
@@ -572,7 +609,7 @@ const Inicio = () => {
 
             <p
               style={{
-                fontSize: isMobile ? "1rem" : "1.2rem",
+                fontSize: isClient && isMobile ? "1rem" : "1.2rem",
                 color: "rgba(255, 255, 255, 0.8)",
                 maxWidth: "600px",
                 margin: "0 auto",
@@ -585,10 +622,11 @@ const Inicio = () => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: isMobile
-                ? "1fr"
-                : "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: isMobile ? "1.5rem" : "2rem",
+              gridTemplateColumns:
+                isClient && isMobile
+                  ? "1fr"
+                  : "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: isClient && isMobile ? "1.5rem" : "2rem",
             }}
           >
             {politicalFlags.map((flag, index) => (
@@ -599,7 +637,7 @@ const Inicio = () => {
                   backdropFilter: "blur(10px)",
                   border: "1px solid rgba(255, 255, 255, 0.1)",
                   borderRadius: "12px",
-                  padding: isMobile ? "1.5rem" : "2rem",
+                  padding: isClient && isMobile ? "1.5rem" : "2rem",
                   textAlign: "center",
                   transition: "all 0.3s ease",
                   transform: isVisible ? "translateY(0)" : "translateY(30px)",
@@ -617,8 +655,8 @@ const Inicio = () => {
               >
                 <div
                   style={{
-                    width: isMobile ? "56px" : "64px",
-                    height: isMobile ? "56px" : "64px",
+                    width: isClient && isMobile ? "56px" : "64px",
+                    height: isClient && isMobile ? "56px" : "64px",
                     borderRadius: "50%",
                     background: flag.color,
                     display: "flex",
@@ -627,12 +665,15 @@ const Inicio = () => {
                     margin: "0 auto 1.5rem",
                   }}
                 >
-                  <flag.icon size={isMobile ? 24 : 28} color="white" />
+                  <flag.icon
+                    size={isClient && isMobile ? 24 : 28}
+                    color="white"
+                  />
                 </div>
 
                 <h3
                   style={{
-                    fontSize: isMobile ? "1.1rem" : "1.3rem",
+                    fontSize: isClient && isMobile ? "1.1rem" : "1.3rem",
                     fontWeight: "600",
                     color: "white",
                     marginBottom: "1rem",
@@ -648,7 +689,7 @@ const Inicio = () => {
                     color: "rgba(255, 255, 255, 0.7)",
                     lineHeight: "1.6",
                     marginBottom: "1.5rem",
-                    fontSize: isMobile ? "0.9rem" : "1rem",
+                    fontSize: isClient && isMobile ? "0.9rem" : "1rem",
                   }}
                 >
                   {flag.description}
@@ -659,13 +700,13 @@ const Inicio = () => {
                     background: `${flag.color}20`,
                     color: flag.color,
                     border: `1px solid ${flag.color}40`,
-                    padding: isMobile ? "10px 18px" : "8px 16px",
+                    padding: isClient && isMobile ? "10px 18px" : "8px 16px",
                     borderRadius: "6px",
-                    fontSize: isMobile ? "13px" : "14px",
+                    fontSize: isClient && isMobile ? "13px" : "14px",
                     fontWeight: "500",
                     cursor: "pointer",
                     transition: "all 0.3s ease",
-                    minHeight: isMobile ? "40px" : "auto",
+                    minHeight: isClient && isMobile ? "40px" : "auto",
                   }}
                   onMouseEnter={(e) => {
                     e.target.style.background = flag.color;
@@ -687,7 +728,7 @@ const Inicio = () => {
       {/* Achievements Section - OPTIMIZADO PARA MÓVILES */}
       <section
         style={{
-          padding: isMobile ? "2rem 1rem" : "3rem 2rem",
+          padding: isClient && isMobile ? "2rem 1rem" : "3rem 2rem",
           width: "100%",
           background:
             "linear-gradient(135deg, #24354b 0%, #24354b 50%, #24354b 100%)",
@@ -696,7 +737,7 @@ const Inicio = () => {
         }}
       >
         {/* Elementos decorativos - OCULTOS EN MÓVIL */}
-        {!isMobile && (
+        {!isClient && isMobile && (
           <>
             <div
               style={{
@@ -737,7 +778,7 @@ const Inicio = () => {
           <div
             style={{
               textAlign: "center",
-              marginBottom: isMobile ? "2rem" : "3.5rem",
+              marginBottom: isClient && isMobile ? "2rem" : "3.5rem",
             }}
           >
             <div
@@ -746,9 +787,9 @@ const Inicio = () => {
                 background: "linear-gradient(135deg, #129ba5, #129ba5)",
                 backdropFilter: "blur(10px)",
                 color: "white",
-                padding: isMobile ? "10px 24px" : "12px 32px",
+                padding: isClient && isMobile ? "10px 24px" : "12px 32px",
                 borderRadius: "8px",
-                fontSize: isMobile ? "12px" : "14px",
+                fontSize: isClient && isMobile ? "12px" : "14px",
                 fontWeight: "700",
                 marginBottom: "1.5rem",
                 textTransform: "uppercase",
@@ -762,7 +803,8 @@ const Inicio = () => {
 
             <h2
               style={{
-                fontSize: isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
+                fontSize:
+                  isClient && isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
                 fontWeight: "700",
                 color: "white",
                 marginBottom: "1rem",
@@ -784,7 +826,8 @@ const Inicio = () => {
             </h2>
             <p
               style={{
-                fontSize: isMobile ? "1rem" : "clamp(1rem, 2vw, 1.2rem)",
+                fontSize:
+                  isClient && isMobile ? "1rem" : "clamp(1rem, 2vw, 1.2rem)",
                 color: "rgba(255, 255, 255, 0.8)",
                 maxWidth: "600px",
                 margin: "0 auto",
@@ -799,10 +842,11 @@ const Inicio = () => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: isMobile
-                ? "1fr"
-                : "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: isMobile ? "1rem" : "1.5rem",
+              gridTemplateColumns:
+                isClient && isMobile
+                  ? "1fr"
+                  : "repeat(auto-fit, minmax(320px, 1fr))",
+              gap: isClient && isMobile ? "1rem" : "1.5rem",
               width: "100%",
             }}
           >
@@ -814,7 +858,7 @@ const Inicio = () => {
                   backdropFilter: "blur(10px)",
                   border: "1px solid rgba(255, 255, 255, 0.1)",
                   borderRadius: "12px",
-                  padding: isMobile ? "1.5rem 1rem" : "2rem 1.5rem",
+                  padding: isClient && isMobile ? "1.5rem 1rem" : "2rem 1.5rem",
                   textAlign: "left",
                   transition: "all 0.3s ease",
                   transform: isVisible ? "translateY(0)" : "translateY(30px)",
@@ -838,20 +882,20 @@ const Inicio = () => {
                   style={{
                     display: "flex",
                     alignItems: "flex-start",
-                    gap: isMobile ? "0.75rem" : "1rem",
-                    flexDirection: isMobile ? "column" : "row",
-                    textAlign: isMobile ? "center" : "left",
+                    gap: isClient && isMobile ? "0.75rem" : "1rem",
+                    flexDirection: isClient && isMobile ? "column" : "row",
+                    textAlign: isClient && isMobile ? "center" : "left",
                   }}
                 >
                   <div
                     style={{
-                      width: isMobile ? "120px" : "150px",
-                      height: isMobile ? "120px" : "150px",
+                      width: isClient && isMobile ? "120px" : "150px",
+                      height: isClient && isMobile ? "120px" : "150px",
                       borderRadius: "8px",
                       overflow: "hidden",
                       flexShrink: 0,
                       border: `2px solid ${achievement.color}30`,
-                      margin: isMobile ? "0 auto 1rem" : "0",
+                      margin: isClient && isMobile ? "0 auto 1rem" : "0",
                     }}
                   >
                     <img
@@ -868,7 +912,7 @@ const Inicio = () => {
                   <div style={{ flex: 1 }}>
                     <h3
                       style={{
-                        fontSize: isMobile ? "1.1rem" : "1.2rem",
+                        fontSize: isClient && isMobile ? "1.1rem" : "1.2rem",
                         fontWeight: "600",
                         color: "white",
                         marginBottom: "0.5rem",
@@ -882,7 +926,7 @@ const Inicio = () => {
                       style={{
                         color: "rgba(255, 255, 255, 0.7)",
                         lineHeight: "1.5",
-                        fontSize: isMobile ? "0.9rem" : "0.95rem",
+                        fontSize: isClient && isMobile ? "0.9rem" : "0.95rem",
                         margin: 0,
                       }}
                     >
@@ -912,7 +956,7 @@ const Inicio = () => {
       <section
         style={{
           background: "linear-gradient(135deg, #129ba5 0%, #129ba5 100%)",
-          padding: isMobile ? "2rem 1rem" : "3rem 2rem",
+          padding: isClient && isMobile ? "2rem 1rem" : "3rem 2rem",
           width: "100%",
         }}
       >
@@ -926,12 +970,15 @@ const Inicio = () => {
           <div
             style={{
               textAlign: "center",
-              marginBottom: isMobile ? "2rem" : "3rem",
+              marginBottom: isClient && isMobile ? "2rem" : "3rem",
             }}
           >
             <h2
               style={{
-                fontSize: isMobile ? "1.6rem" : "clamp(1.8rem, 3vw, 2.2rem)",
+                fontSize:
+                  isClient && isMobile
+                    ? "1.6rem"
+                    : "clamp(1.8rem, 3vw, 2.2rem)",
                 fontWeight: "600",
                 color: "white",
                 marginBottom: "0.5rem",
@@ -943,7 +990,10 @@ const Inicio = () => {
             </h2>
             <p
               style={{
-                fontSize: isMobile ? "0.9rem" : "clamp(0.9rem, 1.6vw, 1rem)",
+                fontSize:
+                  isClient && isMobile
+                    ? "0.9rem"
+                    : "clamp(0.9rem, 1.6vw, 1rem)",
                 color: "rgba(255,255,255,0.8)",
               }}
             >
@@ -954,10 +1004,11 @@ const Inicio = () => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: isMobile
-                ? "1fr"
-                : "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: isMobile ? "1.5rem" : "2rem",
+              gridTemplateColumns:
+                isClient && isMobile
+                  ? "1fr"
+                  : "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: isClient && isMobile ? "1.5rem" : "2rem",
               width: "100%",
             }}
           >
@@ -966,7 +1017,7 @@ const Inicio = () => {
               style={{
                 background: "white",
                 borderRadius: "12px",
-                padding: isMobile ? "1rem" : "1.5rem",
+                padding: isClient && isMobile ? "1rem" : "1.5rem",
                 boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
                 border: "1px solid #e2e8f0",
               }}
@@ -984,7 +1035,7 @@ const Inicio = () => {
                   style={{
                     color: "#129ba5",
                     margin: 0,
-                    fontSize: isMobile ? "0.9rem" : "1rem",
+                    fontSize: isClient && isMobile ? "0.9rem" : "1rem",
                     fontWeight: "600",
                     fontFamily: "'Poppins', sans-serif",
                   }}
@@ -995,7 +1046,7 @@ const Inicio = () => {
               <div
                 style={{
                   width: "100%",
-                  height: isMobile ? "250px" : "300px",
+                  height: isClient && isMobile ? "250px" : "300px",
                   border: "none",
                   overflow: "hidden",
                   borderRadius: "8px",
@@ -1023,7 +1074,7 @@ const Inicio = () => {
               style={{
                 background: "white",
                 borderRadius: "12px",
-                padding: isMobile ? "1rem" : "1.5rem",
+                padding: isClient && isMobile ? "1rem" : "1.5rem",
                 boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
                 border: "1px solid #e2e8f0",
               }}
@@ -1041,7 +1092,7 @@ const Inicio = () => {
                   style={{
                     color: "#129ba5",
                     margin: 0,
-                    fontSize: isMobile ? "0.9rem" : "1rem",
+                    fontSize: isClient && isMobile ? "0.9rem" : "1rem",
                     fontWeight: "600",
                     fontFamily: "'Poppins', sans-serif",
                   }}
@@ -1052,7 +1103,7 @@ const Inicio = () => {
               <div
                 style={{
                   width: "100%",
-                  height: isMobile ? "250px" : "300px",
+                  height: isClient && isMobile ? "250px" : "300px",
                   borderRadius: "8px",
                   overflow: "hidden",
                 }}
@@ -1195,7 +1246,7 @@ const Inicio = () => {
       {/* Videos Section - OPTIMIZADO PARA MÓVILES */}
       <section
         style={{
-          padding: isMobile ? "2rem 1rem" : "3rem 2rem",
+          padding: isClient && isMobile ? "2rem 1rem" : "3rem 2rem",
           width: "100%",
           background: "linear-gradient(135deg, #24354b 0%, #24354b 100%)",
         }}
@@ -1210,7 +1261,7 @@ const Inicio = () => {
           <div
             style={{
               textAlign: "center",
-              marginBottom: isMobile ? "2rem" : "2.5rem",
+              marginBottom: isClient && isMobile ? "2rem" : "2.5rem",
             }}
           >
             <div
@@ -1218,9 +1269,9 @@ const Inicio = () => {
                 display: "inline-block",
                 color: "white",
                 background: "linear-gradient(135deg, #f9b91d, #f9b91d)",
-                padding: isMobile ? "8px 20px" : "10px 24px",
+                padding: isClient && isMobile ? "8px 20px" : "10px 24px",
                 borderRadius: "6px",
-                fontSize: isMobile ? "12px" : "14px",
+                fontSize: isClient && isMobile ? "12px" : "14px",
                 fontWeight: "700",
                 marginBottom: "1rem",
                 textTransform: "uppercase",
@@ -1231,7 +1282,10 @@ const Inicio = () => {
             </div>
             <h2
               style={{
-                fontSize: isMobile ? "1.6rem" : "clamp(2rem, 3.5vw, 2.5rem)",
+                fontSize:
+                  isClient && isMobile
+                    ? "1.6rem"
+                    : "clamp(2rem, 3.5vw, 2.5rem)",
                 fontWeight: "600",
                 color: "white",
                 marginBottom: "0.5rem",
@@ -1243,7 +1297,10 @@ const Inicio = () => {
             </h2>
             <p
               style={{
-                fontSize: isMobile ? "0.9rem" : "clamp(0.9rem, 1.6vw, 1rem)",
+                fontSize:
+                  isClient && isMobile
+                    ? "0.9rem"
+                    : "clamp(0.9rem, 1.6vw, 1rem)",
                 color: "rgba(255, 255, 255, 0.8)",
               }}
             >
@@ -1254,10 +1311,11 @@ const Inicio = () => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: isMobile
-                ? "1fr"
-                : "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: isMobile ? "1rem" : "1.5rem",
+              gridTemplateColumns:
+                isClient && isMobile
+                  ? "1fr"
+                  : "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: isClient && isMobile ? "1rem" : "1.5rem",
               width: "100%",
             }}
           >
@@ -1331,7 +1389,7 @@ const Inicio = () => {
                 </div>
                 <div
                   style={{
-                    padding: isMobile ? "0.75rem" : "1rem",
+                    padding: isClient && isMobile ? "0.75rem" : "1rem",
                     textAlign: "center",
                   }}
                 >
@@ -1343,7 +1401,7 @@ const Inicio = () => {
                   >
                     <h3
                       style={{
-                        fontSize: isMobile ? "0.95rem" : "1.05rem",
+                        fontSize: isClient && isMobile ? "0.95rem" : "1.05rem",
                         fontWeight: "600",
                         color: "#f9b91d",
                         marginBottom: "0.75rem",
@@ -1357,7 +1415,7 @@ const Inicio = () => {
                   </a>
                   <p
                     style={{
-                      fontSize: isMobile ? "0.8rem" : "0.9rem",
+                      fontSize: isClient && isMobile ? "0.8rem" : "0.9rem",
                       color: "#64748b",
                       margin: 0,
                       lineHeight: "1.4",
@@ -1376,7 +1434,7 @@ const Inicio = () => {
       {/* FORMULARIO DE PARTICIPACIÓN - OPTIMIZADO PARA MÓVILES */}
       <section
         style={{
-          padding: isMobile ? "2rem 1rem" : "4rem 2rem",
+          padding: isClient && isMobile ? "2rem 1rem" : "4rem 2rem",
           background: "#569638",
         }}
       >
@@ -1390,7 +1448,8 @@ const Inicio = () => {
           <div style={{ marginBottom: "2rem" }}>
             <h2
               style={{
-                fontSize: isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
+                fontSize:
+                  isClient && isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
                 fontWeight: "700",
                 color: "white",
                 marginBottom: "1rem",
@@ -1402,7 +1461,7 @@ const Inicio = () => {
             </h2>
             <p
               style={{
-                fontSize: isMobile ? "1rem" : "1.2rem",
+                fontSize: isClient && isMobile ? "1rem" : "1.2rem",
                 color: "rgba(255, 255, 255, 0.9)",
                 marginBottom: "2rem",
                 lineHeight: "1.6",
@@ -1418,7 +1477,7 @@ const Inicio = () => {
               background: "rgba(255, 255, 255, 0.1)",
               backdropFilter: "blur(10px)",
               borderRadius: "16px",
-              padding: isMobile ? "2rem 1.5rem" : "2.5rem",
+              padding: isClient && isMobile ? "2rem 1.5rem" : "2.5rem",
               border: "1px solid rgba(255, 255, 255, 0.2)",
             }}
           >
@@ -1429,13 +1488,16 @@ const Inicio = () => {
                 justifyContent: "center",
                 gap: "12px",
                 marginBottom: "1.5rem",
-                flexDirection: isMobile ? "column" : "row",
+                flexDirection: isClient && isMobile ? "column" : "row",
               }}
             >
-              <MessageSquare size={isMobile ? 28 : 32} color="white" />
+              <MessageSquare
+                size={isClient && isMobile ? 28 : 32}
+                color="white"
+              />
               <h3
                 style={{
-                  fontSize: isMobile ? "1.3rem" : "1.5rem",
+                  fontSize: isClient && isMobile ? "1.3rem" : "1.5rem",
                   fontWeight: "600",
                   color: "white",
                   margin: 0,
@@ -1451,7 +1513,7 @@ const Inicio = () => {
               style={{
                 color: "rgba(255, 255, 255, 0.8)",
                 marginBottom: "2rem",
-                fontSize: isMobile ? "1rem" : "1.1rem",
+                fontSize: isClient && isMobile ? "1rem" : "1.1rem",
                 lineHeight: "1.6",
               }}
             >
@@ -1467,14 +1529,14 @@ const Inicio = () => {
                 gap: "8px",
                 background: "#f9b91d",
                 color: "white",
-                padding: isMobile ? "16px 28px" : "16px 32px",
+                padding: isClient && isMobile ? "16px 28px" : "16px 32px",
                 borderRadius: "50px",
                 textDecoration: "none",
                 fontWeight: "600",
-                fontSize: isMobile ? "1rem" : "1.1rem",
+                fontSize: isClient && isMobile ? "1rem" : "1.1rem",
                 transition: "all 0.3s ease",
                 boxShadow: "0 8px 25px rgba(249, 185, 29, 0.4)",
-                minHeight: isMobile ? "48px" : "auto",
+                minHeight: isClient && isMobile ? "48px" : "auto",
               }}
               onMouseEnter={(e) => {
                 e.target.style.transform = "translateY(-3px) scale(1.05)";
@@ -1493,7 +1555,7 @@ const Inicio = () => {
             <p
               style={{
                 color: "rgba(255, 255, 255, 0.6)",
-                fontSize: isMobile ? "0.8rem" : "0.9rem",
+                fontSize: isClient && isMobile ? "0.8rem" : "0.9rem",
                 marginTop: "1.5rem",
                 margin: "1.5rem 0 0 0",
               }}
@@ -1510,7 +1572,8 @@ const Inicio = () => {
         style={{
           background: "linear-gradient(135deg, #24354b 0%, #24354b 100%)",
           color: "white",
-          padding: isMobile ? "2rem 1rem 1rem" : "2.5rem 2rem 1.5rem",
+          padding:
+            isClient && isMobile ? "2rem 1rem 1rem" : "2.5rem 2rem 1.5rem",
           width: "100%",
           position: "relative",
         }}
@@ -1525,10 +1588,11 @@ const Inicio = () => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: isMobile
-                ? "1fr"
-                : "repeat(auto-fit, minmax(250px, 1fr))",
-              gap: isMobile ? "1.5rem" : "2rem",
+              gridTemplateColumns:
+                isClient && isMobile
+                  ? "1fr"
+                  : "repeat(auto-fit, minmax(250px, 1fr))",
+              gap: isClient && isMobile ? "1.5rem" : "2rem",
               marginBottom: "2rem",
             }}
           >
@@ -1536,7 +1600,7 @@ const Inicio = () => {
             <div>
               <h3
                 style={{
-                  fontSize: isMobile ? "1rem" : "1.1rem",
+                  fontSize: isClient && isMobile ? "1rem" : "1.1rem",
                   fontWeight: "600",
                   marginBottom: "1rem",
                   color: "#f9b91d",
@@ -1557,7 +1621,11 @@ const Inicio = () => {
                   style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
                   <Mail size={16} style={{ color: "#f9b91d" }} />
-                  <span style={{ fontSize: isMobile ? "0.8rem" : "0.9rem" }}>
+                  <span
+                    style={{
+                      fontSize: isClient && isMobile ? "0.8rem" : "0.9rem",
+                    }}
+                  >
                     contacto@dorinahernandez.com
                   </span>
                 </div>
@@ -1565,7 +1633,11 @@ const Inicio = () => {
                   style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
                   <Phone size={16} style={{ color: "#f9b91d" }} />
-                  <span style={{ fontSize: isMobile ? "0.8rem" : "0.9rem" }}>
+                  <span
+                    style={{
+                      fontSize: isClient && isMobile ? "0.8rem" : "0.9rem",
+                    }}
+                  >
                     +57 (5) 123-4567
                   </span>
                 </div>
@@ -1573,7 +1645,11 @@ const Inicio = () => {
                   style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
                   <MapPin size={16} style={{ color: "#f9b91d" }} />
-                  <span style={{ fontSize: isMobile ? "0.8rem" : "0.9rem" }}>
+                  <span
+                    style={{
+                      fontSize: isClient && isMobile ? "0.8rem" : "0.9rem",
+                    }}
+                  >
                     San Basilio de Palenque, Bolívar
                   </span>
                 </div>
@@ -1584,7 +1660,7 @@ const Inicio = () => {
             <div>
               <h3
                 style={{
-                  fontSize: isMobile ? "1rem" : "1.1rem",
+                  fontSize: isClient && isMobile ? "1rem" : "1.1rem",
                   fontWeight: "600",
                   marginBottom: "1rem",
                   color: "#f9b91d",
@@ -1653,7 +1729,7 @@ const Inicio = () => {
             <div>
               <h3
                 style={{
-                  fontSize: isMobile ? "1rem" : "1.1rem",
+                  fontSize: isClient && isMobile ? "1rem" : "1.1rem",
                   fontWeight: "600",
                   marginBottom: "1rem",
                   color: "#f9b91d",
@@ -1682,7 +1758,7 @@ const Inicio = () => {
                       color: "rgba(255,255,255,0.8)",
                       textDecoration: "none",
                       transition: "color 0.3s ease",
-                      fontSize: isMobile ? "0.8rem" : "0.9rem",
+                      fontSize: isClient && isMobile ? "0.8rem" : "0.9rem",
                     }}
                     onMouseEnter={(e) => {
                       e.target.style.color = "#f9b91d";
@@ -1708,7 +1784,10 @@ const Inicio = () => {
             }}
           >
             <p
-              style={{ fontSize: isMobile ? "0.75rem" : "0.85rem", margin: 0 }}
+              style={{
+                fontSize: isClient && isMobile ? "0.75rem" : "0.85rem",
+                margin: 0,
+              }}
             >
               © {new Date().getFullYear()} Dorina Hernández Palomino. Todos los
               derechos reservados.
@@ -1747,11 +1826,21 @@ const Inicio = () => {
           }
         }
 
-        @media (max-width: 768px) {
-          .hero-grid {
-            grid-template-columns: 1fr !important;
-            gap: 2rem !important;
-            text-align: center !important;
+        @media screen and (max-width: 768px) {
+          .hero-section {
+            min-height: 100vh !important;
+            background-size: 100% auto !important;
+            background-position: center top !important;
+          }
+
+          html {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+          }
+
+          body {
+            -webkit-overflow-scrolling: touch;
+            overflow-x: hidden;
           }
         }
       `}</style>
