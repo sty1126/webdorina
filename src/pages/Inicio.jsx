@@ -148,7 +148,9 @@ const Inicio = () => {
         className="hero-section"
         style={{
           background: `url('${
-            isMobile ? "media/dorina-hero-mobile.png" : "media/dorina-hero2.png"
+            isMobile
+              ? "media/dorina-banner-mobile4.png"
+              : "media/dorina-hero2.png"
           }')`,
           backgroundSize: isMobile ? "100% auto" : "cover",
           backgroundPosition: isMobile ? "center top" : "center center",
@@ -549,7 +551,7 @@ const Inicio = () => {
               }}
             >
               <img
-                src="media/dorina-hero2.png"
+                src="media/sobremi-inicio.avif"
                 alt="Dorina Hernández Palomino"
                 style={{
                   width: "100%",
