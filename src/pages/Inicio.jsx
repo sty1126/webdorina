@@ -109,18 +109,20 @@ const Inicio = () => {
       <section
         style={{
           background: `url('${
-            isMobile ? "media/dorina-hero2.png" : "media/dorina-hero2.png"
+            isMobile
+              ? "media/dorina-banner-mobile4.png"
+              : "media/dorina-hero2.png"
           }')`,
-          backgroundSize: isMobile ? "contain" : "cover",
+          backgroundSize: isMobile ? "100%" : "cover",
           backgroundPosition: isMobile ? "center top" : "center center",
           backgroundRepeat: "no-repeat",
-          minHeight: isMobile ? "80vh" : "70vh",
+          minHeight: isMobile ? "70vh" : "85vh",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-start",
+          alignItems: isMobile ? "flex-end" : "center",
+          justifyContent: "center",
           position: "relative",
           width: "100%",
-          padding: isMobile ? "1rem 0" : "2rem 0",
+          padding: "0",
           margin: "0",
           fontFamily:
             "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
@@ -138,15 +140,15 @@ const Inicio = () => {
         <div
           style={{
             width: "100%",
-            maxWidth: "1400px",
+            maxWidth: isMobile ? "100%" : "1400px",
             margin: "0 auto",
-            padding: isMobile ? "0 1rem" : "0 3rem",
+            padding: isMobile ? "0 1.5rem 1rem" : "0 3rem",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-start",
+            alignItems: isMobile ? "flex-end" : "center",
+            justifyContent: isMobile ? "center" : "flex-start",
             position: "relative",
             zIndex: 2,
-            minHeight: isMobile ? "75vh" : "65vh",
+            minHeight: isMobile ? "100vh" : "65vh",
           }}
         >
           <div
@@ -156,27 +158,28 @@ const Inicio = () => {
               transition: "all 1s ease-out",
               display: "flex",
               flexDirection: "column",
-              alignItems: "flex-start",
+              alignItems: isMobile ? "center" : "flex-start",
               justifyContent: "flex-end",
-              maxWidth: isMobile ? "100%" : "480px",
               width: "100%",
-              height: "100%",
-              paddingBottom: isMobile ? "2rem" : "4rem",
+              maxWidth: isMobile ? "100%" : "480px",
+              textAlign: isMobile ? "center" : "left",
+              paddingBottom: isMobile ? "1rem" : "4rem",
             }}
           >
-            {/* Espacio invisible para empujar todo hacia abajo */}
-            <div
-              style={{ height: isMobile ? "200px" : "320px", width: "100%" }}
-            />
+            {/* Espaciador solo para móvil para empujar los botones más abajo */}
+            {!isMobile && <div style={{ height: "50vh", width: "100%" }} />}
+
+            {isMobile && <div style={{ height: "50vh", width: "100%" }} />}
 
             <div
               style={{
                 display: "flex",
-                gap: isMobile ? "10px" : "15px",
-                marginBottom: "20px",
+                gap: isMobile ? "12px" : "15px",
+                marginBottom: "24px",
                 flexWrap: "wrap",
                 justifyContent: isMobile ? "center" : "flex-start",
                 width: "100%",
+                alignItems: "center",
               }}
             >
               <a
@@ -249,10 +252,11 @@ const Inicio = () => {
             <div
               style={{
                 display: "flex",
-                gap: isMobile ? "8px" : "10px",
+                gap: isMobile ? "12px" : "10px",
                 flexWrap: "wrap",
                 justifyContent: isMobile ? "center" : "flex-start",
                 width: "100%",
+                alignItems: "center",
               }}
             >
               {[
@@ -509,7 +513,7 @@ const Inicio = () => {
               }}
             >
               <img
-                src="media/dorina-hero2.png"
+                src="media/sobremi-inicio.avif"
                 alt="Dorina Hernández Palomino"
                 style={{
                   width: "100%",
