@@ -171,7 +171,7 @@ const Biografia = () => {
         style={{
           background:
             "linear-gradient(135deg, #007C88 0%, #005A63 50%, #003D42 100%)",
-          padding: "2.5rem 1.5rem",
+          padding: window.innerWidth <= 768 ? "2rem 1rem" : "2.5rem 1.5rem",
           position: "relative",
           overflow: "hidden",
         }}
@@ -212,7 +212,10 @@ const Biografia = () => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gridTemplateColumns:
+                window.innerWidth <= 768
+                  ? "1fr"
+                  : "repeat(auto-fit, minmax(300px, 1fr))",
               gap: "3rem",
               alignItems: "center",
             }}
@@ -229,8 +232,8 @@ const Biografia = () => {
             >
               <div
                 style={{
-                  width: "550px",
-                  height: "550px",
+                  width: window.innerWidth <= 768 ? "280px" : "550px",
+                  height: window.innerWidth <= 768 ? "280px" : "550px",
                   borderRadius: "50%",
                   background: "#EAD9C5",
                   display: "flex",
@@ -334,7 +337,10 @@ const Biografia = () => {
 
               <h1
                 style={{
-                  fontSize: "clamp(2.5rem, 5vw, 4rem)",
+                  fontSize:
+                    window.innerWidth <= 768
+                      ? "2rem"
+                      : "clamp(2.5rem, 5vw, 4rem)",
                   fontWeight: "700",
                   marginBottom: "1rem",
                   lineHeight: "1.1",
@@ -415,7 +421,7 @@ const Biografia = () => {
       <section
         className="animate-section"
         style={{
-          padding: "2.5rem 1.5rem",
+          padding: window.innerWidth <= 768 ? "2rem 1rem" : "2.5rem 1.5rem",
           background: "linear-gradient(135deg, #EAD9C5 0%, #E0CDB0 100%)",
           opacity: 0,
           transform: "translateY(50px)",
@@ -653,7 +659,7 @@ const Biografia = () => {
       <section
         className="animate-section"
         style={{
-          padding: "2.5rem 1.5rem",
+          padding: window.innerWidth <= 768 ? "2rem 1rem" : "2.5rem 1.5rem",
           background:
             "linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%)",
           opacity: 0,
@@ -740,12 +746,13 @@ const Biografia = () => {
             <div
               style={{
                 position: "absolute",
-                left: "50%",
+                left: window.innerWidth <= 768 ? "0" : "50%",
                 top: 0,
                 bottom: 0,
                 width: "2px",
                 background: "linear-gradient(to bottom, #F89C1E, #007C88)",
-                transform: "translateX(-50%)",
+                transform:
+                  window.innerWidth <= 768 ? "none" : "translateX(-50%)",
                 zIndex: 1,
               }}
             />
@@ -755,15 +762,90 @@ const Biografia = () => {
                 key={index}
                 style={{
                   display: "flex",
-                  alignItems: "center",
+                  flexDirection: window.innerWidth <= 768 ? "column" : "row",
+                  alignItems:
+                    window.innerWidth <= 768 ? "flex-start" : "center",
                   marginBottom: "2rem",
                   position: "relative",
                   zIndex: 2,
                 }}
               >
-                {index % 2 === 0 ? (
+                {window.innerWidth <= 768 ? (
+                  // Mobile layout - single column
+                  <div style={{ width: "100%" }}>
+                    <div
+                      style={{
+                        background: "rgba(255, 255, 255, 0.05)",
+                        backdropFilter: "blur(10px)",
+                        border: "1px solid rgba(255, 255, 255, 0.1)",
+                        borderRadius: "16px",
+                        padding: "1.5rem",
+                        position: "relative",
+                        marginLeft: "2rem",
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          left: "-2rem",
+                          top: "1rem",
+                          width: "16px",
+                          height: "16px",
+                          borderRadius: "50%",
+                          background: item.color,
+                          border: "4px solid white",
+                        }}
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          bottom: 0,
+                          width: "4px",
+                          background: item.color,
+                          borderRadius: "16px 0 0 16px",
+                        }}
+                      />
+                      <div
+                        style={{
+                          background: item.color,
+                          color: "white",
+                          padding: "6px 16px",
+                          borderRadius: "20px",
+                          fontSize: "14px",
+                          fontWeight: "600",
+                          display: "inline-block",
+                          marginBottom: "1rem",
+                        }}
+                      >
+                        {item.period}
+                      </div>
+                      <h3
+                        style={{
+                          fontSize: "1.1rem",
+                          fontWeight: "600",
+                          color: "white",
+                          marginBottom: "0.5rem",
+                        }}
+                      >
+                        {item.title}
+                      </h3>
+                      <p
+                        style={{
+                          color: "rgba(255, 255, 255, 0.7)",
+                          fontSize: "0.9rem",
+                          lineHeight: "1.5",
+                          margin: 0,
+                        }}
+                      >
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                ) : // Desktop layout - existing alternating layout
+                index % 2 === 0 ? (
                   <>
-                    {/* Left side */}
                     <div
                       style={{
                         flex: 1,
@@ -828,7 +910,6 @@ const Biografia = () => {
                         </p>
                       </div>
                     </div>
-                    {/* Center dot */}
                     <div
                       style={{
                         width: "16px",
@@ -840,14 +921,11 @@ const Biografia = () => {
                         zIndex: 3,
                       }}
                     />
-                    {/* Right side - empty */}
                     <div style={{ flex: 1 }} />
                   </>
                 ) : (
                   <>
-                    {/* Left side - empty */}
                     <div style={{ flex: 1 }} />
-                    {/* Center dot */}
                     <div
                       style={{
                         width: "16px",
@@ -859,7 +937,6 @@ const Biografia = () => {
                         zIndex: 3,
                       }}
                     />
-                    {/* Right side */}
                     <div style={{ flex: 1, paddingLeft: "2rem" }}>
                       <div
                         style={{
@@ -930,7 +1007,7 @@ const Biografia = () => {
       <section
         className="animate-section"
         style={{
-          padding: "2.5rem 1.5rem",
+          padding: window.innerWidth <= 768 ? "2rem 1rem" : "2.5rem 1.5rem",
           background: "linear-gradient(135deg, #EAD9C5 0%, #E0CDB0 100%)",
           opacity: 0,
           transform: "translateY(50px)",
@@ -1096,7 +1173,7 @@ const Biografia = () => {
       <section
         className="animate-section"
         style={{
-          padding: "2.5rem 1.5rem",
+          padding: window.innerWidth <= 768 ? "2rem 1rem" : "2.5rem 1.5rem",
           background: "linear-gradient(135deg, #007C88 0%, #006B75 100%)",
           opacity: 0,
           transform: "translateY(50px)",
@@ -1363,9 +1440,11 @@ const Biografia = () => {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                gap: "2rem",
+                gap: window.innerWidth <= 768 ? "1rem" : "2rem",
                 flexWrap: "wrap",
                 marginBottom: "2rem",
+                flexDirection: window.innerWidth <= 640 ? "column" : "row",
+                alignItems: window.innerWidth <= 640 ? "center" : "flex-start",
               }}
             >
               <div
@@ -1461,7 +1540,7 @@ const Biografia = () => {
       <section
         className="animate-section"
         style={{
-          padding: "2.5rem 1.5rem",
+          padding: window.innerWidth <= 768 ? "2rem 1rem" : "2.5rem 1.5rem",
           background: "linear-gradient(135deg, #EAD9C5 0%, #E0CDB0 100%)",
           opacity: 0,
           transform: "translateY(50px)",
@@ -1530,7 +1609,8 @@ const Biografia = () => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(2, 1fr)",
+              gridTemplateColumns:
+                window.innerWidth <= 640 ? "1fr" : "repeat(2, 1fr)",
               gap: "2rem",
               maxWidth: "800px",
               margin: "0 auto",

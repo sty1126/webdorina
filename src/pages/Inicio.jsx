@@ -10,11 +10,18 @@ import {
   MapPin,
   ChevronRight,
   X,
+  Scale,
+  GraduationCap,
+  Heart,
+  Users,
+  MessageSquare,
+  Send,
 } from "lucide-react";
 
 const Inicio = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -24,24 +31,66 @@ const Inicio = () => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
+
   const achievements = [
     {
       image: "media/imagen1.png?height=120&width=120",
       title: "Representando Palenque",
       description: "Defendiendo los derechos de la comunidad afrocolombiana",
-      color: "#22C55E",
+      color: "#569638",
     },
     {
       image: "media/imagen2.jpeg?height=120&width=120",
       title: "Compromiso Social",
       description: "Trabajando por la equidad y la justicia social",
-      color: "#FF8C00",
+      color: "#f9b91d",
     },
     {
       image: "media/imagen3.jpeg?height=120&width=120",
       title: "Liderazgo",
       description: "Experiencia comprobada en gestión pública",
-      color: "#EF4444",
+      color: "#129ba5",
+    },
+  ];
+
+  const politicalFlags = [
+    {
+      icon: Scale,
+      title: "Justicia Étnico-Racial",
+      description:
+        "Promoviendo la equidad y el reconocimiento de los derechos de las comunidades afrocolombianas.",
+      color: "#24354b",
+    },
+    {
+      icon: GraduationCap,
+      title: "Educación de Calidad",
+      description:
+        "Garantizando acceso a educación superior y técnica para las comunidades rurales y étnicas.",
+      color: "#0dc1d3",
+    },
+    {
+      icon: Heart,
+      title: "Salud Integral",
+      description:
+        "Fortaleciendo el sistema de salud con enfoque diferencial y territorial.",
+      color: "#f9b91d",
+    },
+    {
+      icon: Users,
+      title: "Desarrollo Comunitario",
+      description:
+        "Impulsando proyectos productivos y de infraestructura en territorios ancestrales.",
+      color: "#569638",
     },
   ];
 
@@ -56,20 +105,22 @@ const Inicio = () => {
         position: "relative",
       }}
     >
-      {/* Hero Section - Sin badge */}
+      {/* Hero Section - OPTIMIZADO PARA MÓVILES */}
       <section
         style={{
-          background: `url('media/dorina-hero2.png')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center center",
+          background: `url('${
+            isMobile ? "media/dorina-hero2.png" : "media/dorina-hero2.png"
+          }')`,
+          backgroundSize: isMobile ? "contain" : "cover",
+          backgroundPosition: isMobile ? "center top" : "center center",
           backgroundRepeat: "no-repeat",
-          minHeight: "70vh",
+          minHeight: isMobile ? "80vh" : "70vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "flex-start",
           position: "relative",
           width: "100%",
-          padding: "2rem 0",
+          padding: isMobile ? "1rem 0" : "2rem 0",
           margin: "0",
           fontFamily:
             "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
@@ -89,13 +140,13 @@ const Inicio = () => {
             width: "100%",
             maxWidth: "1400px",
             margin: "0 auto",
-            padding: "0 3rem",
+            padding: isMobile ? "0 1rem" : "0 3rem",
             display: "flex",
             alignItems: "center",
             justifyContent: "flex-start",
             position: "relative",
             zIndex: 2,
-            minHeight: "65vh",
+            minHeight: isMobile ? "75vh" : "65vh",
           }}
         >
           <div
@@ -107,82 +158,87 @@ const Inicio = () => {
               flexDirection: "column",
               alignItems: "flex-start",
               justifyContent: "flex-end",
-              maxWidth: "480px",
+              maxWidth: isMobile ? "100%" : "480px",
               width: "100%",
               height: "100%",
-              paddingBottom: "4rem",
+              paddingBottom: isMobile ? "2rem" : "4rem",
             }}
           >
             {/* Espacio invisible para empujar todo hacia abajo */}
-            <div style={{ height: "320px", width: "100%" }} />
+            <div
+              style={{ height: isMobile ? "200px" : "320px", width: "100%" }}
+            />
 
             <div
               style={{
                 display: "flex",
-                gap: "15px",
+                gap: isMobile ? "10px" : "15px",
                 marginBottom: "20px",
                 flexWrap: "wrap",
-                justifyContent: "flex-start",
+                justifyContent: isMobile ? "center" : "flex-start",
+                width: "100%",
               }}
             >
-              <button
+              <a
+                href="#sobre-mi"
                 style={{
-                  background: "linear-gradient(135deg, #F89C1E, #E8890B)",
+                  background: "linear-gradient(135deg, #f9b91d, #f9b91d)",
                   color: "white",
-                  padding: "12px 24px",
+                  padding: isMobile ? "14px 20px" : "12px 24px",
                   borderRadius: "25px",
                   border: "none",
-                  fontSize: "14px",
+                  fontSize: isMobile ? "13px" : "14px",
                   fontWeight: "600",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
                   gap: "8px",
                   transition: "all 0.3s ease",
-                  boxShadow: "0 6px 20px rgba(248, 156, 30, 0.4)",
+                  boxShadow: "0 6px 20px rgba(249, 185, 29, 0.4)",
                   whiteSpace: "nowrap",
+                  textDecoration: "none",
+                  minHeight: isMobile ? "44px" : "auto",
                 }}
                 onMouseEnter={(e) => {
                   e.target.style.transform = "translateY(-2px) scale(1.02)";
                   e.target.style.boxShadow =
-                    "0 8px 25px rgba(248, 156, 30, 0.5)";
+                    "0 8px 25px rgba(249, 185, 29, 0.5)";
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.transform = "translateY(0) scale(1)";
                   e.target.style.boxShadow =
-                    "0 6px 20px rgba(248, 156, 30, 0.4)";
+                    "0 6px 20px rgba(249, 185, 29, 0.4)";
                 }}
               >
                 Conoce mi trabajo <ChevronRight size={16} />
-              </button>
+              </a>
 
               <button
                 style={{
                   background: "white",
-                  color: "#007C88",
-                  padding: "12px 24px",
+                  color: "#24354b",
+                  padding: isMobile ? "14px 20px" : "12px 24px",
                   borderRadius: "25px",
-                  border: "2px solid #007C88",
-                  fontSize: "14px",
+                  border: "2px solid #24354b",
+                  fontSize: isMobile ? "13px" : "14px",
                   fontWeight: "600",
                   cursor: "pointer",
                   transition: "all 0.3s ease",
                   whiteSpace: "nowrap",
-                  boxShadow: "0 4px 15px rgba(0, 124, 136, 0.2)",
+                  boxShadow: "0 4px 15px rgba(36, 53, 75, 0.2)",
+                  minHeight: isMobile ? "44px" : "auto",
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.background = "#007C88";
+                  e.target.style.background = "#24354b";
                   e.target.style.color = "white";
                   e.target.style.transform = "translateY(-2px) scale(1.02)";
-                  e.target.style.boxShadow =
-                    "0 6px 18px rgba(0, 124, 136, 0.4)";
+                  e.target.style.boxShadow = "0 6px 18px rgba(36, 53, 75, 0.4)";
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.background = "white";
-                  e.target.style.color = "#007C88";
+                  e.target.style.color = "#24354b";
                   e.target.style.transform = "translateY(0) scale(1)";
-                  e.target.style.boxShadow =
-                    "0 4px 15px rgba(0, 124, 136, 0.2)";
+                  e.target.style.boxShadow = "0 4px 15px rgba(36, 53, 75, 0.2)";
                 }}
               >
                 Ver propuestas
@@ -190,7 +246,15 @@ const Inicio = () => {
             </div>
 
             {/* Social Media Icons */}
-            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: isMobile ? "8px" : "10px",
+                flexWrap: "wrap",
+                justifyContent: isMobile ? "center" : "flex-start",
+                width: "100%",
+              }}
+            >
               {[
                 {
                   icon: Facebook,
@@ -219,8 +283,8 @@ const Inicio = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    width: "40px",
-                    height: "40px",
+                    width: isMobile ? "44px" : "40px",
+                    height: isMobile ? "44px" : "40px",
                     background: "white",
                     borderRadius: "50%",
                     display: "flex",
@@ -244,42 +308,46 @@ const Inicio = () => {
                     e.target.style.boxShadow = "0 3px 10px rgba(0,0,0,0.1)";
                   }}
                 >
-                  <social.icon size={18} />
+                  <social.icon size={isMobile ? 20 : 18} />
                 </a>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Elementos decorativos sutiles */}
-        <div
-          style={{
-            position: "absolute",
-            top: "20%",
-            left: "8%",
-            width: "60px",
-            height: "60px",
-            background: "linear-gradient(135deg, #FF8C00, #22C55E)",
-            borderRadius: "50%",
-            opacity: 0.03,
-            animation: "float 8s ease-in-out infinite",
-            zIndex: 1,
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: "30%",
-            right: "12%",
-            width: "40px",
-            height: "40px",
-            background: "linear-gradient(135deg, #EF4444, #1E3A8A)",
-            borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
-            opacity: 0.02,
-            animation: "float 10s ease-in-out infinite reverse",
-            zIndex: 1,
-          }}
-        />
+        {/* Elementos decorativos sutiles - OCULTOS EN MÓVIL */}
+        {!isMobile && (
+          <>
+            <div
+              style={{
+                position: "absolute",
+                top: "20%",
+                left: "8%",
+                width: "60px",
+                height: "60px",
+                background: "linear-gradient(135deg, #f9b91d, #569638)",
+                borderRadius: "50%",
+                opacity: 0.03,
+                animation: "float 8s ease-in-out infinite",
+                zIndex: 1,
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                bottom: "30%",
+                right: "12%",
+                width: "40px",
+                height: "40px",
+                background: "linear-gradient(135deg, #129ba5, #24354b)",
+                borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
+                opacity: 0.02,
+                animation: "float 10s ease-in-out infinite reverse",
+                zIndex: 1,
+              }}
+            />
+          </>
+        )}
 
         {/* Línea de la bandera de Colombia */}
         <div
@@ -290,46 +358,368 @@ const Inicio = () => {
             right: "0",
             height: "6px",
             background:
-              "linear-gradient(90deg, #FF8C00 0%, #FF8C00 50%, #1E3A8A 50%, #1E3A8A 75%, #EF4444 75%, #EF4444 100%)",
+              "linear-gradient(90deg, #FFCD00 0%, #FFCD00 50%, #003087 50%, #003087 75%, #CE1126 75%, #CE1126 100%)",
           }}
         />
       </section>
 
-      {/* Achievements Section */}
+      {/* ESLOGAN - OPTIMIZADO PARA MÓVILES */}
       <section
         style={{
-          padding: "3rem 2rem",
-          width: "100%",
-          background:
-            "linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%)",
-          position: "relative",
-          overflow: "hidden",
+          padding: isMobile ? "1.5rem 1rem" : "2rem",
+          background: "linear-gradient(135deg, #f9b91d 0%, #f9b91d 100%)",
+          textAlign: "center",
         }}
       >
         <div
           style={{
-            position: "absolute",
-            top: "-50%",
-            right: "-20%",
-            width: "600px",
-            height: "600px",
-            background:
-              "radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 70%)",
-            borderRadius: "50%",
+            maxWidth: "800px",
+            margin: "0 auto",
           }}
-        />
+        >
+          <h2
+            style={{
+              fontSize: isMobile ? "1.5rem" : "clamp(1.5rem, 3vw, 2.5rem)",
+              fontWeight: "700",
+              color: "white",
+              margin: 0,
+              textShadow: "0 2px 4px rgba(0,0,0,0.1)",
+              fontFamily: "'Poppins', sans-serif",
+              lineHeight: "1.3",
+            }}
+          >
+            "Representando la voz de Palenque"
+          </h2>
+        </div>
+      </section>
+
+      {/* SOBRE LA REPRESENTANTE - OPTIMIZADO PARA MÓVILES */}
+      <section
+        id="sobre-mi"
+        style={{
+          padding: isMobile ? "2rem 1rem" : "4rem 2rem",
+          background: "#f8fafc",
+        }}
+      >
         <div
           style={{
-            position: "absolute",
-            bottom: "-30%",
-            left: "-10%",
-            width: "400px",
-            height: "400px",
-            background:
-              "radial-gradient(circle, rgba(255, 140, 0, 0.05) 0%, transparent 70%)",
-            borderRadius: "50%",
+            maxWidth: "1200px",
+            margin: "0 auto",
+            display: "grid",
+            gridTemplateColumns: isMobile
+              ? "1fr"
+              : "repeat(auto-fit, minmax(400px, 1fr))",
+            gap: isMobile ? "2rem" : "3rem",
+            alignItems: "center",
           }}
-        />
+        >
+          <div style={{ order: isMobile ? 2 : 1 }}>
+            <div
+              style={{
+                display: "inline-block",
+                background: "#0dc1d3",
+                color: "white",
+                padding: isMobile ? "6px 16px" : "8px 20px",
+                borderRadius: "6px",
+                fontSize: isMobile ? "11px" : "12px",
+                fontWeight: "700",
+                marginBottom: "1.5rem",
+                textTransform: "uppercase",
+                letterSpacing: "1px",
+              }}
+            >
+              Sobre la Representante
+            </div>
+
+            <h2
+              style={{
+                fontSize: isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
+                fontWeight: "700",
+                color: "#24354b",
+                marginBottom: "1.5rem",
+                fontFamily: "'Poppins', sans-serif",
+                lineHeight: "1.2",
+              }}
+            >
+              Dorina Hernández Palomino
+            </h2>
+
+            <p
+              style={{
+                fontSize: isMobile ? "1rem" : "1.1rem",
+                color: "#4a5568",
+                lineHeight: "1.7",
+                marginBottom: "1.5rem",
+              }}
+            >
+              Representante a la Cámara por Bolívar, líder palenquera
+              comprometida con la defensa de los derechos étnicos y el
+              desarrollo territorial. Con una trayectoria sólida en gestión
+              pública y liderazgo comunitario.
+            </p>
+
+            <p
+              style={{
+                fontSize: isMobile ? "0.9rem" : "1rem",
+                color: "#718096",
+                lineHeight: "1.6",
+                marginBottom: "2rem",
+              }}
+            >
+              Trabajando incansablemente por la equidad, la justicia social y el
+              reconocimiento de las comunidades afrocolombianas en el Congreso
+              de la República.
+            </p>
+
+            <a
+              href="/biografia"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                background: "#24354b",
+                color: "white",
+                padding: isMobile ? "14px 20px" : "12px 24px",
+                borderRadius: "8px",
+                textDecoration: "none",
+                fontWeight: "600",
+                transition: "all 0.3s ease",
+                fontSize: isMobile ? "14px" : "16px",
+                minHeight: isMobile ? "44px" : "auto",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = "translateY(-2px)";
+                e.target.style.boxShadow = "0 8px 25px rgba(36, 53, 75, 0.3)";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = "translateY(0)";
+                e.target.style.boxShadow = "none";
+              }}
+            >
+              Ver biografía completa <ChevronRight size={16} />
+            </a>
+          </div>
+
+          <div style={{ position: "relative", order: isMobile ? 1 : 2 }}>
+            <div
+              style={{
+                borderRadius: "16px",
+                overflow: "hidden",
+                boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
+              }}
+            >
+              <img
+                src="media/dorina-hero2.png"
+                alt="Dorina Hernández Palomino"
+                style={{
+                  width: "100%",
+                  height: isMobile ? "300px" : "500px",
+                  objectFit: "cover",
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* BANDERAS POLÍTICAS - OPTIMIZADO PARA MÓVILES */}
+      <section
+        style={{
+          padding: isMobile ? "2rem 1rem" : "4rem 2rem",
+          background: "#24354b",
+        }}
+      >
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <div
+            style={{
+              textAlign: "center",
+              marginBottom: isMobile ? "2rem" : "3rem",
+            }}
+          >
+            <div
+              style={{
+                display: "inline-block",
+                background: "#f9b91d",
+                color: "white",
+                padding: isMobile ? "6px 16px" : "8px 20px",
+                borderRadius: "6px",
+                fontSize: isMobile ? "11px" : "12px",
+                fontWeight: "700",
+                marginBottom: "1.5rem",
+                textTransform: "uppercase",
+                letterSpacing: "1px",
+              }}
+            >
+              Nuestras Banderas Políticas
+            </div>
+
+            <h2
+              style={{
+                fontSize: isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
+                fontWeight: "700",
+                color: "white",
+                marginBottom: "1rem",
+                fontFamily: "'Poppins', sans-serif",
+                lineHeight: "1.2",
+              }}
+            >
+              Ejes que guían el trabajo legislativo
+            </h2>
+
+            <p
+              style={{
+                fontSize: isMobile ? "1rem" : "1.2rem",
+                color: "rgba(255, 255, 255, 0.8)",
+                maxWidth: "600px",
+                margin: "0 auto",
+              }}
+            >
+              y social de Dorina Hernández
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: isMobile
+                ? "1fr"
+                : "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: isMobile ? "1.5rem" : "2rem",
+            }}
+          >
+            {politicalFlags.map((flag, index) => (
+              <div
+                key={index}
+                style={{
+                  background: "rgba(255, 255, 255, 0.05)",
+                  backdropFilter: "blur(10px)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  borderRadius: "12px",
+                  padding: isMobile ? "1.5rem" : "2rem",
+                  textAlign: "center",
+                  transition: "all 0.3s ease",
+                  transform: isVisible ? "translateY(0)" : "translateY(30px)",
+                  opacity: isVisible ? 1 : 0,
+                  transitionDelay: `${index * 0.1}s`,
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = "translateY(-8px)";
+                  e.target.style.background = "rgba(255, 255, 255, 0.08)";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.background = "rgba(255, 255, 255, 0.05)";
+                }}
+              >
+                <div
+                  style={{
+                    width: isMobile ? "56px" : "64px",
+                    height: isMobile ? "56px" : "64px",
+                    borderRadius: "50%",
+                    background: flag.color,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "0 auto 1.5rem",
+                  }}
+                >
+                  <flag.icon size={isMobile ? 24 : 28} color="white" />
+                </div>
+
+                <h3
+                  style={{
+                    fontSize: isMobile ? "1.1rem" : "1.3rem",
+                    fontWeight: "600",
+                    color: "white",
+                    marginBottom: "1rem",
+                    fontFamily: "'Poppins', sans-serif",
+                    lineHeight: "1.3",
+                  }}
+                >
+                  {flag.title}
+                </h3>
+
+                <p
+                  style={{
+                    color: "rgba(255, 255, 255, 0.7)",
+                    lineHeight: "1.6",
+                    marginBottom: "1.5rem",
+                    fontSize: isMobile ? "0.9rem" : "1rem",
+                  }}
+                >
+                  {flag.description}
+                </p>
+
+                <button
+                  style={{
+                    background: `${flag.color}20`,
+                    color: flag.color,
+                    border: `1px solid ${flag.color}40`,
+                    padding: isMobile ? "10px 18px" : "8px 16px",
+                    borderRadius: "6px",
+                    fontSize: isMobile ? "13px" : "14px",
+                    fontWeight: "500",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                    minHeight: isMobile ? "40px" : "auto",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = flag.color;
+                    e.target.style.color = "white";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = `${flag.color}20`;
+                    e.target.style.color = flag.color;
+                  }}
+                >
+                  Ver más
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Achievements Section - OPTIMIZADO PARA MÓVILES */}
+      <section
+        style={{
+          padding: isMobile ? "2rem 1rem" : "3rem 2rem",
+          width: "100%",
+          background:
+            "linear-gradient(135deg, #24354b 0%, #24354b 50%, #24354b 100%)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* Elementos decorativos - OCULTOS EN MÓVIL */}
+        {!isMobile && (
+          <>
+            <div
+              style={{
+                position: "absolute",
+                top: "-50%",
+                right: "-20%",
+                width: "600px",
+                height: "600px",
+                background:
+                  "radial-gradient(circle, rgba(86, 150, 56, 0.08) 0%, transparent 70%)",
+                borderRadius: "50%",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                bottom: "-30%",
+                left: "-10%",
+                width: "400px",
+                height: "400px",
+                background:
+                  "radial-gradient(circle, rgba(249, 185, 29, 0.05) 0%, transparent 70%)",
+                borderRadius: "50%",
+              }}
+            />
+          </>
+        )}
 
         <div
           style={{
@@ -340,17 +730,21 @@ const Inicio = () => {
             zIndex: 2,
           }}
         >
-          <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
-            {/* Badge Mi Compromiso - Serio y sobrio */}
+          <div
+            style={{
+              textAlign: "center",
+              marginBottom: isMobile ? "2rem" : "3.5rem",
+            }}
+          >
             <div
               style={{
                 display: "inline-block",
-                background: "linear-gradient(135deg, #007C88, #006B75)",
+                background: "linear-gradient(135deg, #129ba5, #129ba5)",
                 backdropFilter: "blur(10px)",
                 color: "white",
-                padding: "12px 32px",
+                padding: isMobile ? "10px 24px" : "12px 32px",
                 borderRadius: "8px",
-                fontSize: "14px",
+                fontSize: isMobile ? "12px" : "14px",
                 fontWeight: "700",
                 marginBottom: "1.5rem",
                 textTransform: "uppercase",
@@ -364,7 +758,7 @@ const Inicio = () => {
 
             <h2
               style={{
-                fontSize: "clamp(2rem, 4vw, 3rem)",
+                fontSize: isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
                 fontWeight: "700",
                 color: "white",
                 marginBottom: "1rem",
@@ -375,7 +769,7 @@ const Inicio = () => {
               Compromiso con{" "}
               <span
                 style={{
-                  background: "linear-gradient(135deg, #F89C1E, #E8890B)",
+                  background: "linear-gradient(135deg, #f9b91d, #f9b91d)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -386,7 +780,7 @@ const Inicio = () => {
             </h2>
             <p
               style={{
-                fontSize: "clamp(1rem, 2vw, 1.2rem)",
+                fontSize: isMobile ? "1rem" : "clamp(1rem, 2vw, 1.2rem)",
                 color: "rgba(255, 255, 255, 0.8)",
                 maxWidth: "600px",
                 margin: "0 auto",
@@ -401,8 +795,10 @@ const Inicio = () => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: "1.5rem",
+              gridTemplateColumns: isMobile
+                ? "1fr"
+                : "repeat(auto-fit, minmax(320px, 1fr))",
+              gap: isMobile ? "1rem" : "1.5rem",
               width: "100%",
             }}
           >
@@ -414,7 +810,7 @@ const Inicio = () => {
                   backdropFilter: "blur(10px)",
                   border: "1px solid rgba(255, 255, 255, 0.1)",
                   borderRadius: "12px",
-                  padding: "2rem 1.5rem",
+                  padding: isMobile ? "1.5rem 1rem" : "2rem 1.5rem",
                   textAlign: "left",
                   transition: "all 0.3s ease",
                   transform: isVisible ? "translateY(0)" : "translateY(30px)",
@@ -438,17 +834,20 @@ const Inicio = () => {
                   style={{
                     display: "flex",
                     alignItems: "flex-start",
-                    gap: "1rem",
+                    gap: isMobile ? "0.75rem" : "1rem",
+                    flexDirection: isMobile ? "column" : "row",
+                    textAlign: isMobile ? "center" : "left",
                   }}
                 >
                   <div
                     style={{
-                      width: "150px",
-                      height: "150px",
+                      width: isMobile ? "120px" : "150px",
+                      height: isMobile ? "120px" : "150px",
                       borderRadius: "8px",
                       overflow: "hidden",
                       flexShrink: 0,
                       border: `2px solid ${achievement.color}30`,
+                      margin: isMobile ? "0 auto 1rem" : "0",
                     }}
                   >
                     <img
@@ -465,11 +864,12 @@ const Inicio = () => {
                   <div style={{ flex: 1 }}>
                     <h3
                       style={{
-                        fontSize: "1.2rem",
+                        fontSize: isMobile ? "1.1rem" : "1.2rem",
                         fontWeight: "600",
                         color: "white",
                         marginBottom: "0.5rem",
                         fontFamily: "'Poppins', sans-serif",
+                        lineHeight: "1.3",
                       }}
                     >
                       {achievement.title}
@@ -478,7 +878,7 @@ const Inicio = () => {
                       style={{
                         color: "rgba(255, 255, 255, 0.7)",
                         lineHeight: "1.5",
-                        fontSize: "0.95rem",
+                        fontSize: isMobile ? "0.9rem" : "0.95rem",
                         margin: 0,
                       }}
                     >
@@ -504,11 +904,11 @@ const Inicio = () => {
         </div>
       </section>
 
-      {/* Social Media Section */}
+      {/* Social Media Section - OPTIMIZADO PARA MÓVILES */}
       <section
         style={{
-          background: "linear-gradient(135deg, #007C88 0%, #006B75 100%)",
-          padding: "3rem 2rem",
+          background: "linear-gradient(135deg, #129ba5 0%, #129ba5 100%)",
+          padding: isMobile ? "2rem 1rem" : "3rem 2rem",
           width: "100%",
         }}
       >
@@ -519,21 +919,27 @@ const Inicio = () => {
             width: "100%",
           }}
         >
-          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+          <div
+            style={{
+              textAlign: "center",
+              marginBottom: isMobile ? "2rem" : "3rem",
+            }}
+          >
             <h2
               style={{
-                fontSize: "clamp(1.8rem, 3vw, 2.2rem)",
+                fontSize: isMobile ? "1.6rem" : "clamp(1.8rem, 3vw, 2.2rem)",
                 fontWeight: "600",
                 color: "white",
                 marginBottom: "0.5rem",
                 fontFamily: "'Poppins', sans-serif",
+                lineHeight: "1.3",
               }}
             >
               Sígueme en Redes Sociales
             </h2>
             <p
               style={{
-                fontSize: "clamp(0.9rem, 1.6vw, 1rem)",
+                fontSize: isMobile ? "0.9rem" : "clamp(0.9rem, 1.6vw, 1rem)",
                 color: "rgba(255,255,255,0.8)",
               }}
             >
@@ -544,8 +950,10 @@ const Inicio = () => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "2rem",
+              gridTemplateColumns: isMobile
+                ? "1fr"
+                : "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: isMobile ? "1.5rem" : "2rem",
               width: "100%",
             }}
           >
@@ -554,7 +962,7 @@ const Inicio = () => {
               style={{
                 background: "white",
                 borderRadius: "12px",
-                padding: "1.5rem",
+                padding: isMobile ? "1rem" : "1.5rem",
                 boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
                 border: "1px solid #e2e8f0",
               }}
@@ -570,9 +978,9 @@ const Inicio = () => {
                 <Facebook size={20} style={{ color: "#1877F2" }} />
                 <h3
                   style={{
-                    color: "#007C88",
+                    color: "#129ba5",
                     margin: 0,
-                    fontSize: "1rem",
+                    fontSize: isMobile ? "0.9rem" : "1rem",
                     fontWeight: "600",
                     fontFamily: "'Poppins', sans-serif",
                   }}
@@ -583,7 +991,7 @@ const Inicio = () => {
               <div
                 style={{
                   width: "100%",
-                  height: "300px",
+                  height: isMobile ? "250px" : "300px",
                   border: "none",
                   overflow: "hidden",
                   borderRadius: "8px",
@@ -592,7 +1000,7 @@ const Inicio = () => {
                 <iframe
                   src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb.facebook.com%2Fphoto.php%3Ffbid%3D10021079351332977%26set%3Da.2588583361249317%26type%3D3&show_text=true&width=500"
                   width="100%"
-                  height="250"
+                  height="100%"
                   style={{
                     border: "none",
                     overflow: "hidden",
@@ -611,7 +1019,7 @@ const Inicio = () => {
               style={{
                 background: "white",
                 borderRadius: "12px",
-                padding: "1.5rem",
+                padding: isMobile ? "1rem" : "1.5rem",
                 boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
                 border: "1px solid #e2e8f0",
               }}
@@ -627,9 +1035,9 @@ const Inicio = () => {
                 <Instagram size={20} style={{ color: "#E4405F" }} />
                 <h3
                   style={{
-                    color: "#007C88",
+                    color: "#129ba5",
                     margin: 0,
-                    fontSize: "1rem",
+                    fontSize: isMobile ? "0.9rem" : "1rem",
                     fontWeight: "600",
                     fontFamily: "'Poppins', sans-serif",
                   }}
@@ -640,7 +1048,7 @@ const Inicio = () => {
               <div
                 style={{
                   width: "100%",
-                  height: "300px",
+                  height: isMobile ? "250px" : "300px",
                   borderRadius: "8px",
                   overflow: "hidden",
                 }}
@@ -663,6 +1071,7 @@ const Inicio = () => {
                     width: "99.375%",
                   }}
                 >
+                  {/* Instagram embed content - mantenido igual */}
                   <div style={{ padding: "16px" }}>
                     <a
                       href="https://www.instagram.com/p/DLLedUUR1LJ/?utm_source=ig_embed&utm_campaign=loading"
@@ -770,161 +1179,7 @@ const Inicio = () => {
                           Ver esta publicación en Instagram
                         </div>
                       </div>
-                      <div style={{ padding: "12.5% 0" }}></div>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          marginBottom: "14px",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div>
-                          <div
-                            style={{
-                              backgroundColor: "#F4F4F4",
-                              borderRadius: "50%",
-                              height: "12.5px",
-                              width: "12.5px",
-                              transform: "translateX(0px) translateY(7px)",
-                            }}
-                          ></div>
-                          <div
-                            style={{
-                              backgroundColor: "#F4F4F4",
-                              height: "12.5px",
-                              transform:
-                                "rotate(-45deg) translateX(3px) translateY(1px)",
-                              width: "12.5px",
-                              flexGrow: 0,
-                              marginRight: "14px",
-                              marginLeft: "2px",
-                            }}
-                          ></div>
-                          <div
-                            style={{
-                              backgroundColor: "#F4F4F4",
-                              borderRadius: "50%",
-                              height: "12.5px",
-                              width: "12.5px",
-                              transform: "translateX(9px) translateY(-18px)",
-                            }}
-                          ></div>
-                        </div>
-                        <div style={{ marginLeft: "8px" }}>
-                          <div
-                            style={{
-                              backgroundColor: "#F4F4F4",
-                              borderRadius: "50%",
-                              flexGrow: 0,
-                              height: "20px",
-                              width: "20px",
-                            }}
-                          ></div>
-                          <div
-                            style={{
-                              width: 0,
-                              height: 0,
-                              borderTop: "2px solid transparent",
-                              borderLeft: "6px solid #f4f4f4",
-                              borderBottom: "2px solid transparent",
-                              transform:
-                                "translateX(16px) translateY(-4px) rotate(30deg)",
-                            }}
-                          ></div>
-                        </div>
-                        <div style={{ marginLeft: "auto" }}>
-                          <div
-                            style={{
-                              width: "0px",
-                              borderTop: "8px solid #F4F4F4",
-                              borderRight: "8px solid transparent",
-                              transform: "translateY(16px)",
-                            }}
-                          ></div>
-                          <div
-                            style={{
-                              backgroundColor: "#F4F4F4",
-                              flexGrow: 0,
-                              height: "12px",
-                              width: "16px",
-                              transform: "translateY(-4px)",
-                            }}
-                          ></div>
-                          <div
-                            style={{
-                              width: 0,
-                              height: 0,
-                              borderTop: "8px solid #F4F4F4",
-                              borderLeft: "8px solid transparent",
-                              transform: "translateY(-4px) translateX(8px)",
-                            }}
-                          ></div>
-                        </div>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          flexGrow: 1,
-                          justifyContent: "center",
-                          marginBottom: "24px",
-                        }}
-                      >
-                        <div
-                          style={{
-                            backgroundColor: "#F4F4F4",
-                            borderRadius: "4px",
-                            flexGrow: 0,
-                            height: "14px",
-                            marginBottom: "6px",
-                            width: "224px",
-                          }}
-                        ></div>
-                        <div
-                          style={{
-                            backgroundColor: "#F4F4F4",
-                            borderRadius: "4px",
-                            flexGrow: 0,
-                            height: "14px",
-                            width: "144px",
-                          }}
-                        ></div>
-                      </div>
                     </a>
-                    <p
-                      style={{
-                        color: "#c9c8cd",
-                        fontFamily: "Arial,sans-serif",
-                        fontSize: "14px",
-                        lineHeight: "17px",
-                        marginBottom: 0,
-                        marginTop: "8px",
-                        overflow: "hidden",
-                        padding: "8px 0 7px",
-                        textAlign: "center",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      <a
-                        href="https://www.instagram.com/p/DLLedUUR1LJ/?utm_source=ig_embed&utm_campaign=loading"
-                        style={{
-                          color: "#c9c8cd",
-                          fontFamily: "Arial,sans-serif",
-                          fontSize: "14px",
-                          fontStyle: "normal",
-                          fontWeight: "normal",
-                          lineHeight: "17px",
-                          textDecoration: "none",
-                        }}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Una publicación compartida por Cha Dorina Hernández
-                        (@chadorinah)
-                      </a>
-                    </p>
                   </div>
                 </blockquote>
               </div>
@@ -933,12 +1188,12 @@ const Inicio = () => {
         </div>
       </section>
 
-      {/* Videos Section */}
+      {/* Videos Section - OPTIMIZADO PARA MÓVILES */}
       <section
         style={{
-          padding: "3rem 2rem",
+          padding: isMobile ? "2rem 1rem" : "3rem 2rem",
           width: "100%",
-          background: "linear-gradient(135deg, #EAD9C5 0%, #E0CDB0 100%)",
+          background: "linear-gradient(135deg, #24354b 0%, #24354b 100%)",
         }}
       >
         <div
@@ -948,15 +1203,20 @@ const Inicio = () => {
             width: "100%",
           }}
         >
-          <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
+          <div
+            style={{
+              textAlign: "center",
+              marginBottom: isMobile ? "2rem" : "2.5rem",
+            }}
+          >
             <div
               style={{
                 display: "inline-block",
-                background: "linear-gradient(135deg, #F89C1E, #E8890B)",
                 color: "white",
-                padding: "10px 24px",
+                background: "linear-gradient(135deg, #f9b91d, #f9b91d)",
+                padding: isMobile ? "8px 20px" : "10px 24px",
                 borderRadius: "6px",
-                fontSize: "14px",
+                fontSize: isMobile ? "12px" : "14px",
                 fontWeight: "700",
                 marginBottom: "1rem",
                 textTransform: "uppercase",
@@ -967,19 +1227,20 @@ const Inicio = () => {
             </div>
             <h2
               style={{
-                fontSize: "clamp(2rem, 3.5vw, 2.5rem)",
+                fontSize: isMobile ? "1.6rem" : "clamp(2rem, 3.5vw, 2.5rem)",
                 fontWeight: "600",
-                color: "#007C88",
+                color: "white",
                 marginBottom: "0.5rem",
                 fontFamily: "'Poppins', sans-serif",
+                lineHeight: "1.3",
               }}
             >
               Mi Trabajo en el Congreso
             </h2>
             <p
               style={{
-                fontSize: "clamp(0.9rem, 1.6vw, 1rem)",
-                color: "#64748b",
+                fontSize: isMobile ? "0.9rem" : "clamp(0.9rem, 1.6vw, 1rem)",
+                color: "rgba(255, 255, 255, 0.8)",
               }}
             >
               Conoce más sobre mis propuestas y gestiones
@@ -989,8 +1250,10 @@ const Inicio = () => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "1.5rem",
+              gridTemplateColumns: isMobile
+                ? "1fr"
+                : "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: isMobile ? "1rem" : "1.5rem",
               width: "100%",
             }}
           >
@@ -1062,22 +1325,35 @@ const Inicio = () => {
                     allowFullScreen
                   />
                 </div>
-                <div style={{ padding: "1rem", textAlign: "center" }}>
-                  <h3
-                    style={{
-                      fontSize: "1.05rem",
-                      fontWeight: "600",
-                      color: "#007C88",
-                      marginBottom: "0.75rem",
-                      fontFamily: "'Poppins', sans-serif",
-                      textAlign: "center",
-                    }}
+                <div
+                  style={{
+                    padding: isMobile ? "0.75rem" : "1rem",
+                    textAlign: "center",
+                  }}
+                >
+                  <a
+                    href={`https://www.youtube.com/watch?v=${video.videoId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
                   >
-                    {video.title}
-                  </h3>
+                    <h3
+                      style={{
+                        fontSize: isMobile ? "0.95rem" : "1.05rem",
+                        fontWeight: "600",
+                        color: "#f9b91d",
+                        marginBottom: "0.75rem",
+                        fontFamily: "'Poppins', sans-serif",
+                        textAlign: "center",
+                        lineHeight: "1.3",
+                      }}
+                    >
+                      {video.title}
+                    </h3>
+                  </a>
                   <p
                     style={{
-                      fontSize: "0.9rem",
+                      fontSize: isMobile ? "0.8rem" : "0.9rem",
                       color: "#64748b",
                       margin: 0,
                       lineHeight: "1.4",
@@ -1093,12 +1369,144 @@ const Inicio = () => {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* FORMULARIO DE PARTICIPACIÓN - OPTIMIZADO PARA MÓVILES */}
+      <section
+        style={{
+          padding: isMobile ? "2rem 1rem" : "4rem 2rem",
+          background: "#569638",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "800px",
+            margin: "0 auto",
+            textAlign: "center",
+          }}
+        >
+          <div style={{ marginBottom: "2rem" }}>
+            <h2
+              style={{
+                fontSize: isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
+                fontWeight: "700",
+                color: "white",
+                marginBottom: "1rem",
+                fontFamily: "'Poppins', sans-serif",
+                lineHeight: "1.2",
+              }}
+            >
+              Haz parte del proyecto político de Dorina
+            </h2>
+            <p
+              style={{
+                fontSize: isMobile ? "1rem" : "1.2rem",
+                color: "rgba(255, 255, 255, 0.9)",
+                marginBottom: "2rem",
+                lineHeight: "1.6",
+              }}
+            >
+              Comparte tus ideas y propuestas. Tu voz es importante para
+              construir un futuro mejor para nuestras comunidades.
+            </p>
+          </div>
+
+          <div
+            style={{
+              background: "rgba(255, 255, 255, 0.1)",
+              backdropFilter: "blur(10px)",
+              borderRadius: "16px",
+              padding: isMobile ? "2rem 1.5rem" : "2.5rem",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "12px",
+                marginBottom: "1.5rem",
+                flexDirection: isMobile ? "column" : "row",
+              }}
+            >
+              <MessageSquare size={isMobile ? 28 : 32} color="white" />
+              <h3
+                style={{
+                  fontSize: isMobile ? "1.3rem" : "1.5rem",
+                  fontWeight: "600",
+                  color: "white",
+                  margin: 0,
+                  fontFamily: "'Poppins', sans-serif",
+                  textAlign: "center",
+                }}
+              >
+                Tu participación cuenta
+              </h3>
+            </div>
+
+            <p
+              style={{
+                color: "rgba(255, 255, 255, 0.8)",
+                marginBottom: "2rem",
+                fontSize: isMobile ? "1rem" : "1.1rem",
+                lineHeight: "1.6",
+              }}
+            >
+              Queremos escuchar tus propuestas, inquietudes y sugerencias.
+              Juntos podemos trabajar por el desarrollo de nuestros territorios.
+            </p>
+
+            <a
+              href="/contacto"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                background: "#f9b91d",
+                color: "white",
+                padding: isMobile ? "16px 28px" : "16px 32px",
+                borderRadius: "50px",
+                textDecoration: "none",
+                fontWeight: "600",
+                fontSize: isMobile ? "1rem" : "1.1rem",
+                transition: "all 0.3s ease",
+                boxShadow: "0 8px 25px rgba(249, 185, 29, 0.4)",
+                minHeight: isMobile ? "48px" : "auto",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = "translateY(-3px) scale(1.05)";
+                e.target.style.boxShadow =
+                  "0 12px 30px rgba(249, 185, 29, 0.5)";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = "translateY(0) scale(1)";
+                e.target.style.boxShadow = "0 8px 25px rgba(249, 185, 29, 0.4)";
+              }}
+            >
+              <Send size={20} />
+              Enviar propuesta
+            </a>
+
+            <p
+              style={{
+                color: "rgba(255, 255, 255, 0.6)",
+                fontSize: isMobile ? "0.8rem" : "0.9rem",
+                marginTop: "1.5rem",
+                margin: "1.5rem 0 0 0",
+              }}
+            >
+              Tu información será tratada confidencialmente de acuerdo con
+              nuestra política de privacidad.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer - OPTIMIZADO PARA MÓVILES */}
       <footer
         style={{
-          background: "linear-gradient(135deg, #1e293b 0%, #334155 100%)",
+          background: "linear-gradient(135deg, #24354b 0%, #24354b 100%)",
           color: "white",
-          padding: "2.5rem 2rem 1.5rem",
+          padding: isMobile ? "2rem 1rem 1rem" : "2.5rem 2rem 1.5rem",
           width: "100%",
           position: "relative",
         }}
@@ -1113,8 +1521,10 @@ const Inicio = () => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-              gap: "2rem",
+              gridTemplateColumns: isMobile
+                ? "1fr"
+                : "repeat(auto-fit, minmax(250px, 1fr))",
+              gap: isMobile ? "1.5rem" : "2rem",
               marginBottom: "2rem",
             }}
           >
@@ -1122,11 +1532,12 @@ const Inicio = () => {
             <div>
               <h3
                 style={{
-                  fontSize: "1.1rem",
+                  fontSize: isMobile ? "1rem" : "1.1rem",
                   fontWeight: "600",
                   marginBottom: "1rem",
-                  color: "#F89C1E",
+                  color: "#f9b91d",
                   fontFamily: "'Poppins', sans-serif",
+                  lineHeight: "1.3",
                 }}
               >
                 Contacto
@@ -1141,22 +1552,24 @@ const Inicio = () => {
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
-                  <Mail size={16} style={{ color: "#F89C1E" }} />
-                  <span style={{ fontSize: "0.9rem" }}>
+                  <Mail size={16} style={{ color: "#f9b91d" }} />
+                  <span style={{ fontSize: isMobile ? "0.8rem" : "0.9rem" }}>
                     contacto@dorinahernandez.com
                   </span>
                 </div>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
-                  <Phone size={16} style={{ color: "#F89C1E" }} />
-                  <span style={{ fontSize: "0.9rem" }}>+57 (5) 123-4567</span>
+                  <Phone size={16} style={{ color: "#f9b91d" }} />
+                  <span style={{ fontSize: isMobile ? "0.8rem" : "0.9rem" }}>
+                    +57 (5) 123-4567
+                  </span>
                 </div>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
-                  <MapPin size={16} style={{ color: "#F89C1E" }} />
-                  <span style={{ fontSize: "0.9rem" }}>
+                  <MapPin size={16} style={{ color: "#f9b91d" }} />
+                  <span style={{ fontSize: isMobile ? "0.8rem" : "0.9rem" }}>
                     San Basilio de Palenque, Bolívar
                   </span>
                 </div>
@@ -1167,11 +1580,12 @@ const Inicio = () => {
             <div>
               <h3
                 style={{
-                  fontSize: "1.1rem",
+                  fontSize: isMobile ? "1rem" : "1.1rem",
                   fontWeight: "600",
                   marginBottom: "1rem",
-                  color: "#F89C1E",
+                  color: "#f9b91d",
                   fontFamily: "'Poppins', sans-serif",
+                  lineHeight: "1.3",
                 }}
               >
                 Redes Sociales
@@ -1235,11 +1649,12 @@ const Inicio = () => {
             <div>
               <h3
                 style={{
-                  fontSize: "1.1rem",
+                  fontSize: isMobile ? "1rem" : "1.1rem",
                   fontWeight: "600",
                   marginBottom: "1rem",
-                  color: "#F89C1E",
+                  color: "#f9b91d",
                   fontFamily: "'Poppins', sans-serif",
+                  lineHeight: "1.3",
                 }}
               >
                 Legal
@@ -1263,10 +1678,10 @@ const Inicio = () => {
                       color: "rgba(255,255,255,0.8)",
                       textDecoration: "none",
                       transition: "color 0.3s ease",
-                      fontSize: "0.9rem",
+                      fontSize: isMobile ? "0.8rem" : "0.9rem",
                     }}
                     onMouseEnter={(e) => {
-                      e.target.style.color = "#F89C1E";
+                      e.target.style.color = "#f9b91d";
                     }}
                     onMouseLeave={(e) => {
                       e.target.style.color = "rgba(255,255,255,0.8)";
@@ -1288,11 +1703,13 @@ const Inicio = () => {
               color: "rgba(255,255,255,0.7)",
             }}
           >
-            <p style={{ fontSize: "0.85rem", margin: 0 }}>
+            <p
+              style={{ fontSize: isMobile ? "0.75rem" : "0.85rem", margin: 0 }}
+            >
               © {new Date().getFullYear()} Dorina Hernández Palomino. Todos los
               derechos reservados.
               <br />
-              <span style={{ color: "#F89C1E" }}>
+              <span style={{ color: "#f9b91d" }}>
                 Representando con orgullo a San Basilio de Palenque 🇨🇴
               </span>
             </p>
@@ -1308,7 +1725,7 @@ const Inicio = () => {
             right: 0,
             height: "3px",
             background:
-              "linear-gradient(90deg, #FF8C00 0%, #FF8C00 50%, #1E3A8A 50%, #1E3A8A 75%, #EF4444 75%, #EF4444 100%)",
+              "linear-gradient(90deg, #FFCD00 0%, #FFCD00 50%, #003087 50%, #003087 75%, #CE1126 75%, #CE1126 100%)",
           }}
         />
       </footer>
