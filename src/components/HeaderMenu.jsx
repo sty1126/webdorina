@@ -21,27 +21,58 @@ import {
 const HeaderMenu = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [screenSize, setScreenSize] = useState({
+    width: typeof window !== "undefined" ? window.innerWidth : 1200,
+    height: typeof window !== "undefined" ? window.innerHeight : 800,
+  });
   const navigate = useNavigate();
 
-  // Detectar si es móvil
+  // Mejorar detección de dispositivos móviles
+  const isMobile = screenSize.width < 768;
+  const isTablet = screenSize.width >= 768 && screenSize.width < 1024;
+  const isSmallMobile = screenSize.width < 480;
+
+  // Detectar cambios de tamaño de pantalla con debounce
   useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+    let timeoutId = null;
+
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setScreenSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }, 150);
     };
 
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
+    // Detectar orientación en móviles
+    const handleOrientationChange = () => {
+      setTimeout(() => {
+        setScreenSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }, 100);
+    };
 
-    return () => window.removeEventListener("resize", checkIsMobile);
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleOrientationChange);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleOrientationChange);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   // Cerrar menú móvil cuando se redimensiona a desktop
   useEffect(() => {
-    if (!isMobile) {
+    if (!isMobile && isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
+      setActiveDropdown(null);
     }
-  }, [isMobile]);
+  }, [isMobile, isMobileMenuOpen]);
 
   const menuItems = [
     {
@@ -109,205 +140,11 @@ const HeaderMenu = () => {
     },
   ];
 
-  const headerStyle = {
-    position: "relative",
-    background:
-      "linear-gradient(135deg, #24354b 0%, #1a2635 50%, #0f1419 100%)",
-    boxShadow:
-      "0 20px 25px -5px rgba(36, 53, 75, 0.2), 0 10px 10px -5px rgba(36, 53, 75, 0.1)",
-    padding: "0",
-    height: "auto",
-    minHeight: isMobile ? "70px" : "80px",
-    zIndex: 1000,
-  };
-
-  const containerStyle = {
-    maxWidth: "1200px",
-    margin: "0 auto",
-    padding: isMobile ? "12px 16px" : "16px 48px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    position: "relative",
-    zIndex: 10,
-  };
-
-  const logoContainerStyle = {
-    display: "flex",
-    alignItems: "center",
-  };
-
-  const logoStyle = {
-    width: isMobile ? "140px" : "180px",
-    height: isMobile ? "45px" : "60px",
-    objectFit: "contain",
-    filter: "brightness(0) invert(1)",
-    transition: "all 0.3s ease",
-    cursor: "pointer",
-  };
-
-  // Estilos para navegación desktop
-  const navStyle = {
-    display: isMobile ? "none" : "flex",
-    alignItems: "center",
-    gap: "8px",
-  };
-
-  const menuItemStyle = {
-    position: "relative",
-  };
-
-  const buttonStyle = {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    padding: "12px 24px",
-    borderRadius: "16px",
-    background: "rgba(13, 193, 211, 0.15)",
-    backdropFilter: "blur(10px)",
-    border: "1px solid rgba(13, 193, 211, 0.3)",
-    color: "#0dc1d3",
-    fontSize: "14px",
-    fontWeight: "500",
-    cursor: "pointer",
-    transition: "all 0.3s ease",
-    whiteSpace: "nowrap",
-  };
-
-  const buttonHoverStyle = {
-    background: "linear-gradient(135deg, #f9b91d, #e6a50a)",
-    color: "#24354b",
-    transform: "scale(1.05)",
-    boxShadow: "0 10px 15px -3px rgba(249, 185, 29, 0.3)",
-  };
-
-  const dropdownStyle = {
-    position: "absolute",
-    top: "100%",
-    right: "0",
-    marginTop: "8px",
-    width: "256px",
-    background: "#ffffff",
-    borderRadius: "16px",
-    boxShadow: "0 25px 50px -12px rgba(36, 53, 75, 0.25)",
-    border: "1px solid rgba(36, 53, 75, 0.1)",
-    overflow: "hidden",
-    zIndex: 50,
-    transition: "all 0.3s ease",
-  };
-
-  // Estilos para menú hamburguesa
-  const hamburgerButtonStyle = {
-    display: isMobile ? "flex" : "none",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "44px",
-    height: "44px",
-    background: "rgba(13, 193, 211, 0.15)",
-    backdropFilter: "blur(10px)",
-    border: "1px solid rgba(13, 193, 211, 0.3)",
-    borderRadius: "12px",
-    color: "#0dc1d3",
-    cursor: "pointer",
-    transition: "all 0.3s ease",
-  };
-
-  // Estilos para menú móvil
-  const mobileMenuStyle = {
-    position: "fixed",
-    top: isMobile ? "70px" : "80px",
-    left: 0,
-    right: 0,
-    background: "linear-gradient(135deg, #24354b 0%, #1a2635 100%)",
-    backdropFilter: "blur(20px)",
-    borderTop: "1px solid rgba(13, 193, 211, 0.3)",
-    transform: isMobileMenuOpen ? "translateY(0)" : "translateY(-100%)",
-    opacity: isMobileMenuOpen ? 1 : 0,
-    visibility: isMobileMenuOpen ? "visible" : "hidden",
-    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-    zIndex: 999,
-    maxHeight: "calc(100vh - 70px)",
-    overflowY: "auto",
-  };
-
-  const mobileMenuItemStyle = {
-    borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-  };
-
-  const mobileButtonStyle = {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "16px 20px",
-    background: "transparent",
-    border: "none",
-    color: "#0dc1d3",
-    fontSize: "16px",
-    fontWeight: "500",
-    cursor: "pointer",
-    transition: "all 0.3s ease",
-  };
-
-  const mobileSubMenuStyle = {
-    background: "rgba(0, 0, 0, 0.2)",
-    maxHeight: activeDropdown ? "200px" : "0",
-    overflow: "hidden",
-    transition: "all 0.3s ease",
-  };
-
-  const mobileSubItemStyle = {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    gap: "12px",
-    padding: "12px 40px",
-    background: "transparent",
-    border: "none",
-    color: "rgba(255, 255, 255, 0.8)",
-    fontSize: "14px",
-    fontWeight: "400",
-    cursor: "pointer",
-    transition: "all 0.3s ease",
-    borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
-  };
-
-  const overlayStyle = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: "linear-gradient(135deg, rgba(36, 53, 75, 0.1), transparent)",
-    pointerEvents: "none",
-  };
-
-  const decorativeBar1Style = {
-    position: "absolute",
-    top: 0,
-    left: isMobile ? "10%" : "20%",
-    width: isMobile ? "100px" : "200px",
-    height: "6px",
-    background:
-      "linear-gradient(90deg, #FFBC11 0%, #FFBC11 50%, #074461 50%, #074461 75%, #FF3D00 75%, #FF3D00 100%)",
-    borderRadius: "3px",
-  };
-
-  const decorativeBar2Style = {
-    position: "absolute",
-    bottom: 0,
-    right: isMobile ? "10%" : "20%",
-    width: isMobile ? "80px" : "150px",
-    height: "6px",
-    background:
-      "linear-gradient(90deg, #FF3D00 0%, #FF3D00 14.28%, #FFBC11 14.28%, #FFBC11 28.56%, #0AA87E 28.56%, #0AA87E 42.84%, #FFFFFF 42.84%, #FFFFFF 57.12%, #0AA87E 57.12%, #0AA87E 71.4%, #FFBC11 71.4%, #FFBC11 85.68%, #FF3D00 85.68%, #FF3D00 100%)",
-    borderRadius: "3px",
-  };
-
   const handleMainNavigation = (item) => {
     if (item.href) {
       navigate(item.href);
       setIsMobileMenuOpen(false);
+      setActiveDropdown(null);
     }
   };
 
@@ -330,63 +167,41 @@ const HeaderMenu = () => {
 
   return (
     <>
-      <header style={headerStyle}>
-        <div style={overlayStyle}></div>
+      <header className="header-container">
+        <div className="header-overlay"></div>
 
-        <div style={containerStyle}>
+        <div className="header-content">
           {/* Logo */}
-          <div style={logoContainerStyle}>
+          <div className="logo-container">
             <img
               src="media/logo.png?height=60&width=180"
               alt="Logo Dorina Hernández"
-              style={logoStyle}
+              className="logo"
               onClick={() => navigate("/")}
-              onMouseEnter={(e) => {
-                e.target.style.filter =
-                  "brightness(0) invert(1) drop-shadow(0 0 10px rgba(13,193,211,0.8))";
-                e.target.style.transform = "scale(1.02)";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.filter = "brightness(0) invert(1)";
-                e.target.style.transform = "scale(1)";
-              }}
             />
           </div>
 
           {/* Desktop Navigation */}
-          <nav style={navStyle}>
+          <nav className="desktop-nav">
             {menuItems.map((item) => (
               <div
                 key={item.key}
-                style={menuItemStyle}
+                className="nav-item"
                 onMouseEnter={() => item.submenu && setActiveDropdown(item.key)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
                 <button
-                  style={buttonStyle}
+                  className="nav-button"
                   onClick={() => handleMainNavigation(item)}
-                  onMouseEnter={(e) => {
-                    Object.assign(e.target.style, buttonHoverStyle);
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = "rgba(13, 193, 211, 0.15)";
-                    e.target.style.color = "#0dc1d3";
-                    e.target.style.transform = "scale(1)";
-                    e.target.style.boxShadow = "none";
-                  }}
                 >
                   <item.icon size={20} />
                   <span>{item.label}</span>
                   {item.submenu && (
                     <ChevronDown
                       size={16}
-                      style={{
-                        transition: "transform 0.3s ease",
-                        transform:
-                          activeDropdown === item.key
-                            ? "rotate(180deg)"
-                            : "rotate(0deg)",
-                      }}
+                      className={`chevron ${
+                        activeDropdown === item.key ? "rotated" : ""
+                      }`}
                     />
                   )}
                 </button>
@@ -394,61 +209,18 @@ const HeaderMenu = () => {
                 {/* Desktop Dropdown */}
                 {item.submenu && (
                   <div
-                    style={{
-                      ...dropdownStyle,
-                      opacity: activeDropdown === item.key ? 1 : 0,
-                      visibility:
-                        activeDropdown === item.key ? "visible" : "hidden",
-                      transform:
-                        activeDropdown === item.key
-                          ? "translateY(0)"
-                          : "translateY(-16px)",
-                    }}
+                    className={`dropdown ${
+                      activeDropdown === item.key ? "active" : ""
+                    }`}
                   >
-                    <div
-                      style={{
-                        background: "linear-gradient(135deg, #ffffff, #f8f9fa)",
-                        padding: "4px",
-                      }}
-                    >
+                    <div className="dropdown-content">
                       {item.submenu.map((subItem, index) => (
                         <button
                           key={subItem.key}
                           onClick={() => handleSubNavigation(subItem)}
-                          style={{
-                            width: "100%",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "12px",
-                            padding: "12px 16px",
-                            textAlign: "left",
-                            color: "#24354b",
-                            fontSize: "14px",
-                            fontWeight: "500",
-                            cursor: "pointer",
-                            transition: "all 0.2s ease",
-                            border: "none",
-                            background: "transparent",
-                            borderRadius:
-                              index === 0
-                                ? "12px 12px 0 0"
-                                : index === item.submenu.length - 1
-                                ? "0 0 12px 12px"
-                                : "0",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.target.style.background = "#569638";
-                            e.target.style.color = "#ffffff";
-                            e.target.style.transform = "scale(1.02)";
-                            e.target.style.boxShadow =
-                              "0 4px 6px -1px rgba(86, 150, 56, 0.3)";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.target.style.background = "transparent";
-                            e.target.style.color = "#24354b";
-                            e.target.style.transform = "scale(1)";
-                            e.target.style.boxShadow = "none";
-                          }}
+                          className={`dropdown-item ${
+                            index === 0 ? "first" : ""
+                          } ${index === item.submenu.length - 1 ? "last" : ""}`}
                         >
                           <subItem.icon size={16} />
                           <span>{subItem.label}</span>
@@ -462,91 +234,29 @@ const HeaderMenu = () => {
           </nav>
 
           {/* Mobile Hamburger Button */}
-          <button
-            style={hamburgerButtonStyle}
-            onClick={toggleMobileMenu}
-            onMouseEnter={(e) => {
-              e.target.style.background =
-                "linear-gradient(135deg, #f9b91d, #e6a50a)";
-              e.target.style.color = "#24354b";
-              e.target.style.transform = "scale(1.05)";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = "rgba(13, 193, 211, 0.15)";
-              e.target.style.color = "#0dc1d3";
-              e.target.style.transform = "scale(1)";
-            }}
-          >
+          <button className="hamburger-button" onClick={toggleMobileMenu}>
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
         {/* Decorative Elements */}
-        <div style={decorativeBar1Style}></div>
-        <div style={decorativeBar2Style}></div>
+        <div className="decorative-bar-1"></div>
+        <div className="decorative-bar-2"></div>
 
         {/* Floating particles effect - OCULTOS EN MÓVIL */}
-        {!isMobile && (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              overflow: "hidden",
-              pointerEvents: "none",
-            }}
-          >
-            <div
-              className="particle-1"
-              style={{
-                position: "absolute",
-                top: "16px",
-                left: "33%",
-                width: "8px",
-                height: "8px",
-                background: "#f9b91d",
-                borderRadius: "50%",
-                opacity: 0.6,
-              }}
-            ></div>
-            <div
-              className="particle-2"
-              style={{
-                position: "absolute",
-                top: "32px",
-                right: "25%",
-                width: "4px",
-                height: "4px",
-                background: "#0dc1d3",
-                borderRadius: "50%",
-                opacity: 0.4,
-              }}
-            ></div>
-            <div
-              className="particle-3"
-              style={{
-                position: "absolute",
-                bottom: "24px",
-                left: "50%",
-                width: "6px",
-                height: "6px",
-                background: "#569638",
-                borderRadius: "50%",
-                opacity: 0.5,
-              }}
-            ></div>
-          </div>
-        )}
+        <div className="particles-container">
+          <div className="particle particle-1"></div>
+          <div className="particle particle-2"></div>
+          <div className="particle particle-3"></div>
+        </div>
       </header>
 
       {/* Mobile Menu */}
-      <div style={mobileMenuStyle}>
+      <div className={`mobile-menu ${isMobileMenuOpen ? "open" : ""}`}>
         {menuItems.map((item) => (
-          <div key={item.key} style={mobileMenuItemStyle}>
+          <div key={item.key} className="mobile-menu-item">
             <button
-              style={mobileButtonStyle}
+              className="mobile-nav-button"
               onClick={() => {
                 if (item.submenu) {
                   toggleMobileDropdown(item.key);
@@ -554,51 +264,33 @@ const HeaderMenu = () => {
                   handleMainNavigation(item);
                 }
               }}
-              onMouseEnter={(e) => {
-                e.target.style.background = "rgba(13, 193, 211, 0.1)";
-                e.target.style.color = "#f9b91d";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = "transparent";
-                e.target.style.color = "#0dc1d3";
-              }}
             >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "12px" }}
-              >
+              <div className="mobile-nav-content">
                 <item.icon size={20} />
                 <span>{item.label}</span>
               </div>
               {item.submenu && (
                 <ChevronDown
                   size={16}
-                  style={{
-                    transition: "transform 0.3s ease",
-                    transform:
-                      activeDropdown === item.key
-                        ? "rotate(180deg)"
-                        : "rotate(0deg)",
-                  }}
+                  className={`mobile-chevron ${
+                    activeDropdown === item.key ? "rotated" : ""
+                  }`}
                 />
               )}
             </button>
 
             {/* Mobile Submenu */}
             {item.submenu && (
-              <div style={mobileSubMenuStyle}>
+              <div
+                className={`mobile-submenu ${
+                  activeDropdown === item.key ? "open" : ""
+                }`}
+              >
                 {item.submenu.map((subItem) => (
                   <button
                     key={subItem.key}
-                    style={mobileSubItemStyle}
+                    className="mobile-sub-item"
                     onClick={() => handleSubNavigation(subItem)}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = "rgba(86, 150, 56, 0.2)";
-                      e.target.style.color = "#f9b91d";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = "transparent";
-                      e.target.style.color = "rgba(255, 255, 255, 0.8)";
-                    }}
                   >
                     <subItem.icon size={16} />
                     <span>{subItem.label}</span>
@@ -612,30 +304,419 @@ const HeaderMenu = () => {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: "rgba(0, 0, 0, 0.5)",
-            zIndex: 998,
-          }}
-          onClick={toggleMobileMenu}
-        />
+        <div className="mobile-overlay" onClick={toggleMobileMenu} />
       )}
 
       <style jsx>{`
+        .header-container {
+          position: relative;
+          background: linear-gradient(
+            135deg,
+            #24354b 0%,
+            #1a2635 50%,
+            #0f1419 100%
+          );
+          box-shadow: 0 20px 25px -5px rgba(36, 53, 75, 0.2),
+            0 10px 10px -5px rgba(36, 53, 75, 0.1);
+          padding: 0;
+          height: auto;
+          min-height: ${isSmallMobile ? "60px" : isMobile ? "70px" : "80px"};
+          z-index: 1000;
+          width: 100%;
+          overflow: hidden;
+        }
+
+        .header-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(
+            135deg,
+            rgba(36, 53, 75, 0.1),
+            transparent
+          );
+          pointer-events: none;
+        }
+
+        .header-content {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: ${isSmallMobile
+            ? "8px 12px"
+            : isMobile
+            ? "12px 16px"
+            : isTablet
+            ? "14px 32px"
+            : "16px 48px"};
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: relative;
+          z-index: 10;
+          min-height: ${isSmallMobile ? "44px" : isMobile ? "46px" : "48px"};
+        }
+
+        .logo-container {
+          display: flex;
+          align-items: center;
+          flex-shrink: 0;
+        }
+
+        .logo {
+          width: ${isSmallMobile
+            ? "120px"
+            : isMobile
+            ? "140px"
+            : isTablet
+            ? "160px"
+            : "180px"};
+          height: ${isSmallMobile
+            ? "38px"
+            : isMobile
+            ? "45px"
+            : isTablet
+            ? "52px"
+            : "60px"};
+          object-fit: contain;
+          filter: brightness(0) invert(1);
+          transition: all 0.3s ease;
+          cursor: pointer;
+          max-width: 100%;
+        }
+
+        .logo:hover {
+          filter: brightness(0) invert(1)
+            drop-shadow(0 0 10px rgba(13, 193, 211, 0.8));
+          transform: scale(1.02);
+        }
+
+        .desktop-nav {
+          display: ${isMobile ? "none" : "flex"};
+          align-items: center;
+          gap: ${isTablet ? "6px" : "8px"};
+          flex-wrap: nowrap;
+        }
+
+        .nav-item {
+          position: relative;
+        }
+
+        .nav-button {
+          display: flex;
+          align-items: center;
+          gap: ${isTablet ? "6px" : "8px"};
+          padding: ${isTablet ? "10px 18px" : "12px 24px"};
+          border-radius: 16px;
+          background: rgba(13, 193, 211, 0.15);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(13, 193, 211, 0.3);
+          color: #0dc1d3;
+          font-size: ${isTablet ? "13px" : "14px"};
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          white-space: nowrap;
+        }
+
+        .nav-button:hover {
+          background: linear-gradient(135deg, #f9b91d, #e6a50a);
+          color: #24354b;
+          transform: scale(1.05);
+          box-shadow: 0 10px 15px -3px rgba(249, 185, 29, 0.3);
+        }
+
+        .chevron {
+          transition: transform 0.3s ease;
+        }
+
+        .chevron.rotated {
+          transform: rotate(180deg);
+        }
+
+        .dropdown {
+          position: absolute;
+          top: 100%;
+          right: 0;
+          margin-top: 8px;
+          width: 256px;
+          background: #ffffff;
+          border-radius: 16px;
+          box-shadow: 0 25px 50px -12px rgba(36, 53, 75, 0.25);
+          border: 1px solid rgba(36, 53, 75, 0.1);
+          overflow: hidden;
+          z-index: 50;
+          transition: all 0.3s ease;
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-16px);
+        }
+
+        .dropdown.active {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+        }
+
+        .dropdown-content {
+          background: linear-gradient(135deg, #ffffff, #f8f9fa);
+          padding: 4px;
+        }
+
+        .dropdown-item {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 16px;
+          text-align: left;
+          color: #24354b;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          border: none;
+          background: transparent;
+          border-radius: 0;
+        }
+
+        .dropdown-item.first {
+          border-radius: 12px 12px 0 0;
+        }
+
+        .dropdown-item.last {
+          border-radius: 0 0 12px 12px;
+        }
+
+        .dropdown-item:hover {
+          background: #569638;
+          color: #ffffff;
+          transform: scale(1.02);
+          box-shadow: 0 4px 6px -1px rgba(86, 150, 56, 0.3);
+        }
+
+        .hamburger-button {
+          display: ${isMobile ? "flex" : "none"};
+          align-items: center;
+          justify-content: center;
+          width: ${isSmallMobile ? "40px" : "44px"};
+          height: ${isSmallMobile ? "40px" : "44px"};
+          background: rgba(13, 193, 211, 0.15);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(13, 193, 211, 0.3);
+          border-radius: 12px;
+          color: #0dc1d3;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          flex-shrink: 0;
+        }
+
+        .hamburger-button:hover {
+          background: linear-gradient(135deg, #f9b91d, #e6a50a);
+          color: #24354b;
+          transform: scale(1.05);
+        }
+
+        .mobile-menu {
+          position: fixed;
+          top: ${isSmallMobile ? "60px" : isMobile ? "70px" : "80px"};
+          left: 0;
+          right: 0;
+          background: linear-gradient(135deg, #24354b 0%, #1a2635 100%);
+          backdrop-filter: blur(20px);
+          border-top: 1px solid rgba(13, 193, 211, 0.3);
+          transform: translateY(-100%);
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          z-index: 999;
+          max-height: calc(
+            100vh - ${isSmallMobile ? "60px" : isMobile ? "70px" : "80px"}
+          );
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .mobile-menu.open {
+          transform: translateY(0);
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .mobile-menu-item {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-nav-button {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: ${isSmallMobile ? "14px 16px" : "16px 20px"};
+          background: transparent;
+          border: none;
+          color: #0dc1d3;
+          font-size: ${isSmallMobile ? "15px" : "16px"};
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          min-height: ${isSmallMobile ? "48px" : "52px"};
+        }
+
+        .mobile-nav-button:hover {
+          background: rgba(13, 193, 211, 0.1);
+          color: #f9b91d;
+        }
+
+        .mobile-nav-content {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .mobile-chevron {
+          transition: transform 0.3s ease;
+          flex-shrink: 0;
+        }
+
+        .mobile-chevron.rotated {
+          transform: rotate(180deg);
+        }
+
+        .mobile-submenu {
+          background: rgba(0, 0, 0, 0.2);
+          max-height: 0;
+          overflow: hidden;
+          transition: all 0.3s ease;
+        }
+
+        .mobile-submenu.open {
+          max-height: 200px;
+        }
+
+        .mobile-sub-item {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: ${isSmallMobile ? "10px 32px" : "12px 40px"};
+          background: transparent;
+          border: none;
+          color: rgba(255, 255, 255, 0.8);
+          font-size: ${isSmallMobile ? "13px" : "14px"};
+          font-weight: 400;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          min-height: ${isSmallMobile ? "40px" : "44px"};
+        }
+
+        .mobile-sub-item:hover {
+          background: rgba(86, 150, 56, 0.2);
+          color: #f9b91d;
+        }
+
+        .mobile-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 998;
+        }
+
+        .decorative-bar-1 {
+          position: absolute;
+          top: 0;
+          left: ${isSmallMobile ? "5%" : isMobile ? "10%" : "20%"};
+          width: ${isSmallMobile ? "80px" : isMobile ? "100px" : "200px"};
+          height: ${isSmallMobile ? "4px" : "6px"};
+          background: linear-gradient(
+            90deg,
+            #ffbc11 0%,
+            #ffbc11 50%,
+            #074461 50%,
+            #074461 75%,
+            #ff3d00 75%,
+            #ff3d00 100%
+          );
+          border-radius: 3px;
+        }
+
+        .decorative-bar-2 {
+          position: absolute;
+          bottom: 0;
+          right: ${isSmallMobile ? "5%" : isMobile ? "10%" : "20%"};
+          width: ${isSmallMobile ? "60px" : isMobile ? "80px" : "150px"};
+          height: ${isSmallMobile ? "4px" : "6px"};
+          background: linear-gradient(
+            90deg,
+            #ff3d00 0%,
+            #ff3d00 14.28%,
+            #ffbc11 14.28%,
+            #ffbc11 28.56%,
+            #0aa87e 28.56%,
+            #0aa87e 42.84%,
+            #ffffff 42.84%,
+            #ffffff 57.12%,
+            #0aa87e 57.12%,
+            #0aa87e 71.4%,
+            #ffbc11 71.4%,
+            #ffbc11 85.68%,
+            #ff3d00 85.68%,
+            #ff3d00 100%
+          );
+          border-radius: 3px;
+        }
+
+        .particles-container {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          overflow: hidden;
+          pointer-events: none;
+          display: ${isMobile ? "none" : "block"};
+        }
+
+        .particle {
+          position: absolute;
+          border-radius: 50%;
+        }
+
         .particle-1 {
+          top: 16px;
+          left: 33%;
+          width: 8px;
+          height: 8px;
+          background: #f9b91d;
+          opacity: 0.6;
           animation: pulse 2s infinite;
         }
+
         .particle-2 {
+          top: 32px;
+          right: 25%;
+          width: 4px;
+          height: 4px;
+          background: #0dc1d3;
+          opacity: 0.4;
           animation: ping 1s infinite;
         }
+
         .particle-3 {
+          bottom: 24px;
+          left: 50%;
+          width: 6px;
+          height: 6px;
+          background: #569638;
+          opacity: 0.5;
           animation: bounce 1s infinite;
         }
+
         @keyframes pulse {
           0%,
           100% {
@@ -645,6 +726,7 @@ const HeaderMenu = () => {
             opacity: 0.3;
           }
         }
+
         @keyframes ping {
           75%,
           100% {
@@ -652,6 +734,7 @@ const HeaderMenu = () => {
             opacity: 0;
           }
         }
+
         @keyframes bounce {
           0%,
           100% {
@@ -662,10 +745,58 @@ const HeaderMenu = () => {
           }
         }
 
-        /* Estilos adicionales para móvil */
-        @media (max-width: 768px) {
-          body {
-            overflow-x: hidden;
+        /* Media queries adicionales para mejor compatibilidad */
+        @media screen and (max-width: 480px) {
+          .header-container {
+            min-height: 60px;
+          }
+
+          .header-content {
+            padding: 8px 12px;
+          }
+
+          .logo {
+            width: 120px;
+            height: 38px;
+          }
+        }
+
+        @media screen and (max-width: 360px) {
+          .logo {
+            width: 100px;
+            height: 32px;
+          }
+
+          .hamburger-button {
+            width: 36px;
+            height: 36px;
+          }
+        }
+
+        @media screen and (orientation: landscape) and (max-height: 500px) {
+          .mobile-menu {
+            max-height: calc(100vh - 50px);
+          }
+        }
+
+        /* Mejoras para dispositivos Android */
+        @media screen and (-webkit-min-device-pixel-ratio: 1) {
+          .header-container {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+          }
+
+          .mobile-menu {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+          }
+        }
+
+        /* Soporte para pantallas de alta densidad */
+        @media screen and (-webkit-min-device-pixel-ratio: 2) {
+          .decorative-bar-1,
+          .decorative-bar-2 {
+            height: ${isSmallMobile ? "3px" : "5px"};
           }
         }
       `}</style>

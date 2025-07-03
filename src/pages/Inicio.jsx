@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Facebook,
   Instagram,
@@ -14,67 +15,84 @@ import {
   GraduationCap,
   Heart,
   Users,
+  BookOpenCheck,
   MessageSquare,
+  HandHeart,
   Send,
 } from "lucide-react";
 
 const Inicio = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isClient, setIsClient] = useState(false);
+  const [screenSize, setScreenSize] = useState({
+    width: typeof window !== "undefined" ? window.innerWidth : 1200,
+    height: typeof window !== "undefined" ? window.innerHeight : 800,
+  });
+  const navigate = useNavigate();
+
+  // Mejorar detección de dispositivos móviles
+  const isMobile = screenSize.width < 768;
+  const isTablet = screenSize.width >= 768 && screenSize.width < 1024;
+  const isSmallMobile = screenSize.width < 480;
+  const isTinyMobile = screenSize.width < 360;
 
   useEffect(() => {
-    setIsClient(true);
     setIsVisible(true);
-
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % 3);
     }, 4000);
     return () => clearInterval(interval);
   }, []);
 
+  // Detectar cambios de tamaño de pantalla con debounce
   useEffect(() => {
-    if (!isClient) return;
+    let timeoutId = null;
 
-    const checkIsMobile = () => {
-      // Detección más robusta para móviles
-      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      const mobileRegex =
-        /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
-      const isMobileUserAgent = mobileRegex.test(userAgent.toLowerCase());
-      const isSmallScreen = window.innerWidth <= 768;
-      const isTouchDevice =
-        "ontouchstart" in window || navigator.maxTouchPoints > 0;
-
-      setIsMobile(isMobileUserAgent || (isSmallScreen && isTouchDevice));
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setScreenSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }, 150);
     };
 
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
-    window.addEventListener("orientationchange", checkIsMobile);
+    // Detectar orientación en móviles
+    const handleOrientationChange = () => {
+      setTimeout(() => {
+        setScreenSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }, 100);
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleOrientationChange);
 
     return () => {
-      window.removeEventListener("resize", checkIsMobile);
-      window.removeEventListener("orientationchange", checkIsMobile);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleOrientationChange);
+      clearTimeout(timeoutId);
     };
-  }, [isClient]);
+  }, []);
 
   const achievements = [
     {
-      image: "media/imagen1.png?height=120&width=120",
+      image: "media/representandoPalenque-inicio.png?height=120&width=120",
       title: "Representando Palenque",
       description: "Defendiendo los derechos de la comunidad afrocolombiana",
       color: "#569638",
     },
     {
-      image: "media/imagen2.jpeg?height=120&width=120",
+      image: "media/compromisoSocial-inicio.jpeg?height=120&width=120",
       title: "Compromiso Social",
       description: "Trabajando por la equidad y la justicia social",
       color: "#f9b91d",
     },
     {
-      image: "media/imagen3.jpeg?height=120&width=120",
+      image: "media/liderazgo-inicio.jpeg?height=120&width=120",
       title: "Liderazgo",
       description: "Experiencia comprobada en gestión pública",
       color: "#129ba5",
@@ -87,267 +105,137 @@ const Inicio = () => {
       title: "Justicia Étnico-Racial",
       description:
         "Promoviendo la equidad y el reconocimiento de los derechos de las comunidades afrocolombianas.",
-      color: "#24354b",
+      color: "#5a9bb8", // azul medio
+    },
+    {
+      icon: MapPin,
+      title: "Territorio y Autonomía",
+      description:
+        "Defendiendo el territorio ancestral y el derecho de las comunidades a decidir sobre su tierra.",
+      color: "#0dc1d3", // cian
     },
     {
       icon: GraduationCap,
-      title: "Educación de Calidad",
+      title: "Educación y Juventud Afro",
       description:
-        "Garantizando acceso a educación superior y técnica para las comunidades rurales y étnicas.",
-      color: "#0dc1d3",
+        "Promoviendo educación inclusiva y el liderazgo juvenil desde la identidad afrocolombiana.",
+      color: "#f9b91d", // amarillo institucional
     },
     {
-      icon: Heart,
-      title: "Salud Integral",
+      icon: BookOpenCheck,
+      title: "Cultura y Memoria",
       description:
-        "Fortaleciendo el sistema de salud con enfoque diferencial y territorial.",
-      color: "#f9b91d",
+        "Preservando la lengua, tradiciones y memoria del pueblo palenquero y afrodescendiente.",
+      color: "#24354b", // azul oscuro
     },
     {
       icon: Users,
-      title: "Desarrollo Comunitario",
+      title: "Participación Comunitaria",
       description:
-        "Impulsando proyectos productivos y de infraestructura en territorios ancestrales.",
-      color: "#569638",
+        "Impulsando la participación directa de las comunidades en la construcción de políticas públicas.",
+      color: "#569638", // verde institucional
+    },
+    {
+      icon: HandHeart,
+      title: "Mujer Negra y Liderazgo",
+      description:
+        "Empoderando a las mujeres negras y visibilizando sus luchas en todos los espacios sociales y políticos.",
+      color: "#8e44ad", // morado fuerte
+    },
+  ];
+  const videos = [
+    {
+      title: "Frente a Frente",
+      description: "Cámara de Representantes",
+      videoId: "U1N-QPqgQuY",
+    },
+    {
+      title: "Soy porque Somos es un reconocimiento a la lucha afro",
+      description: "W Radio Colombia",
+      videoId: "KRDlE6PIBWE",
+    },
+    {
+      title: "Algunos logros legislativos del 2022",
+      description: "Cha Dorina",
+      videoId: "SivSNzUD2qc",
+    },
+    {
+      title: "Entre-Vistas con Alma de País",
+      description: "Presidencia de la República",
+      videoId: "RJ-jOuB1grs",
+    },
+    {
+      title: "Pido la palabra",
+      description: "Canal Congreso Colombia",
+      videoId: "tFKjlfyGIU4",
+    },
+    {
+      title: "Rueda de Prensa",
+      description: "Canal Congreso Colombia",
+      videoId: "e9me2bDYXz4",
     },
   ];
 
-  // Evitar problemas de hidratación
-  if (!isClient) {
-    return <div style={{ minHeight: "100vh", background: "#f8fafc" }} />;
-  }
+  const socialMedia = [
+    {
+      icon: Facebook,
+      color: "#1877F2",
+      url: "https://web.facebook.com/chadorinahe",
+    },
+    {
+      icon: X,
+      color: "#000000",
+      url: "https://x.com/chadorinah?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+    },
+    {
+      icon: Instagram,
+      color: "#E4405F",
+      url: "https://www.instagram.com/chadorinah/?hl=es",
+    },
+    {
+      icon: Youtube,
+      color: "#FF0000",
+      url: "https://www.youtube.com/@chadorina3864",
+    },
+  ];
 
   return (
-    <div
-      style={{
-        width: "100vw",
-        minHeight: "100vh",
-        margin: 0,
-        padding: 0,
-        overflowX: "hidden",
-        position: "relative",
-      }}
-    >
-      {/* Meta viewport para móviles */}
-      <style jsx global>{`
-        @media screen and (max-width: 768px) {
-          html {
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-          }
+    <div className="inicio-container">
+      {/* Hero Section */}
+      <section className="hero-section">
+        <div className="hero-overlay" />
 
-          body {
-            -webkit-overflow-scrolling: touch;
-            overflow-x: hidden;
-          }
-        }
-      `}</style>
+        <div className="hero-content">
+          <div className="hero-text-container">
+            {!isMobile && <div className="hero-spacer" />}
+            {isMobile && <div className="hero-spacer-mobile" />}
 
-      {/* Hero Section - OPTIMIZADO PARA MÓVILES */}
-      <section
-        className="hero-section"
-        style={{
-          background: `url('${
-            isMobile
-              ? "media/dorina-banner-mobile4.png"
-              : "media/dorina-hero2.png"
-          }')`,
-          backgroundSize: isMobile ? "100% auto" : "cover",
-          backgroundPosition: isMobile ? "center top" : "center center",
-          backgroundRepeat: "no-repeat",
-          minHeight: isMobile ? "100vh" : "70vh",
-          display: "flex",
-          alignItems: isMobile ? "flex-end" : "center",
-          justifyContent: "center",
-          position: "relative",
-          width: "100%",
-          padding: "0",
-          margin: "0",
-          fontFamily:
-            "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(0, 0, 0, 0.1)",
-            zIndex: 1,
-          }}
-        />
-
-        <div
-          style={{
-            width: "100%",
-            maxWidth: isMobile ? "100%" : "1400px",
-            margin: "0 auto",
-            padding: isMobile ? "0 1.5rem 1rem" : "0 3rem",
-            display: "flex",
-            alignItems: isMobile ? "flex-end" : "center",
-            justifyContent: isMobile ? "center" : "flex-start",
-            position: "relative",
-            zIndex: 2,
-            minHeight: isMobile ? "100vh" : "65vh",
-          }}
-        >
-          <div
-            style={{
-              transform: isVisible ? "translateX(0)" : "translateX(-50px)",
-              opacity: isVisible ? 1 : 0,
-              transition: "all 1s ease-out",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: isMobile ? "center" : "flex-start",
-              justifyContent: "flex-end",
-              width: "100%",
-              maxWidth: isMobile ? "100%" : "480px",
-              textAlign: isMobile ? "center" : "left",
-              paddingBottom: isMobile ? "1rem" : "4rem",
-            }}
-          >
-            {/* Espaciador solo para móvil para empujar los botones más abajo */}
-            {isMobile && <div style={{ height: "60vh", width: "100%" }} />}
-
-            <div
-              style={{
-                display: "flex",
-                gap: isMobile ? "12px" : "15px",
-                marginBottom: "24px",
-                flexWrap: "wrap",
-                justifyContent: isMobile ? "center" : "flex-start",
-                width: "100%",
-                alignItems: "center",
-              }}
-            >
-              <a
-                href="#sobre-mi"
-                style={{
-                  background: "linear-gradient(135deg, #f9b91d, #f9b91d)",
-                  color: "white",
-                  padding: isMobile ? "14px 20px" : "12px 24px",
-                  borderRadius: "25px",
-                  border: "none",
-                  fontSize: isMobile ? "13px" : "14px",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  transition: "all 0.3s ease",
-                  boxShadow: "0 6px 20px rgba(249, 185, 29, 0.4)",
-                  whiteSpace: "nowrap",
-                  textDecoration: "none",
-                  minHeight: isMobile ? "44px" : "auto",
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = "translateY(-2px) scale(1.02)";
-                  e.target.style.boxShadow =
-                    "0 8px 25px rgba(249, 185, 29, 0.5)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = "translateY(0) scale(1)";
-                  e.target.style.boxShadow =
-                    "0 6px 20px rgba(249, 185, 29, 0.4)";
-                }}
+            <div className="hero-buttons">
+              <button
+                className="hero-button primary"
+                onClick={() => navigate("/biografia")}
               >
                 Conoce mi trabajo <ChevronRight size={16} />
-              </a>
+              </button>
 
               <button
-                style={{
-                  background: "white",
-                  color: "#24354b",
-                  padding: isMobile ? "14px 20px" : "12px 24px",
-                  borderRadius: "25px",
-                  border: "2px solid #24354b",
-                  fontSize: isMobile ? "13px" : "14px",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  whiteSpace: "nowrap",
-                  boxShadow: "0 4px 15px rgba(36, 53, 75, 0.2)",
-                  minHeight: isMobile ? "44px" : "auto",
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = "#24354b";
-                  e.target.style.color = "white";
-                  e.target.style.transform = "translateY(-2px) scale(1.02)";
-                  e.target.style.boxShadow = "0 6px 18px rgba(36, 53, 75, 0.4)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = "white";
-                  e.target.style.color = "#24354b";
-                  e.target.style.transform = "translateY(0) scale(1)";
-                  e.target.style.boxShadow = "0 4px 15px rgba(36, 53, 75, 0.2)";
-                }}
+                className="hero-button secondary"
+                onClick={() => navigate("/propuestas")}
               >
                 Ver propuestas
               </button>
             </div>
 
             {/* Social Media Icons */}
-            <div
-              style={{
-                display: "flex",
-                gap: isMobile ? "12px" : "10px",
-                flexWrap: "wrap",
-                justifyContent: isMobile ? "center" : "flex-start",
-                width: "100%",
-                alignItems: "center",
-              }}
-            >
-              {[
-                {
-                  icon: Facebook,
-                  color: "#1877F2",
-                  url: "https://web.facebook.com/chadorinahe",
-                },
-                {
-                  icon: X,
-                  color: "#000000",
-                  url: "https://x.com/chadorinah?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
-                },
-                {
-                  icon: Instagram,
-                  color: "#E4405F",
-                  url: "https://www.instagram.com/chadorinah/?hl=es",
-                },
-                {
-                  icon: Youtube,
-                  color: "#FF0000",
-                  url: "https://www.youtube.com/@chadorina3864",
-                },
-              ].map((social, index) => (
+            <div className="hero-social">
+              {socialMedia.map((social, index) => (
                 <a
                   key={index}
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    width: isMobile ? "44px" : "40px",
-                    height: isMobile ? "44px" : "40px",
-                    background: "white",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#64748b",
-                    transition: "all 0.3s ease",
-                    border: "1px solid rgba(0,0,0,0.1)",
-                    boxShadow: "0 3px 10px rgba(0,0,0,0.1)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = social.color;
-                    e.target.style.color = "white";
-                    e.target.style.transform = "translateY(-2px) scale(1.05)";
-                    e.target.style.boxShadow = `0 6px 20px ${social.color}40`;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = "white";
-                    e.target.style.color = "#64748b";
-                    e.target.style.transform = "translateY(0) scale(1)";
-                    e.target.style.boxShadow = "0 3px 10px rgba(0,0,0,0.1)";
-                  }}
+                  className="social-icon"
+                  style={{ "--social-color": social.color }}
                 >
                   <social.icon size={isMobile ? 20 : 18} />
                 </a>
@@ -356,704 +244,172 @@ const Inicio = () => {
           </div>
         </div>
 
-        {/* Elementos decorativos sutiles - OCULTOS EN MÓVIL */}
-        {!isMobile && (
-          <>
-            <div
-              style={{
-                position: "absolute",
-                top: "20%",
-                left: "8%",
-                width: "60px",
-                height: "60px",
-                background: "linear-gradient(135deg, #f9b91d, #569638)",
-                borderRadius: "50%",
-                opacity: 0.03,
-                animation: "float 8s ease-in-out infinite",
-                zIndex: 1,
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                bottom: "30%",
-                right: "12%",
-                width: "40px",
-                height: "40px",
-                background: "linear-gradient(135deg, #129ba5, #24354b)",
-                borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
-                opacity: 0.02,
-                animation: "float 10s ease-in-out infinite reverse",
-                zIndex: 1,
-              }}
-            />
-          </>
-        )}
+        {/* Decorative Elements */}
+        <div className="hero-decorations">
+          <div className="decoration-1" />
+          <div className="decoration-2" />
+        </div>
 
-        {/* Línea de la bandera de Colombia */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: "0",
-            left: "0",
-            right: "0",
-            height: "6px",
-            background:
-              "linear-gradient(90deg, #FFCD00 0%, #FFCD00 50%, #003087 50%, #003087 75%, #CE1126 75%, #CE1126 100%)",
-          }}
-        />
+        {/* Colombian Flag Line */}
+        <div className="colombia-flag" />
       </section>
 
-      {/* ESLOGAN - OPTIMIZADO PARA MÓVILES */}
-      <section
-        style={{
-          padding: isMobile ? "1.5rem 1rem" : "2rem",
-          background: "linear-gradient(135deg, #f9b91d 0%, #f9b91d 100%)",
-          textAlign: "center",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "800px",
-            margin: "0 auto",
-          }}
-        >
-          <h2
-            style={{
-              fontSize: isMobile ? "1.5rem" : "clamp(1.5rem, 3vw, 2.5rem)",
-              fontWeight: "700",
-              color: "white",
-              margin: 0,
-              textShadow: "0 2px 4px rgba(0,0,0,0.1)",
-              fontFamily: "'Poppins', sans-serif",
-              lineHeight: "1.3",
-            }}
-          >
-            "Representando la voz de Palenque"
-          </h2>
+      {/* Eslogan Section */}
+      <section className="eslogan-section">
+        <div className="container">
+          <h2 className="eslogan-title">"Representando la voz de Palenque"</h2>
         </div>
       </section>
 
-      {/* Resto de las secciones permanecen igual... */}
-      {/* SOBRE LA REPRESENTANTE - OPTIMIZADO PARA MÓVILES */}
-      <section
-        id="sobre-mi"
-        style={{
-          padding: isMobile ? "2rem 1rem" : "4rem 2rem",
-          background: "#f8fafc",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: isMobile
-              ? "1fr"
-              : "repeat(auto-fit, minmax(400px, 1fr))",
-            gap: isMobile ? "2rem" : "3rem",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ order: isMobile ? 2 : 1 }}>
-            <div
-              style={{
-                display: "inline-block",
-                background: "#0dc1d3",
-                color: "white",
-                padding: isMobile ? "6px 16px" : "8px 20px",
-                borderRadius: "6px",
-                fontSize: isMobile ? "11px" : "12px",
-                fontWeight: "700",
-                marginBottom: "1.5rem",
-                textTransform: "uppercase",
-                letterSpacing: "1px",
-              }}
-            >
-              Sobre la Representante
+      {/* Sobre la Representante Section */}
+      <section id="sobre-mi" className="sobre-section">
+        <div className="container">
+          <div className="sobre-grid">
+            <div className="sobre-text">
+              <div className="section-badge">Sobre la Representante</div>
+
+              <h2 className="section-title">Dorina Hernández Palomino</h2>
+
+              <p className="sobre-description">
+                Representante a la Cámara por Bolívar, líder palenquera
+                comprometida con la defensa de los derechos étnicos y el
+                desarrollo territorial. Con una trayectoria sólida en gestión
+                pública y liderazgo comunitario.
+              </p>
+
+              <p className="sobre-subdescription">
+                Trabajando incansablemente por la equidad, la justicia social y
+                el reconocimiento de las comunidades afrocolombianas en el
+                Congreso de la República.
+              </p>
+
+              <button
+                className="sobre-button"
+                onClick={() => navigate("/biografia")}
+              >
+                Ver biografía completa <ChevronRight size={16} />
+              </button>
             </div>
 
-            <h2
-              style={{
-                fontSize: isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
-                fontWeight: "700",
-                color: "#24354b",
-                marginBottom: "1.5rem",
-                fontFamily: "'Poppins', sans-serif",
-                lineHeight: "1.2",
-              }}
-            >
-              Dorina Hernández Palomino
-            </h2>
-
-            <p
-              style={{
-                fontSize: isMobile ? "1rem" : "1.1rem",
-                color: "#4a5568",
-                lineHeight: "1.7",
-                marginBottom: "1.5rem",
-              }}
-            >
-              Representante a la Cámara por Bolívar, líder palenquera
-              comprometida con la defensa de los derechos étnicos y el
-              desarrollo territorial. Con una trayectoria sólida en gestión
-              pública y liderazgo comunitario.
-            </p>
-
-            <p
-              style={{
-                fontSize: isMobile ? "0.9rem" : "1rem",
-                color: "#718096",
-                lineHeight: "1.6",
-                marginBottom: "2rem",
-              }}
-            >
-              Trabajando incansablemente por la equidad, la justicia social y el
-              reconocimiento de las comunidades afrocolombianas en el Congreso
-              de la República.
-            </p>
-
-            <a
-              href="/biografia"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                background: "#24354b",
-                color: "white",
-                padding: isMobile ? "14px 20px" : "12px 24px",
-                borderRadius: "8px",
-                textDecoration: "none",
-                fontWeight: "600",
-                transition: "all 0.3s ease",
-                fontSize: isMobile ? "14px" : "16px",
-                minHeight: isMobile ? "44px" : "auto",
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.transform = "translateY(-2px)";
-                e.target.style.boxShadow = "0 8px 25px rgba(36, 53, 75, 0.3)";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = "translateY(0)";
-                e.target.style.boxShadow = "none";
-              }}
-            >
-              Ver biografía completa <ChevronRight size={16} />
-            </a>
-          </div>
-
-          <div style={{ position: "relative", order: isMobile ? 1 : 2 }}>
-            <div
-              style={{
-                borderRadius: "16px",
-                overflow: "hidden",
-                boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
-              }}
-            >
-              <img
-                src="media/sobremi-inicio.avif"
-                alt="Dorina Hernández Palomino"
-                style={{
-                  width: "100%",
-                  height: isMobile ? "300px" : "500px",
-                  objectFit: "cover",
-                }}
-              />
+            <div className="sobre-image">
+              <div className="image-container">
+                <img
+                  src="media/sobremi-inicio.jpg?height=500&width=400"
+                  alt="Dorina Hernández Palomino"
+                  className="profile-image"
+                />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* BANDERAS POLÍTICAS - OPTIMIZADO PARA MÓVILES */}
-      <section
-        style={{
-          padding: isClient && isMobile ? "2rem 1rem" : "4rem 2rem",
-          background: "#24354b",
-        }}
-      >
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div
-            style={{
-              textAlign: "center",
-              marginBottom: isClient && isMobile ? "2rem" : "3rem",
-            }}
-          >
-            <div
-              style={{
-                display: "inline-block",
-                background: "#f9b91d",
-                color: "white",
-                padding: isClient && isMobile ? "6px 16px" : "8px 20px",
-                borderRadius: "6px",
-                fontSize: isClient && isMobile ? "11px" : "12px",
-                fontWeight: "700",
-                marginBottom: "1.5rem",
-                textTransform: "uppercase",
-                letterSpacing: "1px",
-              }}
-            >
-              Nuestras Banderas Políticas
-            </div>
-
-            <h2
-              style={{
-                fontSize:
-                  isClient && isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
-                fontWeight: "700",
-                color: "white",
-                marginBottom: "1rem",
-                fontFamily: "'Poppins', sans-serif",
-                lineHeight: "1.2",
-              }}
-            >
+      {/* Banderas Políticas Section */}
+      <section className="banderas-section">
+        <div className="container">
+          <div className="section-header">
+            <div className="section-badge">Nuestras Banderas Políticas</div>
+            <h2 className="section-title white">
               Ejes que guían el trabajo legislativo
             </h2>
-
-            <p
-              style={{
-                fontSize: isClient && isMobile ? "1rem" : "1.2rem",
-                color: "rgba(255, 255, 255, 0.8)",
-                maxWidth: "600px",
-                margin: "0 auto",
-              }}
-            >
-              y social de Dorina Hernández
-            </p>
+            <p className="section-subtitle">y social de Dorina Hernández</p>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                isClient && isMobile
-                  ? "1fr"
-                  : "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: isClient && isMobile ? "1.5rem" : "2rem",
-            }}
-          >
+          <div className="banderas-grid">
             {politicalFlags.map((flag, index) => (
               <div
                 key={index}
+                className="bandera-card"
                 style={{
-                  background: "rgba(255, 255, 255, 0.05)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  borderRadius: "12px",
-                  padding: isClient && isMobile ? "1.5rem" : "2rem",
-                  textAlign: "center",
-                  transition: "all 0.3s ease",
-                  transform: isVisible ? "translateY(0)" : "translateY(30px)",
-                  opacity: isVisible ? 1 : 0,
-                  transitionDelay: `${index * 0.1}s`,
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = "translateY(-8px)";
-                  e.target.style.background = "rgba(255, 255, 255, 0.08)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.background = "rgba(255, 255, 255, 0.05)";
+                  "--flag-color": flag.color,
+                  "--delay": `${index * 0.1}s`,
                 }}
               >
-                <div
-                  style={{
-                    width: isClient && isMobile ? "56px" : "64px",
-                    height: isClient && isMobile ? "56px" : "64px",
-                    borderRadius: "50%",
-                    background: flag.color,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: "0 auto 1.5rem",
-                  }}
-                >
-                  <flag.icon
-                    size={isClient && isMobile ? 24 : 28}
-                    color="white"
-                  />
+                <div className="bandera-icon">
+                  <flag.icon size={isMobile ? 24 : 28} color="white" />
                 </div>
 
-                <h3
-                  style={{
-                    fontSize: isClient && isMobile ? "1.1rem" : "1.3rem",
-                    fontWeight: "600",
-                    color: "white",
-                    marginBottom: "1rem",
-                    fontFamily: "'Poppins', sans-serif",
-                    lineHeight: "1.3",
-                  }}
-                >
-                  {flag.title}
-                </h3>
+                <h3 className="bandera-title">{flag.title}</h3>
+                <p className="bandera-description">{flag.description}</p>
 
-                <p
-                  style={{
-                    color: "rgba(255, 255, 255, 0.7)",
-                    lineHeight: "1.6",
-                    marginBottom: "1.5rem",
-                    fontSize: isClient && isMobile ? "0.9rem" : "1rem",
-                  }}
-                >
-                  {flag.description}
-                </p>
-
-                <button
-                  style={{
-                    background: `${flag.color}20`,
-                    color: flag.color,
-                    border: `1px solid ${flag.color}40`,
-                    padding: isClient && isMobile ? "10px 18px" : "8px 16px",
-                    borderRadius: "6px",
-                    fontSize: isClient && isMobile ? "13px" : "14px",
-                    fontWeight: "500",
-                    cursor: "pointer",
-                    transition: "all 0.3s ease",
-                    minHeight: isClient && isMobile ? "40px" : "auto",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = flag.color;
-                    e.target.style.color = "white";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = `${flag.color}20`;
-                    e.target.style.color = flag.color;
-                  }}
-                >
-                  Ver más
-                </button>
+                <button className="bandera-button">Ver más</button>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Achievements Section - OPTIMIZADO PARA MÓVILES */}
-      <section
-        style={{
-          padding: isClient && isMobile ? "2rem 1rem" : "3rem 2rem",
-          width: "100%",
-          background:
-            "linear-gradient(135deg, #24354b 0%, #24354b 50%, #24354b 100%)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* Elementos decorativos - OCULTOS EN MÓVIL */}
-        {!isClient && isMobile && (
-          <>
-            <div
-              style={{
-                position: "absolute",
-                top: "-50%",
-                right: "-20%",
-                width: "600px",
-                height: "600px",
-                background:
-                  "radial-gradient(circle, rgba(86, 150, 56, 0.08) 0%, transparent 70%)",
-                borderRadius: "50%",
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                bottom: "-30%",
-                left: "-10%",
-                width: "400px",
-                height: "400px",
-                background:
-                  "radial-gradient(circle, rgba(249, 185, 29, 0.05) 0%, transparent 70%)",
-                borderRadius: "50%",
-              }}
-            />
-          </>
-        )}
+      {/* Achievements Section */}
+      <section className="achievements-section">
+        <div className="achievements-decorations">
+          <div className="achievement-decoration-1" />
+          <div className="achievement-decoration-2" />
+        </div>
 
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            width: "100%",
-            position: "relative",
-            zIndex: 2,
-          }}
-        >
-          <div
-            style={{
-              textAlign: "center",
-              marginBottom: isClient && isMobile ? "2rem" : "3.5rem",
-            }}
-          >
-            <div
-              style={{
-                display: "inline-block",
-                background: "linear-gradient(135deg, #129ba5, #129ba5)",
-                backdropFilter: "blur(10px)",
-                color: "white",
-                padding: isClient && isMobile ? "10px 24px" : "12px 32px",
-                borderRadius: "8px",
-                fontSize: isClient && isMobile ? "12px" : "14px",
-                fontWeight: "700",
-                marginBottom: "1.5rem",
-                textTransform: "uppercase",
-                letterSpacing: "2px",
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-                boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              Mi Compromiso
-            </div>
-
-            <h2
-              style={{
-                fontSize:
-                  isClient && isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
-                fontWeight: "700",
-                color: "white",
-                marginBottom: "1rem",
-                lineHeight: "1.2",
-                fontFamily: "'Poppins', sans-serif",
-              }}
-            >
+        <div className="container">
+          <div className="section-header">
+            <div className="section-badge">Mi Compromiso</div>
+            <h2 className="section-title white">
               Compromiso con{" "}
-              <span
-                style={{
-                  background: "linear-gradient(135deg, #f9b91d, #f9b91d)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                Palenque y Colombia
-              </span>
+              <span className="highlight">Palenque y Colombia</span>
             </h2>
-            <p
-              style={{
-                fontSize:
-                  isClient && isMobile ? "1rem" : "clamp(1rem, 2vw, 1.2rem)",
-                color: "rgba(255, 255, 255, 0.8)",
-                maxWidth: "600px",
-                margin: "0 auto",
-                lineHeight: "1.6",
-                fontWeight: "400",
-              }}
-            >
+            <p className="section-subtitle">
               Representando con orgullo las raíces afrocolombianas
             </p>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                isClient && isMobile
-                  ? "1fr"
-                  : "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: isClient && isMobile ? "1rem" : "1.5rem",
-              width: "100%",
-            }}
-          >
+          <div className="achievements-grid">
             {achievements.map((achievement, index) => (
               <div
                 key={index}
+                className="achievement-card"
                 style={{
-                  background: "rgba(255, 255, 255, 0.05)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  borderRadius: "12px",
-                  padding: isClient && isMobile ? "1.5rem 1rem" : "2rem 1.5rem",
-                  textAlign: "left",
-                  transition: "all 0.3s ease",
-                  transform: isVisible ? "translateY(0)" : "translateY(30px)",
-                  opacity: isVisible ? 1 : 0,
-                  transitionDelay: `${index * 0.1}s`,
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = "translateY(-4px)";
-                  e.target.style.background = "rgba(255, 255, 255, 0.08)";
-                  e.target.style.borderColor = achievement.color + "30";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.background = "rgba(255, 255, 255, 0.05)";
-                  e.target.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                  "--achievement-color": achievement.color,
+                  "--delay": `${index * 0.1}s`,
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    gap: isClient && isMobile ? "0.75rem" : "1rem",
-                    flexDirection: isClient && isMobile ? "column" : "row",
-                    textAlign: isClient && isMobile ? "center" : "left",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: isClient && isMobile ? "120px" : "150px",
-                      height: isClient && isMobile ? "120px" : "150px",
-                      borderRadius: "8px",
-                      overflow: "hidden",
-                      flexShrink: 0,
-                      border: `2px solid ${achievement.color}30`,
-                      margin: isClient && isMobile ? "0 auto 1rem" : "0",
-                    }}
-                  >
+                <div className="achievement-content">
+                  <div className="achievement-image">
                     <img
                       src={achievement.image || "/placeholder.svg"}
                       alt={achievement.title}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
+                      className="achievement-img"
                     />
                   </div>
 
-                  <div style={{ flex: 1 }}>
-                    <h3
-                      style={{
-                        fontSize: isClient && isMobile ? "1.1rem" : "1.2rem",
-                        fontWeight: "600",
-                        color: "white",
-                        marginBottom: "0.5rem",
-                        fontFamily: "'Poppins', sans-serif",
-                        lineHeight: "1.3",
-                      }}
-                    >
-                      {achievement.title}
-                    </h3>
-                    <p
-                      style={{
-                        color: "rgba(255, 255, 255, 0.7)",
-                        lineHeight: "1.5",
-                        fontSize: isClient && isMobile ? "0.9rem" : "0.95rem",
-                        margin: 0,
-                      }}
-                    >
+                  <div className="achievement-text">
+                    <h3 className="achievement-title">{achievement.title}</h3>
+                    <p className="achievement-description">
                       {achievement.description}
                     </p>
                   </div>
                 </div>
 
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: "2px",
-                    background: achievement.color,
-                    opacity: 0.6,
-                  }}
-                />
+                <div className="achievement-border" />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Social Media Section - OPTIMIZADO PARA MÓVILES */}
-      <section
-        style={{
-          background: "linear-gradient(135deg, #129ba5 0%, #129ba5 100%)",
-          padding: isClient && isMobile ? "2rem 1rem" : "3rem 2rem",
-          width: "100%",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            width: "100%",
-          }}
-        >
-          <div
-            style={{
-              textAlign: "center",
-              marginBottom: isClient && isMobile ? "2rem" : "3rem",
-            }}
-          >
-            <h2
-              style={{
-                fontSize:
-                  isClient && isMobile
-                    ? "1.6rem"
-                    : "clamp(1.8rem, 3vw, 2.2rem)",
-                fontWeight: "600",
-                color: "white",
-                marginBottom: "0.5rem",
-                fontFamily: "'Poppins', sans-serif",
-                lineHeight: "1.3",
-              }}
-            >
-              Sígueme en Redes Sociales
-            </h2>
-            <p
-              style={{
-                fontSize:
-                  isClient && isMobile
-                    ? "0.9rem"
-                    : "clamp(0.9rem, 1.6vw, 1rem)",
-                color: "rgba(255,255,255,0.8)",
-              }}
-            >
+      {/* Social Media Section */}
+      <section className="social-section">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title white">Sígueme en Redes Sociales</h2>
+            <p className="section-subtitle">
               Mantente al día con mi trabajo y propuestas
             </p>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                isClient && isMobile
-                  ? "1fr"
-                  : "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: isClient && isMobile ? "1.5rem" : "2rem",
-              width: "100%",
-            }}
-          >
+          <div className="social-grid">
             {/* Facebook Embed */}
-            <div
-              style={{
-                background: "white",
-                borderRadius: "12px",
-                padding: isClient && isMobile ? "1rem" : "1.5rem",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
-                border: "1px solid #e2e8f0",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  marginBottom: "1rem",
-                }}
-              >
+            <div className="social-card">
+              <div className="social-header">
                 <Facebook size={20} style={{ color: "#1877F2" }} />
-                <h3
-                  style={{
-                    color: "#129ba5",
-                    margin: 0,
-                    fontSize: isClient && isMobile ? "0.9rem" : "1rem",
-                    fontWeight: "600",
-                    fontFamily: "'Poppins', sans-serif",
-                  }}
-                >
-                  Facebook
-                </h3>
+                <h3 className="social-title">Facebook</h3>
               </div>
-              <div
-                style={{
-                  width: "100%",
-                  height: isClient && isMobile ? "250px" : "300px",
-                  border: "none",
-                  overflow: "hidden",
-                  borderRadius: "8px",
-                }}
-              >
+              <div className="social-embed">
                 <iframe
                   src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fweb.facebook.com%2Fphoto.php%3Ffbid%3D10021079351332977%26set%3Da.2588583361249317%26type%3D3&show_text=true&width=500"
                   width="100%"
@@ -1072,313 +428,49 @@ const Inicio = () => {
             </div>
 
             {/* Instagram Embed */}
-            <div
-              style={{
-                background: "white",
-                borderRadius: "12px",
-                padding: isClient && isMobile ? "1rem" : "1.5rem",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
-                border: "1px solid #e2e8f0",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  marginBottom: "1rem",
-                }}
-              >
+            <div className="social-card">
+              <div className="social-header">
                 <Instagram size={20} style={{ color: "#E4405F" }} />
-                <h3
-                  style={{
-                    color: "#129ba5",
-                    margin: 0,
-                    fontSize: isClient && isMobile ? "0.9rem" : "1rem",
-                    fontWeight: "600",
-                    fontFamily: "'Poppins', sans-serif",
-                  }}
-                >
-                  Instagram
-                </h3>
+                <h3 className="social-title">Instagram</h3>
               </div>
-              <div
-                style={{
-                  width: "100%",
-                  height: isClient && isMobile ? "250px" : "300px",
-                  borderRadius: "8px",
-                  overflow: "hidden",
-                }}
-              >
-                <blockquote
-                  className="instagram-media"
-                  data-instgrm-captioned
-                  data-instgrm-permalink="https://www.instagram.com/p/DLLedUUR1LJ/?utm_source=ig_embed&utm_campaign=loading"
-                  data-instgrm-version="14"
-                  style={{
-                    background: "#FFF",
-                    border: 0,
-                    borderRadius: "3px",
-                    boxShadow:
-                      "0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)",
-                    margin: "1px",
-                    maxWidth: "540px",
-                    minWidth: "326px",
-                    padding: 0,
-                    width: "99.375%",
-                  }}
-                >
-                  {/* Instagram embed content - mantenido igual */}
-                  <div style={{ padding: "16px" }}>
-                    <a
-                      href="https://www.instagram.com/p/DLLedUUR1LJ/?utm_source=ig_embed&utm_campaign=loading"
-                      style={{
-                        background: "#FFFFFF",
-                        lineHeight: 0,
-                        padding: "0 0",
-                        textAlign: "center",
-                        textDecoration: "none",
-                        width: "100%",
-                      }}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div
-                          style={{
-                            backgroundColor: "#F4F4F4",
-                            borderRadius: "50%",
-                            flexGrow: 0,
-                            height: "40px",
-                            marginRight: "14px",
-                            width: "40px",
-                          }}
-                        ></div>
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            flexGrow: 1,
-                            justifyContent: "center",
-                          }}
-                        >
-                          <div
-                            style={{
-                              backgroundColor: "#F4F4F4",
-                              borderRadius: "4px",
-                              flexGrow: 0,
-                              height: "14px",
-                              marginBottom: "6px",
-                              width: "100px",
-                            }}
-                          ></div>
-                          <div
-                            style={{
-                              backgroundColor: "#F4F4F4",
-                              borderRadius: "4px",
-                              flexGrow: 0,
-                              height: "14px",
-                              width: "60px",
-                            }}
-                          ></div>
-                        </div>
+              <div className="social-embed">
+                <div className="instagram-placeholder">
+                  <div className="instagram-content">
+                    <div className="instagram-header">
+                      <div className="instagram-avatar" />
+                      <div className="instagram-info">
+                        <div className="instagram-username" />
+                        <div className="instagram-location" />
                       </div>
-                      <div style={{ padding: "19% 0" }}></div>
-                      <div
-                        style={{
-                          display: "block",
-                          height: "50px",
-                          margin: "0 auto 12px",
-                          width: "50px",
-                        }}
-                      >
-                        <svg
-                          width="50px"
-                          height="50px"
-                          viewBox="0 0 60 60"
-                          version="1.1"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g
-                            stroke="none"
-                            strokeWidth="1"
-                            fill="none"
-                            fillRule="evenodd"
-                          >
-                            <g
-                              transform="translate(-511.000000, -20.000000)"
-                              fill="#000000"
-                            >
-                              <g>
-                                <path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path>
-                              </g>
-                            </g>
-                          </g>
-                        </svg>
-                      </div>
-                      <div style={{ paddingTop: "8px" }}>
-                        <div
-                          style={{
-                            color: "#3897f0",
-                            fontFamily: "Arial,sans-serif",
-                            fontSize: "14px",
-                            fontStyle: "normal",
-                            fontWeight: "550",
-                            lineHeight: "18px",
-                          }}
-                        >
-                          Ver esta publicación en Instagram
-                        </div>
-                      </div>
-                    </a>
+                    </div>
+                    <div className="instagram-image" />
+                    <div className="instagram-actions">
+                      <Instagram size={24} style={{ color: "#E4405F" }} />
+                      <span>Ver en Instagram</span>
+                    </div>
                   </div>
-                </blockquote>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Videos Section - OPTIMIZADO PARA MÓVILES */}
-      <section
-        style={{
-          padding: isClient && isMobile ? "2rem 1rem" : "3rem 2rem",
-          width: "100%",
-          background: "linear-gradient(135deg, #24354b 0%, #24354b 100%)",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            width: "100%",
-          }}
-        >
-          <div
-            style={{
-              textAlign: "center",
-              marginBottom: isClient && isMobile ? "2rem" : "2.5rem",
-            }}
-          >
-            <div
-              style={{
-                display: "inline-block",
-                color: "white",
-                background: "linear-gradient(135deg, #f9b91d, #f9b91d)",
-                padding: isClient && isMobile ? "8px 20px" : "10px 24px",
-                borderRadius: "6px",
-                fontSize: isClient && isMobile ? "12px" : "14px",
-                fontWeight: "700",
-                marginBottom: "1rem",
-                textTransform: "uppercase",
-                letterSpacing: "1px",
-              }}
-            >
-              Videos Destacados
-            </div>
-            <h2
-              style={{
-                fontSize:
-                  isClient && isMobile
-                    ? "1.6rem"
-                    : "clamp(2rem, 3.5vw, 2.5rem)",
-                fontWeight: "600",
-                color: "white",
-                marginBottom: "0.5rem",
-                fontFamily: "'Poppins', sans-serif",
-                lineHeight: "1.3",
-              }}
-            >
-              Mi Trabajo en el Congreso
-            </h2>
-            <p
-              style={{
-                fontSize:
-                  isClient && isMobile
-                    ? "0.9rem"
-                    : "clamp(0.9rem, 1.6vw, 1rem)",
-                color: "rgba(255, 255, 255, 0.8)",
-              }}
-            >
+      {/* Videos Section */}
+      <section className="videos-section">
+        <div className="container">
+          <div className="section-header">
+            <div className="section-badge">Videos Destacados</div>
+            <h2 className="section-title white">Mi Trabajo en el Congreso</h2>
+            <p className="section-subtitle">
               Conoce más sobre mis propuestas y gestiones
             </p>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                isClient && isMobile
-                  ? "1fr"
-                  : "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: isClient && isMobile ? "1rem" : "1.5rem",
-              width: "100%",
-            }}
-          >
-            {[
-              {
-                title: "Frente a Frente",
-                description: "Cámara de Representantes",
-                videoId: "U1N-QPqgQuY",
-              },
-              {
-                title: "Soy porque Somos es un reconocimiento a la lucha afro",
-                description: "W Radio Colombia",
-                videoId: "KRDlE6PIBWE",
-              },
-              {
-                title: "Algunos logros legislativos del 2022",
-                description: "Cha Dorina",
-                videoId: "SivSNzUD2qc",
-              },
-              {
-                title: "Entre-Vistas con Alma de País",
-                description: "Presidencia de la República",
-                videoId: "RJ-jOuB1grs",
-              },
-              {
-                title: "Pido la palabra",
-                description: "Canal Congreso Colombia",
-                videoId: "tFKjlfyGIU4",
-              },
-              {
-                title: "Rueda de Prensa",
-                description: "Canal Congreso Colombia",
-                videoId: "e9me2bDYXz4",
-              },
-            ].map((video, index) => (
-              <div
-                key={index}
-                style={{
-                  background: "white",
-                  borderRadius: "12px",
-                  overflow: "hidden",
-                  boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
-                  border: "1px solid #e2e8f0",
-                  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = "translateY(-6px)";
-                  e.target.style.boxShadow = "0 8px 25px rgba(0,0,0,0.12)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow = "0 4px 15px rgba(0,0,0,0.08)";
-                }}
-              >
-                <div
-                  style={{
-                    position: "relative",
-                    aspectRatio: "16/9",
-                    background: "#000",
-                  }}
-                >
+          <div className="videos-grid">
+            {videos.map((video, index) => (
+              <div key={index} className="video-card">
+                <div className="video-embed">
                   <iframe
                     width="100%"
                     height="100%"
@@ -1389,43 +481,16 @@ const Inicio = () => {
                     allowFullScreen
                   />
                 </div>
-                <div
-                  style={{
-                    padding: isClient && isMobile ? "0.75rem" : "1rem",
-                    textAlign: "center",
-                  }}
-                >
+                <div className="video-info">
                   <a
                     href={`https://www.youtube.com/watch?v=${video.videoId}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ textDecoration: "none" }}
+                    className="video-link"
                   >
-                    <h3
-                      style={{
-                        fontSize: isClient && isMobile ? "0.95rem" : "1.05rem",
-                        fontWeight: "600",
-                        color: "#f9b91d",
-                        marginBottom: "0.75rem",
-                        fontFamily: "'Poppins', sans-serif",
-                        textAlign: "center",
-                        lineHeight: "1.3",
-                      }}
-                    >
-                      {video.title}
-                    </h3>
+                    <h3 className="video-title">{video.title}</h3>
                   </a>
-                  <p
-                    style={{
-                      fontSize: isClient && isMobile ? "0.8rem" : "0.9rem",
-                      color: "#64748b",
-                      margin: 0,
-                      lineHeight: "1.4",
-                      textAlign: "center",
-                    }}
-                  >
-                    {video.description}
-                  </p>
+                  <p className="video-description">{video.description}</p>
                 </div>
               </div>
             ))}
@@ -1433,293 +498,84 @@ const Inicio = () => {
         </div>
       </section>
 
-      {/* FORMULARIO DE PARTICIPACIÓN - OPTIMIZADO PARA MÓVILES */}
-      <section
-        style={{
-          padding: isClient && isMobile ? "2rem 1rem" : "4rem 2rem",
-          background: "#569638",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "800px",
-            margin: "0 auto",
-            textAlign: "center",
-          }}
-        >
-          <div style={{ marginBottom: "2rem" }}>
-            <h2
-              style={{
-                fontSize:
-                  isClient && isMobile ? "1.8rem" : "clamp(2rem, 4vw, 3rem)",
-                fontWeight: "700",
-                color: "white",
-                marginBottom: "1rem",
-                fontFamily: "'Poppins', sans-serif",
-                lineHeight: "1.2",
-              }}
-            >
+      {/* Participación Section */}
+      <section className="participacion-section">
+        <div className="container">
+          <div className="participacion-content">
+            <h2 className="participacion-title">
               Haz parte del proyecto político de Dorina
             </h2>
-            <p
-              style={{
-                fontSize: isClient && isMobile ? "1rem" : "1.2rem",
-                color: "rgba(255, 255, 255, 0.9)",
-                marginBottom: "2rem",
-                lineHeight: "1.6",
-              }}
-            >
+            <p className="participacion-description">
               Comparte tus ideas y propuestas. Tu voz es importante para
               construir un futuro mejor para nuestras comunidades.
             </p>
-          </div>
 
-          <div
-            style={{
-              background: "rgba(255, 255, 255, 0.1)",
-              backdropFilter: "blur(10px)",
-              borderRadius: "16px",
-              padding: isClient && isMobile ? "2rem 1.5rem" : "2.5rem",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "12px",
-                marginBottom: "1.5rem",
-                flexDirection: isClient && isMobile ? "column" : "row",
-              }}
-            >
-              <MessageSquare
-                size={isClient && isMobile ? 28 : 32}
-                color="white"
-              />
-              <h3
-                style={{
-                  fontSize: isClient && isMobile ? "1.3rem" : "1.5rem",
-                  fontWeight: "600",
-                  color: "white",
-                  margin: 0,
-                  fontFamily: "'Poppins', sans-serif",
-                  textAlign: "center",
-                }}
+            <div className="participacion-card">
+              <div className="participacion-header">
+                <MessageSquare size={isMobile ? 28 : 32} color="white" />
+                <h3 className="participacion-subtitle">
+                  Tu participación cuenta
+                </h3>
+              </div>
+
+              <p className="participacion-text">
+                Queremos escuchar tus propuestas, inquietudes y sugerencias.
+                Juntos podemos trabajar por el desarrollo de nuestros
+                territorios.
+              </p>
+
+              <button
+                className="participacion-button"
+                onClick={() => navigate("/contacto")}
               >
-                Tu participación cuenta
-              </h3>
+                <Send size={20} />
+                Enviar propuesta
+              </button>
+
+              <p className="participacion-disclaimer">
+                Tu información será tratada confidencialmente de acuerdo con
+                nuestra política de privacidad.
+              </p>
             </div>
-
-            <p
-              style={{
-                color: "rgba(255, 255, 255, 0.8)",
-                marginBottom: "2rem",
-                fontSize: isClient && isMobile ? "1rem" : "1.1rem",
-                lineHeight: "1.6",
-              }}
-            >
-              Queremos escuchar tus propuestas, inquietudes y sugerencias.
-              Juntos podemos trabajar por el desarrollo de nuestros territorios.
-            </p>
-
-            <a
-              href="/contacto"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                background: "#f9b91d",
-                color: "white",
-                padding: isClient && isMobile ? "16px 28px" : "16px 32px",
-                borderRadius: "50px",
-                textDecoration: "none",
-                fontWeight: "600",
-                fontSize: isClient && isMobile ? "1rem" : "1.1rem",
-                transition: "all 0.3s ease",
-                boxShadow: "0 8px 25px rgba(249, 185, 29, 0.4)",
-                minHeight: isClient && isMobile ? "48px" : "auto",
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.transform = "translateY(-3px) scale(1.05)";
-                e.target.style.boxShadow =
-                  "0 12px 30px rgba(249, 185, 29, 0.5)";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = "translateY(0) scale(1)";
-                e.target.style.boxShadow = "0 8px 25px rgba(249, 185, 29, 0.4)";
-              }}
-            >
-              <Send size={20} />
-              Enviar propuesta
-            </a>
-
-            <p
-              style={{
-                color: "rgba(255, 255, 255, 0.6)",
-                fontSize: isClient && isMobile ? "0.8rem" : "0.9rem",
-                marginTop: "1.5rem",
-                margin: "1.5rem 0 0 0",
-              }}
-            >
-              Tu información será tratada confidencialmente de acuerdo con
-              nuestra política de privacidad.
-            </p>
           </div>
         </div>
       </section>
 
-      {/* Footer - OPTIMIZADO PARA MÓVILES */}
-      <footer
-        style={{
-          background: "linear-gradient(135deg, #24354b 0%, #24354b 100%)",
-          color: "white",
-          padding:
-            isClient && isMobile ? "2rem 1rem 1rem" : "2.5rem 2rem 1.5rem",
-          width: "100%",
-          position: "relative",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            width: "100%",
-          }}
-        >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                isClient && isMobile
-                  ? "1fr"
-                  : "repeat(auto-fit, minmax(250px, 1fr))",
-              gap: isClient && isMobile ? "1.5rem" : "2rem",
-              marginBottom: "2rem",
-            }}
-          >
+      {/* Footer */}
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-grid">
             {/* Contact Info */}
-            <div>
-              <h3
-                style={{
-                  fontSize: isClient && isMobile ? "1rem" : "1.1rem",
-                  fontWeight: "600",
-                  marginBottom: "1rem",
-                  color: "#f9b91d",
-                  fontFamily: "'Poppins', sans-serif",
-                  lineHeight: "1.3",
-                }}
-              >
-                Contacto
-              </h3>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.75rem",
-                }}
-              >
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
+            <div className="footer-section">
+              <h3 className="footer-title">Contacto</h3>
+              <div className="footer-links">
+                <div className="footer-link">
                   <Mail size={16} style={{ color: "#f9b91d" }} />
-                  <span
-                    style={{
-                      fontSize: isClient && isMobile ? "0.8rem" : "0.9rem",
-                    }}
-                  >
-                    contacto@dorinahernandez.com
-                  </span>
+                  <span>contacto@dorinahernandez.com</span>
                 </div>
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
+                <div className="footer-link">
                   <Phone size={16} style={{ color: "#f9b91d" }} />
-                  <span
-                    style={{
-                      fontSize: isClient && isMobile ? "0.8rem" : "0.9rem",
-                    }}
-                  >
-                    +57 (5) 123-4567
-                  </span>
+                  <span>+57 (5) 123-4567</span>
                 </div>
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
+                <div className="footer-link">
                   <MapPin size={16} style={{ color: "#f9b91d" }} />
-                  <span
-                    style={{
-                      fontSize: isClient && isMobile ? "0.8rem" : "0.9rem",
-                    }}
-                  >
-                    San Basilio de Palenque, Bolívar
-                  </span>
+                  <span>San Basilio de Palenque, Bolívar</span>
                 </div>
               </div>
             </div>
 
             {/* Social Media */}
-            <div>
-              <h3
-                style={{
-                  fontSize: isClient && isMobile ? "1rem" : "1.1rem",
-                  fontWeight: "600",
-                  marginBottom: "1rem",
-                  color: "#f9b91d",
-                  fontFamily: "'Poppins', sans-serif",
-                  lineHeight: "1.3",
-                }}
-              >
-                Redes Sociales
-              </h3>
-              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-                {[
-                  {
-                    icon: Facebook,
-                    color: "#1877F2",
-                    url: "https://web.facebook.com/chadorinahe",
-                  },
-                  {
-                    icon: X,
-                    color: "#000000",
-                    url: "https://x.com/chadorinah?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
-                  },
-                  {
-                    icon: Instagram,
-                    color: "#E4405F",
-                    url: "https://www.instagram.com/chadorinah/?hl=es",
-                  },
-                  {
-                    icon: Youtube,
-                    color: "#FF0000",
-                    url: "https://www.youtube.com/@chadorina3864",
-                  },
-                ].map((social, index) => (
+            <div className="footer-section">
+              <h3 className="footer-title">Redes Sociales</h3>
+              <div className="footer-social">
+                {socialMedia.map((social, index) => (
                   <a
                     key={index}
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      background: "rgba(255,255,255,0.1)",
-                      borderRadius: "8px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      color: "white",
-                      transition: "all 0.3s ease",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = social.color;
-                      e.target.style.transform = "translateY(-2px)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = "rgba(255,255,255,0.1)";
-                      e.target.style.transform = "translateY(0)";
-                    }}
+                    className="footer-social-icon"
+                    style={{ "--social-color": social.color }}
                   >
                     <social.icon size={18} />
                   </a>
@@ -1728,47 +584,15 @@ const Inicio = () => {
             </div>
 
             {/* Legal */}
-            <div>
-              <h3
-                style={{
-                  fontSize: isClient && isMobile ? "1rem" : "1.1rem",
-                  fontWeight: "600",
-                  marginBottom: "1rem",
-                  color: "#f9b91d",
-                  fontFamily: "'Poppins', sans-serif",
-                  lineHeight: "1.3",
-                }}
-              >
-                Legal
-              </h3>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.5rem",
-                }}
-              >
+            <div className="footer-section">
+              <h3 className="footer-title">Legal</h3>
+              <div className="footer-links">
                 {[
                   "Aviso Legal",
                   "Política de Privacidad",
                   "Términos y Condiciones",
                 ].map((item, index) => (
-                  <a
-                    key={index}
-                    href="#"
-                    style={{
-                      color: "rgba(255,255,255,0.8)",
-                      textDecoration: "none",
-                      transition: "color 0.3s ease",
-                      fontSize: isClient && isMobile ? "0.8rem" : "0.9rem",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.color = "#f9b91d";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.color = "rgba(255,255,255,0.8)";
-                    }}
-                  >
+                  <a key={index} href="#" className="footer-legal-link">
                     {item}
                   </a>
                 ))}
@@ -1777,47 +601,984 @@ const Inicio = () => {
           </div>
 
           {/* Copyright */}
-          <div
-            style={{
-              borderTop: "1px solid rgba(255,255,255,0.1)",
-              paddingTop: "1.5rem",
-              textAlign: "center",
-              color: "rgba(255,255,255,0.7)",
-            }}
-          >
-            <p
-              style={{
-                fontSize: isClient && isMobile ? "0.75rem" : "0.85rem",
-                margin: 0,
-              }}
-            >
+          <div className="footer-copyright">
+            <p>
               © {new Date().getFullYear()} Dorina Hernández Palomino. Todos los
               derechos reservados.
               <br />
-              <span style={{ color: "#f9b91d" }}>
+              <span className="footer-highlight">
                 Representando con orgullo a San Basilio de Palenque 🇨🇴
               </span>
             </p>
           </div>
         </div>
 
-        {/* Bandera de Colombia */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: "3px",
-            background:
-              "linear-gradient(90deg, #FFCD00 0%, #FFCD00 50%, #003087 50%, #003087 75%, #CE1126 75%, #CE1126 100%)",
-          }}
-        />
+        {/* Colombian Flag */}
+        <div className="footer-flag" />
       </footer>
 
       <style jsx>{`
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
 
+        .inicio-container {
+          width: 100vw;
+          min-height: 100vh;
+          margin: 0;
+          padding: 0;
+          overflow-x: hidden;
+          position: relative;
+          font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
+            sans-serif;
+        }
+
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0
+            ${isTinyMobile
+              ? "12px"
+              : isSmallMobile
+              ? "16px"
+              : isMobile
+              ? "20px"
+              : isTablet
+              ? "32px"
+              : "48px"};
+          width: 100%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+          background: url("${isMobile
+            ? "media/heroMobile-inicio.png"
+            : "media/hero-inicio.png"}");
+          background-size: ${isMobile ? "100%" : "cover"};
+          background-position: ${isMobile ? "center top" : "center center"};
+          background-repeat: no-repeat;
+          min-height: ${isSmallMobile ? "60vh" : isMobile ? "70vh" : "85vh"};
+          display: flex;
+          align-items: ${isMobile ? "flex-end" : "center"};
+          justify-content: center;
+          position: relative;
+          width: 100%;
+          padding: 0;
+          margin: 0;
+        }
+
+        .hero-overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.1);
+          z-index: 1;
+        }
+
+        .hero-content {
+          width: 100%;
+          max-width: ${isMobile ? "100%" : "1400px"};
+          margin: 0 auto;
+          padding: ${isMobile ? "0 1.5rem 1rem" : "0 3rem"};
+          display: flex;
+          align-items: ${isMobile ? "flex-end" : "center"};
+          justify-content: ${isMobile ? "center" : "flex-start"};
+          position: relative;
+          z-index: 2;
+          min-height: ${isMobile ? "100vh" : "60vh"};
+        }
+
+        .hero-text-container {
+          transform: ${isVisible ? "translateX(0)" : "translateX(-50px)"};
+          opacity: ${isVisible ? 1 : 0};
+          transition: all 1s ease-out;
+          display: flex;
+          flex-direction: column;
+          align-items: ${isMobile ? "center" : "flex-start"};
+          justify-content: flex-end;
+          width: 100%;
+          max-width: ${isMobile ? "100%" : "480px"};
+          text-align: ${isMobile ? "center" : "left"};
+          padding-bottom: ${isMobile ? "1rem" : "4rem"};
+        }
+
+        .hero-spacer {
+          height: 60vh;
+          width: 100%;
+        }
+
+        .hero-spacer-mobile {
+          height: 50vh;
+          width: 100%;
+        }
+
+        .hero-buttons {
+          display: flex;
+          gap: ${isMobile ? "12px" : "15px"};
+          margin-bottom: 24px;
+          flex-wrap: wrap;
+          justify-content: ${isMobile ? "center" : "flex-start"};
+          width: 100%;
+          align-items: center;
+        }
+
+        .hero-button {
+          padding: ${isMobile ? "14px 20px" : "12px 24px"};
+          border-radius: 25px;
+          border: none;
+          font-size: ${isMobile ? "13px" : "14px"};
+          font-weight: 600;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          transition: all 0.3s ease;
+          white-space: nowrap;
+          text-decoration: none;
+          min-height: ${isMobile ? "44px" : "auto"};
+        }
+
+        .hero-button.primary {
+          background: linear-gradient(135deg, #f9b91d, #f9b91d);
+          color: white;
+          box-shadow: 0 6px 20px rgba(249, 185, 29, 0.4);
+        }
+
+        .hero-button.primary:hover {
+          transform: translateY(-2px) scale(1.02);
+          box-shadow: 0 8px 25px rgba(249, 185, 29, 0.5);
+        }
+
+        .hero-button.secondary {
+          background: white;
+          color: #24354b;
+          border: 2px solid #24354b;
+          box-shadow: 0 4px 15px rgba(36, 53, 75, 0.2);
+        }
+
+        .hero-button.secondary:hover {
+          background: #24354b;
+          color: white;
+          transform: translateY(-2px) scale(1.02);
+          box-shadow: 0 6px 18px rgba(36, 53, 75, 0.4);
+        }
+
+        .hero-social {
+          display: flex;
+          gap: ${isMobile ? "12px" : "10px"};
+          flex-wrap: wrap;
+          justify-content: ${isMobile ? "center" : "flex-start"};
+          width: 100%;
+          align-items: center;
+        }
+
+        .social-icon {
+          width: ${isMobile ? "44px" : "40px"};
+          height: ${isMobile ? "44px" : "40px"};
+          background: white;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #64748b;
+          transition: all 0.3s ease;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+          text-decoration: none;
+        }
+
+        .social-icon:hover {
+          background: var(--social-color);
+          color: white;
+          transform: translateY(-2px) scale(1.05);
+          box-shadow: 0 6px 20px
+            color-mix(in srgb, var(--social-color) 40%, transparent);
+        }
+
+        .hero-decorations {
+          display: ${isMobile ? "none" : "block"};
+        }
+
+        .decoration-1 {
+          position: absolute;
+          top: 20%;
+          left: 8%;
+          width: 60px;
+          height: 60px;
+          background: linear-gradient(135deg, #f9b91d, #569638);
+          border-radius: 50%;
+          opacity: 0.03;
+          animation: float 8s ease-in-out infinite;
+          z-index: 1;
+        }
+
+        .decoration-2 {
+          position: absolute;
+          bottom: 30%;
+          right: 12%;
+          width: 40px;
+          height: 40px;
+          background: linear-gradient(135deg, #129ba5, #24354b);
+          border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+          opacity: 0.02;
+          animation: float 10s ease-in-out infinite reverse;
+          z-index: 1;
+        }
+
+        .colombia-flag {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 6px;
+          background: linear-gradient(
+            90deg,
+            #ffcd00 0%,
+            #ffcd00 50%,
+            #003087 50%,
+            #003087 75%,
+            #ce1126 75%,
+            #ce1126 100%
+          );
+        }
+
+        /* Eslogan Section */
+        .eslogan-section {
+          padding: ${isMobile ? "1.5rem 0" : "2rem 0"};
+          background: linear-gradient(135deg, #f9b91d 0%, #f9b91d 100%);
+          text-align: center;
+        }
+
+        .eslogan-title {
+          font-size: ${isTinyMobile
+            ? "1.3rem"
+            : isSmallMobile
+            ? "1.4rem"
+            : isMobile
+            ? "1.5rem"
+            : "clamp(1.5rem, 3vw, 2.5rem)"};
+          font-weight: 700;
+          color: white;
+          margin: 0;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          line-height: 1.3;
+          max-width: 800px;
+          margin: 0 auto;
+        }
+
+        /* Common Section Styles */
+        .section-badge {
+          display: inline-block;
+          background: #0dc1d3;
+          color: white;
+          padding: ${isMobile ? "6px 16px" : "8px 20px"};
+          border-radius: 6px;
+          font-size: ${isMobile ? "11px" : "12px"};
+          font-weight: 700;
+          margin-bottom: 1.5rem;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        .section-title {
+          font-size: ${isTinyMobile
+            ? "1.5rem"
+            : isSmallMobile
+            ? "1.6rem"
+            : isMobile
+            ? "1.8rem"
+            : "clamp(2rem, 4vw, 3rem)"};
+          font-weight: 700;
+          color: #24354b;
+          margin-bottom: 1.5rem;
+          line-height: 1.2;
+        }
+
+        .section-title.white {
+          color: white;
+        }
+
+        .section-subtitle {
+          font-size: ${isMobile ? "1rem" : "clamp(1rem, 2vw, 1.2rem)"};
+          color: rgba(255, 255, 255, 0.8);
+          max-width: 600px;
+          margin: 0 auto;
+          line-height: 1.6;
+          font-weight: 400;
+        }
+
+        .section-header {
+          text-align: center;
+          margin-bottom: ${isMobile ? "2rem" : "3rem"};
+        }
+
+        /* Sobre Section */
+        .sobre-section {
+          padding: ${isMobile ? "2rem 0" : "4rem 0"};
+          background: #f8fafc;
+        }
+
+        .sobre-grid {
+          display: grid;
+          grid-template-columns: ${isMobile
+            ? "1fr"
+            : "repeat(auto-fit, minmax(400px, 1fr))"};
+          gap: ${isMobile ? "2rem" : "3rem"};
+          align-items: center;
+        }
+
+        .sobre-text {
+          order: ${isMobile ? 2 : 1};
+        }
+
+        .sobre-description {
+          font-size: ${isMobile ? "1rem" : "1.1rem"};
+          color: #4a5568;
+          line-height: 1.7;
+          margin-bottom: 1.5rem;
+        }
+
+        .sobre-subdescription {
+          font-size: ${isMobile ? "0.9rem" : "1rem"};
+          color: #718096;
+          line-height: 1.6;
+          margin-bottom: 2rem;
+        }
+
+        .sobre-button {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: #24354b;
+          color: white;
+          padding: ${isMobile ? "14px 20px" : "12px 24px"};
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          font-size: ${isMobile ? "14px" : "16px"};
+          min-height: ${isMobile ? "44px" : "auto"};
+          border: none;
+          cursor: pointer;
+        }
+
+        .sobre-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(36, 53, 75, 0.3);
+        }
+
+        .sobre-image {
+          position: relative;
+          order: ${isMobile ? 1 : 2};
+        }
+
+        .image-container {
+          border-radius: 16px;
+          overflow: hidden;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-image {
+          width: 100%;
+          height: ${isMobile ? "300px" : "500px"};
+          object-fit: cover;
+        }
+
+        /* Banderas Section */
+        .banderas-section {
+          padding: ${isMobile ? "2rem 0" : "4rem 0"};
+          background: #24354b;
+        }
+
+        .banderas-grid {
+          display: grid;
+          grid-template-columns: ${isMobile
+            ? "1fr"
+            : "repeat(auto-fit, minmax(280px, 1fr))"};
+          gap: ${isMobile ? "1.5rem" : "2rem"};
+        }
+
+        .bandera-card {
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          padding: ${isMobile ? "1.5rem" : "2rem"};
+          text-align: center;
+          transition: all 0.3s ease;
+          transform: ${isVisible ? "translateY(0)" : "translateY(30px)"};
+          opacity: ${isVisible ? 1 : 0};
+          transition-delay: var(--delay);
+        }
+
+        .bandera-card:hover {
+          transform: translateY(-8px);
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        .bandera-icon {
+          width: ${isMobile ? "56px" : "64px"};
+          height: ${isMobile ? "56px" : "64px"};
+          border-radius: 50%;
+          background: var(--flag-color);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 1.5rem;
+        }
+
+        .bandera-title {
+          font-size: ${isMobile ? "1.1rem" : "1.3rem"};
+          font-weight: 600;
+          color: white;
+          margin-bottom: 1rem;
+          line-height: 1.3;
+        }
+
+        .bandera-description {
+          color: rgba(255, 255, 255, 0.7);
+          line-height: 1.6;
+          margin-bottom: 1.5rem;
+          font-size: ${isMobile ? "0.9rem" : "1rem"};
+        }
+
+        .bandera-button {
+          background: color-mix(in srgb, var(--flag-color) 20%, transparent);
+          color: var(--flag-color);
+          border: 1px solid
+            color-mix(in srgb, var(--flag-color) 40%, transparent);
+          padding: ${isMobile ? "10px 18px" : "8px 16px"};
+          border-radius: 6px;
+          font-size: ${isMobile ? "13px" : "14px"};
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          min-height: ${isMobile ? "40px" : "auto"};
+        }
+
+        .bandera-button:hover {
+          background: var(--flag-color);
+          color: white;
+        }
+
+        /* Achievements Section */
+        .achievements-section {
+          padding: ${isMobile ? "2rem 0" : "3rem 0"};
+          width: 100%;
+          background: linear-gradient(
+            135deg,
+            #24354b 0%,
+            #24354b 50%,
+            #24354b 100%
+          );
+          position: relative;
+          overflow: hidden;
+        }
+
+        .achievements-decorations {
+          display: ${isMobile ? "none" : "block"};
+        }
+
+        .achievement-decoration-1 {
+          position: absolute;
+          top: -50%;
+          right: -20%;
+          width: 600px;
+          height: 600px;
+          background: radial-gradient(
+            circle,
+            rgba(86, 150, 56, 0.08) 0%,
+            transparent 70%
+          );
+          border-radius: 50%;
+        }
+
+        .achievement-decoration-2 {
+          position: absolute;
+          bottom: -30%;
+          left: -10%;
+          width: 400px;
+          height: 400px;
+          background: radial-gradient(
+            circle,
+            rgba(249, 185, 29, 0.05) 0%,
+            transparent 70%
+          );
+          border-radius: 50%;
+        }
+
+        .achievements-grid {
+          display: grid;
+          grid-template-columns: ${isMobile
+            ? "1fr"
+            : "repeat(auto-fit, minmax(320px, 1fr))"};
+          gap: ${isMobile ? "1rem" : "1.5rem"};
+          width: 100%;
+          position: relative;
+          z-index: 2;
+        }
+
+        .achievement-card {
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          padding: ${isMobile ? "1.5rem 1rem" : "2rem 1.5rem"};
+          text-align: left;
+          transition: all 0.3s ease;
+          transform: ${isVisible ? "translateY(0)" : "translateY(30px)"};
+          opacity: ${isVisible ? 1 : 0};
+          transition-delay: var(--delay);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .achievement-card:hover {
+          transform: translateY(-4px);
+          background: rgba(255, 255, 255, 0.08);
+          border-color: color-mix(
+            in srgb,
+            var(--achievement-color) 30%,
+            transparent
+          );
+        }
+
+        .achievement-content {
+          display: flex;
+          align-items: flex-start;
+          gap: ${isMobile ? "0.75rem" : "1rem"};
+          flex-direction: ${isMobile ? "column" : "row"};
+          text-align: ${isMobile ? "center" : "left"};
+        }
+
+        .achievement-image {
+          width: ${isMobile ? "120px" : "150px"};
+          height: ${isMobile ? "120px" : "150px"};
+          border-radius: 8px;
+          overflow: hidden;
+          flex-shrink: 0;
+          border: 2px solid
+            color-mix(in srgb, var(--achievement-color) 30%, transparent);
+          margin: ${isMobile ? "0 auto 1rem" : "0"};
+        }
+
+        .achievement-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .achievement-text {
+          flex: 1;
+        }
+
+        .achievement-title {
+          font-size: ${isMobile ? "1.1rem" : "1.2rem"};
+          font-weight: 600;
+          color: white;
+          margin-bottom: 0.5rem;
+          line-height: 1.3;
+        }
+
+        .achievement-description {
+          color: rgba(255, 255, 255, 0.7);
+          line-height: 1.5;
+          font-size: ${isMobile ? "0.9rem" : "0.95rem"};
+          margin: 0;
+        }
+
+        .achievement-border {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: var(--achievement-color);
+          opacity: 0.6;
+        }
+
+        .highlight {
+          background: linear-gradient(135deg, #f9b91d, #f9b91d);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        /* Social Section */
+        .social-section {
+          background: linear-gradient(135deg, #129ba5 0%, #129ba5 100%);
+          padding: ${isMobile ? "2rem 0" : "3rem 0"};
+          width: 100%;
+        }
+
+        .social-grid {
+          display: grid;
+          grid-template-columns: ${isMobile
+            ? "1fr"
+            : "repeat(auto-fit, minmax(300px, 1fr))"};
+          gap: ${isMobile ? "1.5rem" : "2rem"};
+          width: 100%;
+        }
+
+        .social-card {
+          background: white;
+          border-radius: 12px;
+          padding: ${isMobile ? "1rem" : "1.5rem"};
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+          border: 1px solid #e2e8f0;
+        }
+
+        .social-header {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 1rem;
+        }
+
+        .social-title {
+          color: #129ba5;
+          margin: 0;
+          font-size: ${isMobile ? "0.9rem" : "1rem"};
+          font-weight: 600;
+        }
+
+        .social-embed {
+          width: 100%;
+          height: ${isMobile ? "250px" : "300px"};
+          border: none;
+          overflow: hidden;
+          border-radius: 8px;
+        }
+
+        .instagram-placeholder {
+          width: 100%;
+          height: 100%;
+          background: #f8f9fa;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .instagram-content {
+          text-align: center;
+          padding: 2rem;
+        }
+
+        .instagram-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 1rem;
+        }
+
+        .instagram-avatar {
+          width: 40px;
+          height: 40px;
+          background: #e2e8f0;
+          border-radius: 50%;
+        }
+
+        .instagram-info {
+          flex: 1;
+        }
+
+        .instagram-username {
+          height: 14px;
+          background: #e2e8f0;
+          border-radius: 4px;
+          margin-bottom: 6px;
+          width: 100px;
+        }
+
+        .instagram-location {
+          height: 14px;
+          background: #e2e8f0;
+          border-radius: 4px;
+          width: 60px;
+        }
+
+        .instagram-image {
+          width: 100%;
+          height: 200px;
+          background: #e2e8f0;
+          border-radius: 8px;
+          margin-bottom: 1rem;
+        }
+
+        .instagram-actions {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          color: #e4405f;
+          font-weight: 600;
+        }
+
+        /* Videos Section */
+        .videos-section {
+          padding: ${isMobile ? "2rem 0" : "3rem 0"};
+          width: 100%;
+          background: linear-gradient(135deg, #24354b 0%, #24354b 100%);
+        }
+
+        .videos-grid {
+          display: grid;
+          grid-template-columns: ${isMobile
+            ? "1fr"
+            : "repeat(auto-fit, minmax(300px, 1fr))"};
+          gap: ${isMobile ? "1rem" : "1.5rem"};
+          width: 100%;
+        }
+
+        .video-card {
+          background: white;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+          border: 1px solid #e2e8f0;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .video-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .video-embed {
+          position: relative;
+          aspect-ratio: 16/9;
+          background: #000;
+        }
+
+        .video-info {
+          padding: ${isMobile ? "0.75rem" : "1rem"};
+          text-align: center;
+        }
+
+        .video-link {
+          text-decoration: none;
+        }
+
+        .video-title {
+          font-size: ${isMobile ? "0.95rem" : "1.05rem"};
+          font-weight: 600;
+          color: #f9b91d;
+          margin-bottom: 0.75rem;
+          text-align: center;
+          line-height: 1.3;
+        }
+
+        .video-description {
+          font-size: ${isMobile ? "0.8rem" : "0.9rem"};
+          color: #64748b;
+          margin: 0;
+          line-height: 1.4;
+          text-align: center;
+        }
+
+        /* Participación Section */
+        .participacion-section {
+          padding: ${isMobile ? "2rem 0" : "4rem 0"};
+          background: #569638;
+        }
+
+        .participacion-content {
+          max-width: 800px;
+          margin: 0 auto;
+          text-align: center;
+          padding: 0 ${isMobile ? "1rem" : "2rem"};
+        }
+
+        .participacion-title {
+          font-size: ${isTinyMobile
+            ? "1.5rem"
+            : isSmallMobile
+            ? "1.6rem"
+            : isMobile
+            ? "1.8rem"
+            : "clamp(2rem, 4vw, 3rem)"};
+          font-weight: 700;
+          color: white;
+          margin-bottom: 1rem;
+          line-height: 1.2;
+        }
+
+        .participacion-description {
+          font-size: ${isMobile ? "1rem" : "1.2rem"};
+          color: rgba(255, 255, 255, 0.9);
+          margin-bottom: 2rem;
+          line-height: 1.6;
+        }
+
+        .participacion-card {
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border-radius: 16px;
+          padding: ${isMobile ? "2rem 1.5rem" : "2.5rem"};
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .participacion-header {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          margin-bottom: 1.5rem;
+          flex-direction: ${isMobile ? "column" : "row"};
+        }
+
+        .participacion-subtitle {
+          font-size: ${isMobile ? "1.3rem" : "1.5rem"};
+          font-weight: 600;
+          color: white;
+          margin: 0;
+          text-align: center;
+        }
+
+        .participacion-text {
+          color: rgba(255, 255, 255, 0.8);
+          margin-bottom: 2rem;
+          font-size: ${isMobile ? "1rem" : "1.1rem"};
+          line-height: 1.6;
+        }
+
+        .participacion-button {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: #f9b91d;
+          color: white;
+          padding: ${isMobile ? "16px 28px" : "16px 32px"};
+          border-radius: 50px;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: ${isMobile ? "1rem" : "1.1rem"};
+          transition: all 0.3s ease;
+          box-shadow: 0 8px 25px rgba(249, 185, 29, 0.4);
+          min-height: ${isMobile ? "48px" : "auto"};
+          border: none;
+          cursor: pointer;
+        }
+
+        .participacion-button:hover {
+          transform: translateY(-3px) scale(1.05);
+          box-shadow: 0 12px 30px rgba(249, 185, 29, 0.5);
+        }
+
+        .participacion-disclaimer {
+          color: rgba(255, 255, 255, 0.6);
+          font-size: ${isMobile ? "0.8rem" : "0.9rem"};
+          margin-top: 1.5rem;
+          margin-bottom: 0;
+        }
+
+        /* Footer */
+        .footer {
+          background: linear-gradient(135deg, #24354b 0%, #24354b 100%);
+          color: white;
+          padding: ${isMobile ? "2rem 0 1rem" : "2.5rem 0 1.5rem"};
+          width: 100%;
+          position: relative;
+        }
+
+        .footer-grid {
+          display: grid;
+          grid-template-columns: ${isMobile
+            ? "1fr"
+            : "repeat(auto-fit, minmax(250px, 1fr))"};
+          gap: ${isMobile ? "1.5rem" : "2rem"};
+          margin-bottom: 2rem;
+        }
+
+        .footer-title {
+          font-size: ${isMobile ? "1rem" : "1.1rem"};
+          font-weight: 600;
+          margin-bottom: 1rem;
+          color: #f9b91d;
+          line-height: 1.3;
+        }
+
+        .footer-links {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .footer-link {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: ${isMobile ? "0.8rem" : "0.9rem"};
+        }
+
+        .footer-social {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+
+        .footer-social-icon {
+          width: 40px;
+          height: 40px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          transition: all 0.3s ease;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          text-decoration: none;
+        }
+
+        .footer-social-icon:hover {
+          background: var(--social-color);
+          transform: translateY(-2px);
+        }
+
+        .footer-legal-link {
+          color: rgba(255, 255, 255, 0.8);
+          text-decoration: none;
+          transition: color 0.3s ease;
+          font-size: ${isMobile ? "0.8rem" : "0.9rem"};
+        }
+
+        .footer-legal-link:hover {
+          color: #f9b91d;
+        }
+
+        .footer-copyright {
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          padding-top: 1.5rem;
+          text-align: center;
+          color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-copyright p {
+          font-size: ${isMobile ? "0.75rem" : "0.85rem"};
+          margin: 0;
+        }
+
+        .footer-highlight {
+          color: #f9b91d;
+        }
+
+        .footer-flag {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: linear-gradient(
+            90deg,
+            #ffcd00 0%,
+            #ffcd00 50%,
+            #003087 50%,
+            #003087 75%,
+            #ce1126 75%,
+            #ce1126 100%
+          );
+        }
+
+        /* Animations */
         @keyframes float {
           0%,
           100% {
@@ -1828,27 +1589,68 @@ const Inicio = () => {
           }
         }
 
-        @media screen and (max-width: 768px) {
+        /* Media Queries específicas para Android */
+        @media screen and (max-width: 480px) {
           .hero-section {
-            min-height: 100vh !important;
-            background-size: 100% auto !important;
-            background-position: center top !important;
+            min-height: 60vh;
           }
 
-          html {
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
+          .hero-content {
+            padding: 0 12px 1rem;
+          }
+        }
+
+        @media screen and (max-width: 360px) {
+          .hero-buttons {
+            flex-direction: column;
+            align-items: center;
           }
 
-          body {
-            -webkit-overflow-scrolling: touch;
-            overflow-x: hidden;
+          .hero-button {
+            width: 100%;
+            max-width: 280px;
+            justify-content: center;
+          }
+        }
+
+        @media screen and (orientation: landscape) and (max-height: 500px) {
+          .hero-section {
+            min-height: 100vh;
+          }
+        }
+
+        /* Mejoras para dispositivos Android */
+        @media screen and (-webkit-min-device-pixel-ratio: 1) {
+          .inicio-container {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+          }
+        }
+
+        /* Soporte para pantallas de alta densidad */
+        @media screen and (-webkit-min-device-pixel-ratio: 2) {
+          .colombia-flag,
+          .footer-flag {
+            height: 4px;
+          }
+        }
+
+        /* Mejoras de accesibilidad para móviles */
+        @media (hover: none) and (pointer: coarse) {
+          .hero-button:hover,
+          .social-icon:hover,
+          .bandera-card:hover,
+          .achievement-card:hover,
+          .video-card:hover {
+            transform: none;
+          }
+
+          .hero-button:active,
+          .social-icon:active {
+            transform: scale(0.95);
           }
         }
       `}</style>
-
-      {/* Instagram Embed Script */}
-      <script async src="//www.instagram.com/embed.js"></script>
     </div>
   );
 };
