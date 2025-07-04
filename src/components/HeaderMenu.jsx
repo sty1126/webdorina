@@ -14,7 +14,6 @@ import {
   DollarSign,
   Newspaper,
   Phone,
-  Menu,
   X,
 } from "lucide-react";
 
@@ -235,7 +234,15 @@ const HeaderMenu = () => {
 
           {/* Mobile Hamburger Button */}
           <button className="hamburger-button" onClick={toggleMobileMenu}>
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMobileMenuOpen ? (
+              <X size={24} />
+            ) : (
+              <div className="hamburger-lines">
+                <span className="line"></span>
+                <span className="line"></span>
+                <span className="line"></span>
+              </div>
+            )}
           </button>
         </div>
 
@@ -279,13 +286,9 @@ const HeaderMenu = () => {
               )}
             </button>
 
-            {/* Mobile Submenu */}
+            {/* Mobile Submenu - SIEMPRE ABIERTO EN MÓVIL */}
             {item.submenu && (
-              <div
-                className={`mobile-submenu ${
-                  activeDropdown === item.key ? "open" : ""
-                }`}
-              >
+              <div className="mobile-submenu open">
                 {item.submenu.map((subItem) => (
                   <button
                     key={subItem.key}
@@ -505,20 +508,20 @@ const HeaderMenu = () => {
           justify-content: center;
           width: ${isSmallMobile ? "40px" : "44px"};
           height: ${isSmallMobile ? "40px" : "44px"};
-          background: rgba(13, 193, 211, 0.15);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(13, 193, 211, 0.3);
+          background: linear-gradient(135deg, #f9b91d, #f9b91d);
+          border: 1px solid rgba(249, 185, 29, 0.3);
           border-radius: 12px;
-          color: #0dc1d3;
+          color: #24354b;
           cursor: pointer;
           transition: all 0.3s ease;
           flex-shrink: 0;
         }
 
         .hamburger-button:hover {
-          background: linear-gradient(135deg, #f9b91d, #e6a50a);
-          color: #24354b;
+          background: linear-gradient(135deg, #e6a50a, #d4940a);
           transform: scale(1.05);
+          box-shadow: 0 4px 12px rgba(249, 185, 29, 0.4);
+          color: #24354b;
         }
 
         .mobile-menu {
@@ -581,6 +584,7 @@ const HeaderMenu = () => {
         .mobile-chevron {
           transition: transform 0.3s ease;
           flex-shrink: 0;
+          display: none; /* Ocultar chevron ya que los submenús están siempre abiertos */
         }
 
         .mobile-chevron.rotated {
@@ -595,7 +599,7 @@ const HeaderMenu = () => {
         }
 
         .mobile-submenu.open {
-          max-height: 200px;
+          max-height: 300px; /* Aumentar para que se vean todos los elementos */
         }
 
         .mobile-sub-item {
@@ -627,7 +631,7 @@ const HeaderMenu = () => {
           right: 0;
           bottom: 0;
           background: rgba(0, 0, 0, 0.5);
-          z-index: 99997;
+          z-index: 99996;
         }
 
         .decorative-bar-1 {
@@ -801,6 +805,26 @@ const HeaderMenu = () => {
           .decorative-bar-2 {
             height: 5px;
           }
+        }
+
+        .hamburger-lines {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          width: 18px;
+          height: 14px;
+        }
+
+        .line {
+          width: 100%;
+          height: 2px;
+          background-color: #24354b;
+          border-radius: 1px;
+          transition: all 0.3s ease;
+        }
+
+        .hamburger-button:hover .line {
+          background-color: #1a2635;
         }
       `}</style>
     </>
