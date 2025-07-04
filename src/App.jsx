@@ -3,6 +3,7 @@ import HeaderMenu from "./components/HeaderMenu";
 import Inicio from "./pages/Inicio";
 import Biografia from "./pages/Biografia";
 import Cultura from "./pages/Cultura";
+import Contacto from "./pages/Contacto";
 
 function App() {
   return (
@@ -13,14 +14,6 @@ function App() {
           <Route path="/" element={<Inicio />} />
           <Route path="/biografia" element={<Biografia />} />
           <Route path="/cultura" element={<Cultura />} />
-          <Route
-            path="/congreso"
-            element={<div>Página del Congreso (próximamente)</div>}
-          />
-          <Route
-            path="/territorio"
-            element={<div>Página del Territorio (próximamente)</div>}
-          />
           <Route
             path="/documentos"
             element={<div>Página de Documentos (próximamente)</div>}
@@ -33,10 +26,7 @@ function App() {
             path="/noticias"
             element={<div>Página de Noticias (próximamente)</div>}
           />
-          <Route
-            path="/contacto"
-            element={<div>Página de Contacto (próximamente)</div>}
-          />
+          <Route path="/contacto" element={<Contacto />} />
         </Routes>
       </div>
     </Router>

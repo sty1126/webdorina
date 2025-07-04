@@ -194,7 +194,7 @@ const HeaderMenu = () => {
                   className="nav-button"
                   onClick={() => handleMainNavigation(item)}
                 >
-                  <item.icon size={20} />
+                  {item.icon && <item.icon size={20} />}
                   <span>{item.label}</span>
                   {item.submenu && (
                     <ChevronDown
@@ -222,7 +222,7 @@ const HeaderMenu = () => {
                             index === 0 ? "first" : ""
                           } ${index === item.submenu.length - 1 ? "last" : ""}`}
                         >
-                          <subItem.icon size={16} />
+                          {subItem.icon && <subItem.icon size={16} />}
                           <span>{subItem.label}</span>
                         </button>
                       ))}
@@ -266,7 +266,7 @@ const HeaderMenu = () => {
               }}
             >
               <div className="mobile-nav-content">
-                <item.icon size={20} />
+                {item.icon && <item.icon size={20} />}
                 <span>{item.label}</span>
               </div>
               {item.submenu && (
@@ -292,7 +292,7 @@ const HeaderMenu = () => {
                     className="mobile-sub-item"
                     onClick={() => handleSubNavigation(subItem)}
                   >
-                    <subItem.icon size={16} />
+                    {subItem.icon && <subItem.icon size={16} />}
                     <span>{subItem.label}</span>
                   </button>
                 ))}
@@ -309,7 +309,10 @@ const HeaderMenu = () => {
 
       <style jsx>{`
         .header-container {
-          position: relative;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
           background: linear-gradient(
             135deg,
             #24354b 0%,
@@ -321,9 +324,9 @@ const HeaderMenu = () => {
           padding: 0;
           height: auto;
           min-height: ${isSmallMobile ? "60px" : isMobile ? "70px" : "80px"};
-          z-index: 1000;
+          z-index: 99999;
           width: 100%;
-          overflow: hidden;
+          overflow: visible;
         }
 
         .header-overlay {
@@ -446,7 +449,7 @@ const HeaderMenu = () => {
           box-shadow: 0 25px 50px -12px rgba(36, 53, 75, 0.25);
           border: 1px solid rgba(36, 53, 75, 0.1);
           overflow: hidden;
-          z-index: 50;
+          z-index: 99998;
           transition: all 0.3s ease;
           opacity: 0;
           visibility: hidden;
@@ -530,7 +533,7 @@ const HeaderMenu = () => {
           opacity: 0;
           visibility: hidden;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          z-index: 999;
+          z-index: 99997;
           max-height: calc(
             100vh - ${isSmallMobile ? "60px" : isMobile ? "70px" : "80px"}
           );
@@ -624,7 +627,7 @@ const HeaderMenu = () => {
           right: 0;
           bottom: 0;
           background: rgba(0, 0, 0, 0.5);
-          z-index: 998;
+          z-index: 99997;
         }
 
         .decorative-bar-1 {
@@ -796,7 +799,7 @@ const HeaderMenu = () => {
         @media screen and (-webkit-min-device-pixel-ratio: 2) {
           .decorative-bar-1,
           .decorative-bar-2 {
-            height: ${isSmallMobile ? "3px" : "5px"};
+            height: 5px;
           }
         }
       `}</style>

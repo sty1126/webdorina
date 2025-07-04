@@ -14,11 +14,11 @@ import {
   Scale,
   GraduationCap,
   Heart,
-  Users,
   BookOpenCheck,
+  Users,
   MessageSquare,
-  HandHeart,
   Send,
+  HandHeart,
 } from "lucide-react";
 
 const Inicio = () => {
@@ -98,11 +98,10 @@ const Inicio = () => {
       color: "#129ba5",
     },
   ];
-
   const politicalFlags = [
     {
       icon: Scale,
-      title: "Justicia Étnico-Racial",
+      title: "Justicia Étnico‑Racial",
       description:
         "Promoviendo la equidad y el reconocimiento de los derechos de las comunidades afrocolombianas.",
       color: "#5a9bb8", // azul medio
@@ -126,7 +125,7 @@ const Inicio = () => {
       title: "Cultura y Memoria",
       description:
         "Preservando la lengua, tradiciones y memoria del pueblo palenquero y afrodescendiente.",
-      color: "#24354b", // azul oscuro
+      color: "#f9b91d", // azul oscuro
     },
     {
       icon: Users,
@@ -143,6 +142,7 @@ const Inicio = () => {
       color: "#8e44ad", // morado fuerte
     },
   ];
+
   const videos = [
     {
       title: "Frente a Frente",
@@ -625,10 +625,16 @@ const Inicio = () => {
           min-height: 100vh;
           margin: 0;
           padding: 0;
+          padding-top: ${isSmallMobile ? "60px" : isMobile ? "70px" : "80px"};
           overflow-x: hidden;
           position: relative;
           font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
             sans-serif;
+          box-sizing: border-box;
+        }
+
+        * {
+          box-sizing: border-box;
         }
 
         .container {
@@ -636,15 +642,16 @@ const Inicio = () => {
           margin: 0 auto;
           padding: 0
             ${isTinyMobile
-              ? "12px"
+              ? "8px"
               : isSmallMobile
-              ? "16px"
+              ? "12px"
               : isMobile
-              ? "20px"
+              ? "16px"
               : isTablet
               ? "32px"
               : "48px"};
           width: 100%;
+          box-sizing: border-box;
         }
 
         /* Hero Section */
@@ -663,13 +670,14 @@ const Inicio = () => {
           width: 100%;
           padding: 0;
           margin: 0;
+          z-index: 1;
         }
 
         .hero-overlay {
           position: absolute;
           inset: 0;
           background: rgba(0, 0, 0, 0.1);
-          z-index: 1;
+          z-index: 0;
         }
 
         .hero-content {
@@ -681,7 +689,7 @@ const Inicio = () => {
           align-items: ${isMobile ? "flex-end" : "center"};
           justify-content: ${isMobile ? "center" : "flex-start"};
           position: relative;
-          z-index: 2;
+          z-index: 1;
           min-height: ${isMobile ? "100vh" : "60vh"};
         }
 
@@ -985,6 +993,8 @@ const Inicio = () => {
         .banderas-section {
           padding: ${isMobile ? "2rem 0" : "4rem 0"};
           background: #24354b;
+          width: 100%;
+          overflow-x: hidden;
         }
 
         .banderas-grid {
@@ -993,6 +1003,8 @@ const Inicio = () => {
             ? "1fr"
             : "repeat(auto-fit, minmax(280px, 1fr))"};
           gap: ${isMobile ? "1.5rem" : "2rem"};
+          width: 100%;
+          max-width: 100%;
         }
 
         .bandera-card {
@@ -1000,12 +1012,15 @@ const Inicio = () => {
           backdrop-filter: blur(10px);
           border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 12px;
-          padding: ${isMobile ? "1.5rem" : "2rem"};
+          padding: ${isMobile ? "1.5rem 1rem" : "2rem"};
           text-align: center;
           transition: all 0.3s ease;
           transform: ${isVisible ? "translateY(0)" : "translateY(30px)"};
           opacity: ${isVisible ? 1 : 0};
           transition-delay: var(--delay);
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
         }
 
         .bandera-card:hover {
@@ -1648,6 +1663,50 @@ const Inicio = () => {
           .hero-button:active,
           .social-icon:active {
             transform: scale(0.95);
+          }
+        }
+
+        /* Corrección específica para móviles */
+        @media screen and (max-width: 768px) {
+          .inicio-container {
+            overflow-x: hidden;
+            width: 100vw;
+          }
+
+          .container {
+            padding-left: 16px;
+            padding-right: 16px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+
+          .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 0;
+          }
+
+          .banderas-section,
+          .achievements-section,
+          .social-section,
+          .videos-section,
+          .participacion-section {
+            width: 100%;
+            overflow-x: hidden;
+          }
+        }
+
+        @media screen and (max-width: 480px) {
+          .container {
+            padding-left: 12px;
+            padding-right: 12px;
+          }
+        }
+
+        @media screen and (max-width: 360px) {
+          .container {
+            padding-left: 8px;
+            padding-right: 8px;
           }
         }
       `}</style>
