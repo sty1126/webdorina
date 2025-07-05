@@ -818,13 +818,13 @@ const HeaderMenu = () => {
         .line {
           width: 100%;
           height: 2px;
-          background-color: #24354b;
+          background-color: #ffffff;
           border-radius: 1px;
           transition: all 0.3s ease;
         }
 
         .hamburger-button:hover .line {
-          background-color: #1a2635;
+          background-color: #ffffff;
         }
       `}</style>
     </>

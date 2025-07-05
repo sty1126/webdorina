@@ -4,6 +4,9 @@ import Inicio from "./pages/Inicio";
 import Biografia from "./pages/Biografia";
 import Cultura from "./pages/Cultura";
 import Contacto from "./pages/Contacto";
+import Documentos from "./pages/Documentos";
+import Finanzas from "./pages/Finanzas";
+import Noticias from "./pages/Noticias";
 
 function App() {
   return (
@@ -14,18 +17,9 @@ function App() {
           <Route path="/" element={<Inicio />} />
           <Route path="/biografia" element={<Biografia />} />
           <Route path="/cultura" element={<Cultura />} />
-          <Route
-            path="/documentos"
-            element={<div>Página de Documentos (próximamente)</div>}
-          />
-          <Route
-            path="/finanzas"
-            element={<div>Página de Finanzas (próximamente)</div>}
-          />
-          <Route
-            path="/noticias"
-            element={<div>Página de Noticias (próximamente)</div>}
-          />
+          <Route path="/documentos" element={<Documentos />} />
+          <Route path="/finanzas" element={<Finanzas />} />
+          <Route path="/noticias" element={<Noticias />} />
           <Route path="/contacto" element={<Contacto />} />
         </Routes>
       </div>
