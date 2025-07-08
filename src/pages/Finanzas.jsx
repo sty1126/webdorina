@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FileText,
   Receipt,
@@ -12,20 +12,20 @@ import {
   Eye,
 } from "lucide-react";
 
-// Estilos corregidos para ocupar toda la pantalla
+// Estilos con paleta de colores vibrantes - Azul y Cian
 const styles = {
   container: {
     width: "100vw",
     minHeight: "100vh",
     margin: 0,
     padding: 0,
-    paddingTop: "80px", // Agregar esta línea
+    paddingTop: "80px",
     overflowX: "hidden",
     position: "relative",
     fontFamily:
       '"Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     boxSizing: "border-box",
-    background: "#f8fafc",
+    background: "linear-gradient(135deg, #e6f3ff 0%, #f0fcff 100%)",
   },
   backgroundOverlay: {
     position: "absolute",
@@ -34,9 +34,9 @@ const styles = {
     right: 0,
     bottom: 0,
     background: `
-      radial-gradient(circle at 25% 25%, rgba(18, 155, 165, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 75% 75%, rgba(249, 185, 29, 0.06) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(86, 150, 56, 0.04) 0%, transparent 40%)
+      radial-gradient(circle at 25% 25%, rgba(16, 58, 153, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 75% 75%, rgba(13, 193, 211, 0.12) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(16, 58, 153, 0.06) 0%, transparent 40%)
     `,
     pointerEvents: "none",
     zIndex: 0,
@@ -44,12 +44,13 @@ const styles = {
   containerInner: {
     maxWidth: "1200px",
     margin: "0 auto",
-    padding: "0 24px", // Cambiar de 48px a 24px
+    padding: "0 24px",
     width: "100%",
     boxSizing: "border-box",
   },
   header: {
-    background: "linear-gradient(135deg, #24354b 0%, #129ba5 100%)",
+    background:
+      "linear-gradient(135deg, rgba(16, 58, 153, 0.9) 0%, rgba(13, 193, 211, 0.9) 100%)",
     padding: "4rem 0",
     position: "relative",
     overflow: "hidden",
@@ -74,101 +75,106 @@ const styles = {
     marginBottom: "1.5rem",
     lineHeight: 1.2,
     margin: 0,
+    textShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
   },
   subtitle: {
     fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)",
-    color: "rgba(255, 255, 255, 0.9)",
+    color: "rgba(255, 255, 255, 0.95)",
     lineHeight: 1.6,
     margin: 0,
+    textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
   },
   infoSection: {
     background: "white",
-    borderBottom: "1px solid #e2e8f0",
+    borderBottom: "2px solid rgba(13, 193, 211, 0.85)",
     position: "relative",
     zIndex: 1,
     padding: "3rem 0",
+    boxShadow: "0 8px 32px rgba(13, 193, 211, 0.15)",
   },
   infoContainer: {
     maxWidth: "1200px",
     margin: "0 auto",
-    padding: "0 24px", // Cambiar de 48px a 24px
+    padding: "0 24px",
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-    gap: "2rem",
+    gap: "2.5rem",
     textAlign: "center",
   },
   infoItem: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "1rem",
+    gap: "1.25rem",
   },
   infoIcon: {
-    width: "3rem",
-    height: "3rem",
+    width: "4rem",
+    height: "4rem",
     borderRadius: "50%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)",
   },
   infoText: {
     textAlign: "left",
   },
   infoTitle: {
     fontWeight: "700",
-    color: "#111827",
-    fontSize: "1.1rem",
-    marginBottom: "0.25rem",
+    color: "rgba(16, 58, 153, 0.85)",
+    fontSize: "1.2rem",
+    marginBottom: "0.5rem",
   },
   infoDescription: {
-    fontSize: "0.875rem",
+    fontSize: "1rem",
     color: "#6b7280",
   },
   main: {
     padding: "4rem 0",
-    background: "#f8fafc",
+    background: "linear-gradient(135deg, #e6f3ff 0%, #f0fcff 100%)",
   },
   mainContainer: {
     maxWidth: "1200px",
     margin: "0 auto",
-    padding: "0 24px", // Cambiar de 48px a 24px
+    padding: "0 24px",
     width: "100%",
     boxSizing: "border-box",
   },
   sectionTitle: {
-    fontSize: "2rem",
+    fontSize: "2.5rem",
     fontWeight: "bold",
-    color: "#111827",
-    marginBottom: "0.5rem",
+    color: "rgba(16, 58, 153, 0.85)",
+    marginBottom: "0.75rem",
     textAlign: "center",
   },
   sectionDescription: {
     color: "#6b7280",
-    marginBottom: "2rem",
-    fontSize: "1rem",
+    marginBottom: "3rem",
+    fontSize: "1.1rem",
     textAlign: "center",
   },
   accordionContainer: {
     display: "flex",
     flexDirection: "column",
-    gap: "1rem",
+    gap: "1.5rem",
   },
   accordionCard: {
-    borderRadius: "1rem",
-    border: "1px solid #e2e8f0",
+    borderRadius: "20px",
+    border: "2px solid rgba(13, 193, 211, 0.6)",
     backgroundColor: "white",
     overflow: "hidden",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+    boxShadow: "0 8px 24px rgba(13, 193, 211, 0.12)",
     transition: "all 0.3s ease",
   },
   accordionCardHover: {
-    boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
-    borderColor: "#129ba5",
+    boxShadow: "0 20px 40px rgba(16, 58, 153, 0.2)",
+    borderColor: "rgba(16, 58, 153, 0.85)",
+    transform: "translateY(-4px)",
   },
   accordionButton: {
     width: "100%",
-    padding: "2rem",
+    padding: "2.5rem",
     textAlign: "left",
     backgroundColor: "transparent",
     border: "none",
@@ -177,7 +183,8 @@ const styles = {
     transition: "all 0.3s ease",
   },
   accordionButtonHover: {
-    backgroundColor: "rgba(18, 155, 165, 0.05)",
+    background:
+      "linear-gradient(135deg, rgba(13, 193, 211, 0.05) 0%, rgba(16, 58, 153, 0.05) 100%)",
   },
   accordionHeader: {
     display: "flex",
@@ -187,89 +194,96 @@ const styles = {
   accordionLeft: {
     display: "flex",
     alignItems: "center",
-    gap: "1.5rem",
+    gap: "2rem",
   },
   yearBadge: {
-    width: "3.5rem",
-    height: "3.5rem",
-    background: "linear-gradient(135deg, #129ba5 0%, #0891b2 100%)",
+    width: "4rem",
+    height: "4rem",
+    background:
+      "linear-gradient(135deg, rgba(16, 58, 153, 0.85) 0%, rgba(13, 193, 211, 0.85) 100%)",
     borderRadius: "50%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     color: "white",
     fontWeight: "bold",
-    fontSize: "1.1rem",
-    boxShadow: "0 4px 6px rgba(18, 155, 165, 0.25)",
+    fontSize: "1.2rem",
+    boxShadow: "0 8px 20px rgba(13, 193, 211, 0.4)",
   },
   accordionInfo: {
     flex: 1,
   },
   accordionYear: {
-    fontSize: "1.5rem",
+    fontSize: "1.8rem",
     fontWeight: "700",
-    color: "#111827",
-    marginBottom: "0.25rem",
+    color: "rgba(16, 58, 153, 0.85)",
+    marginBottom: "0.5rem",
   },
   accordionMeta: {
-    fontSize: "0.875rem",
+    fontSize: "1rem",
     color: "#6b7280",
   },
   accordionRight: {
     display: "flex",
     alignItems: "center",
-    gap: "1rem",
+    gap: "1.25rem",
   },
   badge: {
     display: "inline-flex",
     alignItems: "center",
-    borderRadius: "9999px",
-    border: "1px solid",
-    padding: "0.25rem 0.75rem",
-    fontSize: "0.75rem",
-    fontWeight: "600",
-    backgroundColor: "#dbeafe",
-    color: "#1e40af",
-    borderColor: "#bfdbfe",
+    borderRadius: "50px",
+    border: "2px solid",
+    padding: "0.5rem 1rem",
+    fontSize: "0.8rem",
+    fontWeight: "700",
+    backgroundColor: "rgba(13, 193, 211, 0.85)",
+    color: "white",
+    borderColor: "rgba(13, 193, 211, 0.85)",
+    boxShadow: "0 4px 12px rgba(13, 193, 211, 0.3)",
   },
   accordionContent: {
-    borderTop: "1px solid #e2e8f0",
-    backgroundColor: "#f9fafb",
+    borderTop: "2px solid rgba(13, 193, 211, 0.2)",
+    background:
+      "linear-gradient(135deg, rgba(13, 193, 211, 0.02) 0%, rgba(16, 58, 153, 0.02) 100%)",
   },
   documentsGrid: {
-    padding: "2rem",
+    padding: "2.5rem",
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-    gap: "1.5rem",
+    gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
+    maxWidth: "900px",
+    margin: "0 auto",
+    gap: "2rem",
   },
   documentCard: {
     backgroundColor: "white",
-    borderRadius: "0.75rem",
-    border: "1px solid #e2e8f0",
-    padding: "1.5rem",
+    borderRadius: "16px",
+    border: "2px solid rgba(13, 193, 211, 0.6)",
+    padding: "2.5rem",
     transition: "all 0.3s ease",
     cursor: "pointer",
+    boxShadow: "0 4px 12px rgba(13, 193, 211, 0.08)",
   },
   documentCardHover: {
-    boxShadow: "0 8px 25px rgba(0, 0, 0, 0.1)",
-    borderColor: "#129ba5",
-    transform: "translateY(-2px)",
+    boxShadow: "0 15px 35px rgba(16, 58, 153, 0.2)",
+    borderColor: "rgba(16, 58, 153, 0.85)",
+    transform: "translateY(-4px)",
   },
   documentHeader: {
     display: "flex",
     alignItems: "flex-start",
-    gap: "1rem",
-    marginBottom: "1rem",
+    gap: "1.25rem",
+    marginBottom: "1.5rem",
   },
   documentIcon: {
-    width: "3rem",
-    height: "3rem",
-    backgroundColor: "#f3f4f6",
-    borderRadius: "0.5rem",
+    width: "3.5rem",
+    height: "3.5rem",
+    background: "linear-gradient(135deg, #0dc1d3 0%, #103a99 100%)",
+    borderRadius: "12px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
+    boxShadow: "0 6px 15px rgba(13, 193, 211, 0.3)",
   },
   documentInfo: {
     flex: 1,
@@ -277,19 +291,19 @@ const styles = {
   },
   documentTitle: {
     fontWeight: "700",
-    color: "#111827",
-    fontSize: "0.875rem",
+    color: "rgba(16, 58, 153, 0.85)",
+    fontSize: "1rem",
     lineHeight: "1.4",
-    marginBottom: "0.5rem",
+    marginBottom: "0.75rem",
     display: "-webkit-box",
     WebkitLineClamp: 2,
     WebkitBoxOrient: "vertical",
     overflow: "hidden",
   },
   documentDescription: {
-    fontSize: "0.75rem",
+    fontSize: "0.85rem",
     color: "#6b7280",
-    marginBottom: "0.75rem",
+    marginBottom: "1rem",
     display: "-webkit-box",
     WebkitLineClamp: 2,
     WebkitBoxOrient: "vertical",
@@ -299,81 +313,85 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    fontSize: "0.75rem",
+    fontSize: "0.8rem",
     color: "#6b7280",
-    marginBottom: "1rem",
+    marginBottom: "2rem",
   },
   documentMetaLeft: {
     display: "flex",
     alignItems: "center",
-    gap: "1rem",
+    gap: "2rem",
   },
   documentMetaItem: {
     display: "flex",
     alignItems: "center",
-    gap: "0.25rem",
+    gap: "0.375rem",
   },
   button: {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: "0.5rem",
-    fontSize: "0.75rem",
-    fontWeight: "600",
+    borderRadius: "12px",
+    fontSize: "0.85rem",
+    fontWeight: "700",
     transition: "all 0.3s ease",
     cursor: "pointer",
     outline: "none",
     width: "100%",
-    padding: "0.5rem 1rem",
-    backgroundColor: "#129ba5",
+    padding: "0.875rem 1.25rem",
+    background:
+      "linear-gradient(135deg, rgba(16, 58, 153, 0.9) 0%, rgba(13, 193, 211, 0.9) 100%)",
     color: "white",
-    border: "2px solid #129ba5",
+    border: "2px solid rgba(16, 58, 153, 0.6)",
+    boxShadow: "0 6px 20px rgba(16, 58, 153, 0.25)",
   },
   buttonHover: {
-    backgroundColor: "#0891b2",
-    borderColor: "#0891b2",
-    transform: "translateY(-1px)",
-    boxShadow: "0 4px 6px rgba(18, 155, 165, 0.25)",
+    transform: "translateY(-2px)",
+    boxShadow: "0 12px 30px rgba(13, 193, 211, 0.4)",
+    borderColor: "rgba(13, 193, 211, 0.85)",
   },
   legalSection: {
-    marginTop: "3rem",
-    backgroundColor: "rgba(239, 246, 255, 0.8)",
-    border: "1px solid rgba(147, 197, 253, 0.5)",
-    borderRadius: "1rem",
-    padding: "2rem",
+    marginTop: "4rem",
+    background:
+      "linear-gradient(135deg, rgba(16, 58, 153, 0.05) 0%, rgba(13, 193, 211, 0.05) 100%)",
+    border: "2px solid rgba(13, 193, 211, 0.3)",
+    borderRadius: "20px",
+    padding: "3rem",
+    boxShadow: "0 8px 24px rgba(13, 193, 211, 0.1)",
   },
   legalHeader: {
     display: "flex",
     alignItems: "flex-start",
-    gap: "1rem",
+    gap: "1.5rem",
   },
   legalIcon: {
-    width: "2.5rem",
-    height: "2.5rem",
-    backgroundColor: "rgba(147, 197, 253, 0.2)",
+    width: "3rem",
+    height: "3rem",
+    background: "linear-gradient(135deg, #0dc1d3 0%, #103a99 100%)",
     borderRadius: "50%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
+    boxShadow: "0 6px 15px rgba(13, 193, 211, 0.3)",
   },
   legalContent: {
     flex: 1,
   },
   legalTitle: {
     fontWeight: "700",
-    color: "#1e40af",
-    marginBottom: "0.5rem",
-    fontSize: "1.1rem",
+    color: "rgba(16, 58, 153, 0.85)",
+    marginBottom: "0.75rem",
+    fontSize: "1.3rem",
   },
   legalText: {
-    fontSize: "0.875rem",
-    color: "#1e40af",
+    fontSize: "1rem",
+    color: "rgba(16, 58, 153, 0.85)",
     lineHeight: "1.6",
   },
 };
 
-// Componentes UI
+// Componentes UI actualizados
 const Button = ({ children, onClick, style = {} }) => {
   const [isHovered, setIsHovered] = useState(false);
   return (
@@ -392,7 +410,7 @@ const Button = ({ children, onClick, style = {} }) => {
   );
 };
 
-// Datos de ejemplo
+// Datos de ejemplo (sin cambios)
 const informesPorAno = {
   2024: [
     {
@@ -475,6 +493,11 @@ const informesPorAno = {
 export default function InformesFinancieros() {
   const [anosAbiertos, setAnosAbiertos] = useState(new Set(["2024"]));
 
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
   const toggleAno = (ano) => {
     const nuevosAnosAbiertos = new Set(anosAbiertos);
     if (nuevosAnosAbiertos.has(ano)) {
@@ -497,16 +520,16 @@ export default function InformesFinancieros() {
     switch (tipo) {
       case "Declaración Tributaria":
         return {
-          backgroundColor: "#f9b91d",
-          color: "#24354b",
-          borderColor: "#f9b91d",
+          backgroundColor: "rgba(16, 58, 153, 0.85)",
+          color: "white",
+          borderColor: "rgba(16, 58, 153, 0.85)",
         };
       case "Informe Financiero":
       case "Informe Anual":
         return {
-          backgroundColor: "#129ba5",
+          backgroundColor: "rgba(13, 193, 211, 0.85)",
           color: "white",
-          borderColor: "#129ba5",
+          borderColor: "rgba(13, 193, 211, 0.85)",
         };
       case "Declaración Patrimonial":
         return {
@@ -516,15 +539,14 @@ export default function InformesFinancieros() {
         };
       default:
         return {
-          backgroundColor: "#f3f4f6",
-          color: "#374151",
-          borderColor: "#d1d5db",
+          backgroundColor: "rgba(16, 58, 153, 0.85)",
+          color: "white",
+          borderColor: "rgba(16, 58, 153, 0.85)",
         };
     }
   };
 
   const anosOrdenados = Object.keys(informesPorAno).sort((a, b) => b - a);
-  const isDesktop = typeof window !== "undefined" && window.innerWidth >= 768;
 
   return (
     <div style={styles.container}>
@@ -552,11 +574,11 @@ export default function InformesFinancieros() {
             <div
               style={{
                 ...styles.infoIcon,
-                backgroundColor: "rgba(249, 185, 29, 0.1)",
+                background: "linear-gradient(135deg, #0dc1d3 0%, #103a99 100%)",
               }}
             >
               <FileText
-                style={{ width: "1.5rem", height: "1.5rem", color: "#f59e0b" }}
+                style={{ width: "1.75rem", height: "1.75rem", color: "white" }}
               />
             </div>
             <div style={styles.infoText}>
@@ -570,11 +592,11 @@ export default function InformesFinancieros() {
             <div
               style={{
                 ...styles.infoIcon,
-                backgroundColor: "rgba(18, 155, 165, 0.1)",
+                background: "linear-gradient(135deg, #103a99 0%, #0dc1d3 100%)",
               }}
             >
               <Download
-                style={{ width: "1.5rem", height: "1.5rem", color: "#129ba5" }}
+                style={{ width: "1.75rem", height: "1.75rem", color: "white" }}
               />
             </div>
             <div style={styles.infoText}>
@@ -586,11 +608,11 @@ export default function InformesFinancieros() {
             <div
               style={{
                 ...styles.infoIcon,
-                backgroundColor: "rgba(86, 150, 56, 0.1)",
+                background: "linear-gradient(135deg, #0dc1d3 0%, #103a99 100%)",
               }}
             >
               <Calendar
-                style={{ width: "1.5rem", height: "1.5rem", color: "#569638" }}
+                style={{ width: "1.75rem", height: "1.75rem", color: "white" }}
               />
             </div>
             <div style={styles.infoText}>
@@ -603,7 +625,7 @@ export default function InformesFinancieros() {
 
       <main style={styles.main}>
         <div style={styles.mainContainer}>
-          <div style={{ marginBottom: "2rem" }}>
+          <div style={{ marginBottom: "3rem" }}>
             <h2 style={styles.sectionTitle}>Documentos por Año</h2>
             <p style={styles.sectionDescription}>
               Selecciona un año para ver los documentos disponibles
@@ -638,7 +660,11 @@ export default function InformesFinancieros() {
             <div style={styles.legalHeader}>
               <div style={styles.legalIcon}>
                 <FileText
-                  style={{ width: "1rem", height: "1rem", color: "#3b82f6" }}
+                  style={{
+                    width: "1.25rem",
+                    height: "1.25rem",
+                    color: "white",
+                  }}
                 />
               </div>
               <div style={styles.legalContent}>
@@ -683,7 +709,7 @@ export default function InformesFinancieros() {
   );
 }
 
-// Componente AccordionCard
+// Componente AccordionCard actualizado
 const AccordionCard = ({
   ano,
   documentos,
@@ -728,17 +754,17 @@ const AccordionCard = ({
             {estaAbierto ? (
               <ChevronDown
                 style={{
-                  width: "1.25rem",
-                  height: "1.25rem",
-                  color: "#6b7280",
+                  width: "1.5rem",
+                  height: "1.5rem",
+                  color: "#0dc1d3",
                 }}
               />
             ) : (
               <ChevronRight
                 style={{
-                  width: "1.25rem",
-                  height: "1.25rem",
-                  color: "#6b7280",
+                  width: "1.5rem",
+                  height: "1.5rem",
+                  color: "#0dc1d3",
                 }}
               />
             )}
@@ -764,7 +790,7 @@ const AccordionCard = ({
   );
 };
 
-// Componente DocumentCard
+// Componente DocumentCard actualizado
 const DocumentCard = ({ documento, formatearFecha, getTipoColor }) => {
   const [isHovered, setIsHovered] = useState(false);
   const IconoDocumento = documento.icono;
@@ -781,7 +807,7 @@ const DocumentCard = ({ documento, formatearFecha, getTipoColor }) => {
       <div style={styles.documentHeader}>
         <div style={styles.documentIcon}>
           <IconoDocumento
-            style={{ width: "1.5rem", height: "1.5rem", color: "#6b7280" }}
+            style={{ width: "1.75rem", height: "1.75rem", color: "white" }}
           />
         </div>
         <div style={styles.documentInfo}>
@@ -790,8 +816,8 @@ const DocumentCard = ({ documento, formatearFecha, getTipoColor }) => {
               display: "flex",
               alignItems: "flex-start",
               justifyContent: "space-between",
-              gap: "0.5rem",
-              marginBottom: "0.5rem",
+              gap: "0.75rem",
+              marginBottom: "0.75rem",
             }}
           >
             <h4 style={styles.documentTitle}>{documento.titulo}</h4>
@@ -800,8 +826,8 @@ const DocumentCard = ({ documento, formatearFecha, getTipoColor }) => {
                 ...styles.badge,
                 ...getTipoColor(documento.tipo),
                 flexShrink: 0,
-                fontSize: "0.625rem",
-                padding: "0.125rem 0.5rem",
+                fontSize: "0.7rem",
+                padding: "0.25rem 0.75rem",
               }}
             >
               {documento.tipo}
@@ -811,30 +837,46 @@ const DocumentCard = ({ documento, formatearFecha, getTipoColor }) => {
           <div style={styles.documentMeta}>
             <div style={styles.documentMetaLeft}>
               <div style={styles.documentMetaItem}>
-                <Calendar style={{ width: "0.75rem", height: "0.75rem" }} />
+                <Calendar
+                  style={{
+                    width: "0.875rem",
+                    height: "0.875rem",
+                    color: "#0dc1d3",
+                  }}
+                />
                 {formatearFecha(documento.fecha)}
               </div>
               <div style={styles.documentMetaItem}>
-                <Eye style={{ width: "0.75rem", height: "0.75rem" }} />
+                <Eye
+                  style={{
+                    width: "0.875rem",
+                    height: "0.875rem",
+                    color: "#0dc1d3",
+                  }}
+                />
                 {documento.descargas.toLocaleString()}
               </div>
             </div>
-            <span style={{ fontWeight: "600" }}>{documento.tamano}</span>
+            <span
+              style={{ fontWeight: "700", color: "rgba(16, 58, 153, 0.85)" }}
+            >
+              {documento.tamano}
+            </span>
           </div>
           <Button onClick={() => window.open(documento.url, "_blank")}>
             <Download
               style={{
-                width: "0.75rem",
-                height: "0.75rem",
-                marginRight: "0.5rem",
+                width: "0.875rem",
+                height: "0.875rem",
+                marginRight: "0.75rem",
               }}
             />
             Descargar PDF
             <ExternalLink
               style={{
-                width: "0.75rem",
-                height: "0.75rem",
-                marginLeft: "0.5rem",
+                width: "0.875rem",
+                height: "0.875rem",
+                marginLeft: "0.75rem",
               }}
             />
           </Button>

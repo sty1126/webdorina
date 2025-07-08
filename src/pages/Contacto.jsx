@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Mail,
@@ -25,8 +25,13 @@ const Contacto = () => {
     mensaje: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+  const [submitStatus, setSubmitStatus] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, []);
 
   const temaOptions = [
     { value: "", label: "Selecciona un tema" },
@@ -48,7 +53,6 @@ const Contacto = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simular envío del formulario
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       setSubmitStatus("success");
@@ -297,7 +301,7 @@ const Contacto = () => {
                     </div>
                     <div className="method-content">
                       <h4 className="method-title">Ubicación</h4>
-                      <p className="method-text">San Basilio de Palenque</p>
+                      <p className="method-text">Bogotá, Colombia</p>
                       <p className="method-text">Bolívar, Colombia</p>
                     </div>
                   </div>
@@ -358,6 +362,7 @@ const Contacto = () => {
           font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
             sans-serif;
           box-sizing: border-box;
+          background: linear-gradient(135deg, #e6f3ff 0%, #f0f9ff 100%);
         }
 
         * {
@@ -374,7 +379,7 @@ const Contacto = () => {
 
         /* Hero Section */
         .hero-section {
-          background: linear-gradient(135deg, #24354b 0%, #129ba5 100%);
+          background: linear-gradient(135deg, #103a99 0%, #0dc1d3 100%);
           padding: 4rem 0;
           position: relative;
           overflow: hidden;
@@ -401,19 +406,21 @@ const Contacto = () => {
           color: white;
           margin-bottom: 1.5rem;
           line-height: 1.2;
+          text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .hero-subtitle {
           font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-          color: rgba(255, 255, 255, 0.9);
+          color: rgba(255, 255, 255, 0.95);
           line-height: 1.6;
           margin: 0;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         /* Main Section */
         .main-section {
           padding: 4rem 0;
-          background: #f8fafc;
+          background: linear-gradient(135deg, #e6f3ff 0%, #f0f9ff 100%);
         }
 
         .content-grid {
@@ -426,32 +433,49 @@ const Contacto = () => {
         /* Form Section */
         .form-section {
           background: white;
-          border-radius: 16px;
-          padding: 2.5rem;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-          border: 1px solid #e2e8f0;
+          border-radius: 24px;
+          padding: 3rem;
+          box-shadow: 0 20px 40px rgba(16, 58, 153, 0.15);
+          border: 2px solid rgba(13, 193, 211, 0.85);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .form-section::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 6px;
+          background: linear-gradient(
+            135deg,
+            rgba(16, 58, 153, 0.9) 0%,
+            rgba(13, 193, 211, 0.9) 100%
+          );
         }
 
         .form-header {
           text-align: center;
-          margin-bottom: 2rem;
+          margin-bottom: 2.5rem;
         }
 
         .form-icon {
-          color: #f9b91d;
+          color: #0dc1d3;
           margin-bottom: 1rem;
+          filter: drop-shadow(0 4px 8px rgba(13, 193, 211, 0.3));
         }
 
         .form-title {
-          font-size: 1.8rem;
-          font-weight: 600;
-          color: #24354b;
-          margin-bottom: 0.5rem;
+          font-size: 2rem;
+          font-weight: 700;
+          color: rgba(16, 58, 153, 0.85);
+          margin-bottom: 0.75rem;
         }
 
         .form-description {
           color: #64748b;
-          font-size: 1rem;
+          font-size: 1.1rem;
           line-height: 1.6;
           margin: 0;
         }
@@ -461,22 +485,31 @@ const Contacto = () => {
           display: flex;
           align-items: center;
           gap: 12px;
-          padding: 1rem 1.25rem;
-          border-radius: 8px;
-          margin-bottom: 1.5rem;
-          font-weight: 500;
+          padding: 1.25rem 1.5rem;
+          border-radius: 16px;
+          margin-bottom: 2rem;
+          font-weight: 600;
+          font-size: 0.95rem;
         }
 
         .alert-success {
-          background: rgba(86, 150, 56, 0.1);
+          background: linear-gradient(
+            135deg,
+            rgba(86, 150, 56, 0.15) 0%,
+            rgba(86, 150, 56, 0.05) 100%
+          );
           color: #569638;
-          border: 1px solid rgba(86, 150, 56, 0.2);
+          border: 2px solid #569638;
         }
 
         .alert-error {
-          background: rgba(239, 68, 68, 0.1);
-          color: #dc2626;
-          border: 1px solid rgba(239, 68, 68, 0.2);
+          background: linear-gradient(
+            135deg,
+            rgba(255, 31, 41, 0.15) 0%,
+            rgba(255, 31, 41, 0.05) 100%
+          );
+          color: #ff1f29;
+          border: 2px solid #ff1f29;
         }
 
         /* Form Styles */
@@ -487,47 +520,49 @@ const Contacto = () => {
         .form-row {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
-          margin-bottom: 1.5rem;
+          gap: 2rem;
+          margin-bottom: 2rem;
         }
 
         .form-group {
           display: flex;
           flex-direction: column;
-          gap: 0.5rem;
+          gap: 0.75rem;
         }
 
         .form-label {
           display: flex;
           align-items: center;
-          gap: 8px;
-          font-weight: 500;
-          color: #24354b;
-          font-size: 0.9rem;
+          gap: 10px;
+          font-weight: 600;
+          color: rgba(16, 58, 153, 0.85);
+          font-size: 1rem;
         }
 
         .form-input,
         .form-select,
         .form-textarea {
-          padding: 12px 16px;
-          border: 2px solid #e2e8f0;
-          border-radius: 8px;
+          padding: 16px 20px;
+          border: 2px solid rgba(13, 193, 211, 0.6);
+          border-radius: 12px;
           font-size: 1rem;
           transition: all 0.3s ease;
           font-family: inherit;
+          background: white;
         }
 
         .form-input:focus,
         .form-select:focus,
         .form-textarea:focus {
           outline: none;
-          border-color: #129ba5;
-          box-shadow: 0 0 0 3px rgba(18, 155, 165, 0.1);
+          border-color: rgba(16, 58, 153, 0.8);
+          box-shadow: 0 0 0 3px rgba(16, 58, 153, 0.15);
+          transform: translateY(-2px);
         }
 
         .form-textarea {
           resize: vertical;
-          min-height: 120px;
+          min-height: 140px;
         }
 
         .submit-button {
@@ -535,23 +570,30 @@ const Contacto = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 8px;
-          background: linear-gradient(135deg, #f9b91d, #f9b91d);
+          gap: 12px;
+          background: linear-gradient(
+            135deg,
+            rgba(16, 58, 153, 0.9) 0%,
+            rgba(13, 193, 211, 0.9) 100%
+          );
           color: white;
-          padding: 16px 32px;
+          padding: 20px 40px;
           border: none;
           border-radius: 50px;
-          font-size: 1.1rem;
-          font-weight: 600;
+          font-size: 1.2rem;
+          font-weight: 700;
           cursor: pointer;
           transition: all 0.3s ease;
-          box-shadow: 0 8px 25px rgba(249, 185, 29, 0.4);
-          margin-bottom: 1rem;
+          box-shadow: 0 12px 30px rgba(16, 58, 153, 0.3);
+          margin-top: 1rem;
+          margin-bottom: 1.5rem;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
         .submit-button:hover:not(:disabled) {
-          transform: translateY(-2px);
-          box-shadow: 0 12px 30px rgba(249, 185, 29, 0.5);
+          transform: translateY(-4px) scale(1.02);
+          box-shadow: 0 20px 40px rgba(13, 193, 211, 0.5);
         }
 
         .submit-button:disabled {
@@ -563,8 +605,8 @@ const Contacto = () => {
         .spinner {
           width: 20px;
           height: 20px;
-          border: 2px solid rgba(255, 255, 255, 0.3);
-          border-top: 2px solid white;
+          border: 3px solid rgba(255, 255, 255, 0.3);
+          border-top: 3px solid white;
           border-radius: 50%;
           animation: spin 1s linear infinite;
         }
@@ -579,7 +621,7 @@ const Contacto = () => {
         }
 
         .form-disclaimer {
-          font-size: 0.85rem;
+          font-size: 0.9rem;
           color: #64748b;
           text-align: center;
           line-height: 1.5;
@@ -590,54 +632,56 @@ const Contacto = () => {
         .info-section {
           display: flex;
           flex-direction: column;
-          gap: 2rem;
+          gap: 2.5rem;
         }
 
         .info-card,
         .participation-card {
           background: white;
-          border-radius: 16px;
-          padding: 2rem;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-          border: 1px solid #e2e8f0;
+          border-radius: 20px;
+          padding: 2.5rem;
+          box-shadow: 0 15px 35px rgba(16, 58, 153, 0.12);
+          border: 2px solid rgba(13, 193, 211, 0.85);
         }
 
         .info-title,
         .participation-title {
-          font-size: 1.4rem;
-          font-weight: 600;
-          color: #24354b;
-          margin-bottom: 1rem;
+          font-size: 1.6rem;
+          font-weight: 700;
+          color: rgba(16, 58, 153, 0.85);
+          margin-bottom: 1.25rem;
         }
 
         .info-description {
           color: #64748b;
           line-height: 1.6;
-          margin-bottom: 2rem;
+          margin-bottom: 2.5rem;
+          font-size: 1.05rem;
         }
 
         .contact-methods {
           display: flex;
           flex-direction: column;
-          gap: 1.5rem;
+          gap: 2rem;
         }
 
         .contact-method {
           display: flex;
-          gap: 1rem;
+          gap: 1.25rem;
           align-items: flex-start;
         }
 
         .method-icon {
-          width: 48px;
-          height: 48px;
-          background: rgba(18, 155, 165, 0.1);
-          border-radius: 12px;
+          width: 56px;
+          height: 56px;
+          background: linear-gradient(135deg, #0dc1d3 0%, #103a99 100%);
+          border-radius: 16px;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #129ba5;
+          color: white;
           flex-shrink: 0;
+          box-shadow: 0 8px 20px rgba(13, 193, 211, 0.3);
         }
 
         .method-content {
@@ -645,47 +689,49 @@ const Contacto = () => {
         }
 
         .method-title {
-          font-size: 1.1rem;
-          font-weight: 600;
-          color: #24354b;
-          margin-bottom: 0.5rem;
+          font-size: 1.2rem;
+          font-weight: 700;
+          color: rgba(16, 58, 153, 0.85);
+          margin-bottom: 0.75rem;
         }
 
         .method-text {
           color: #64748b;
           margin: 0;
           line-height: 1.5;
+          font-size: 1rem;
         }
 
         .method-text + .method-text {
-          margin-top: 0.25rem;
+          margin-top: 0.5rem;
         }
 
         /* Participation Steps */
         .participation-steps {
           display: flex;
           flex-direction: column;
-          gap: 1.5rem;
+          gap: 2rem;
         }
 
         .step {
           display: flex;
-          gap: 1rem;
+          gap: 1.25rem;
           align-items: flex-start;
         }
 
         .step-number {
-          width: 32px;
-          height: 32px;
-          background: #f9b91d;
+          width: 40px;
+          height: 40px;
+          background: linear-gradient(135deg, #0dc1d3 0%, #103a99 100%);
           color: white;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-weight: 600;
-          font-size: 0.9rem;
+          font-weight: 700;
+          font-size: 1.1rem;
           flex-shrink: 0;
+          box-shadow: 0 6px 15px rgba(13, 193, 211, 0.4);
         }
 
         .step-content {
@@ -693,20 +739,20 @@ const Contacto = () => {
         }
 
         .step-title {
-          font-size: 1rem;
-          font-weight: 600;
-          color: #24354b;
-          margin-bottom: 0.25rem;
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: rgba(16, 58, 153, 0.85);
+          margin-bottom: 0.5rem;
         }
 
         .step-text {
           color: #64748b;
-          font-size: 0.9rem;
+          font-size: 1rem;
           line-height: 1.5;
           margin: 0;
         }
 
-        /* Mobile Responsive - Mejorado */
+        /* Mobile Responsive */
         @media screen and (max-width: 768px) {
           .contacto-container {
             padding-top: 70px;
@@ -717,63 +763,57 @@ const Contacto = () => {
           }
 
           .hero-section {
-            padding: 2rem 0;
-          }
-
-          .hero-title {
-            font-size: clamp(1.8rem, 8vw, 2.5rem);
-          }
-
-          .hero-subtitle {
-            font-size: clamp(1rem, 4vw, 1.2rem);
+            padding: 2.5rem 0;
           }
 
           .main-section {
-            padding: 2rem 0;
+            padding: 2.5rem 0;
           }
 
           .content-grid {
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 2.5rem;
           }
 
           .form-section {
-            padding: 1.5rem;
-            border-radius: 12px;
+            padding: 2rem;
+            border-radius: 16px;
           }
 
           .form-row {
             grid-template-columns: 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
           }
 
           .form-input,
           .form-select,
           .form-textarea {
-            padding: 14px 16px;
-            font-size: 16px; /* Evita zoom en iOS */
+            padding: 18px 16px;
+            font-size: 16px;
           }
 
           .submit-button {
-            padding: 18px 32px;
-            font-size: 1rem;
-            min-height: 48px; /* Mejor accesibilidad táctil */
+            padding: 22px 32px;
+            font-size: 1.1rem;
+            min-height: 56px;
           }
 
           .info-card,
           .participation-card {
-            padding: 1.5rem;
-          }
-
-          .contact-method {
-            flex-direction: row;
-            align-items: flex-start;
+            padding: 2rem;
+            border-radius: 16px;
           }
 
           .method-icon {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
+          }
+
+          .step-number {
+            width: 36px;
+            height: 36px;
+            font-size: 1rem;
           }
         }
 
@@ -787,89 +827,30 @@ const Contacto = () => {
           }
 
           .hero-section {
-            padding: 1.5rem 0;
-          }
-
-          .hero-title {
-            font-size: clamp(1.5rem, 7vw, 2rem);
-            margin-bottom: 1rem;
-          }
-
-          .hero-subtitle {
-            font-size: clamp(0.9rem, 4vw, 1.1rem);
+            padding: 2rem 0;
           }
 
           .form-section {
-            padding: 1rem;
-            margin: 0;
+            padding: 1.5rem;
           }
 
           .form-header {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
           }
 
           .form-title {
-            font-size: 1.4rem;
-          }
-
-          .form-icon {
-            width: 28px;
-            height: 28px;
-          }
-
-          .form-group {
-            margin-bottom: 1rem;
-          }
-
-          .form-input,
-          .form-select,
-          .form-textarea {
-            padding: 16px;
-            font-size: 16px;
-            border-radius: 6px;
-          }
-
-          .form-textarea {
-            min-height: 100px;
+            font-size: 1.6rem;
           }
 
           .submit-button {
             padding: 20px 24px;
             font-size: 1rem;
             min-height: 52px;
-            border-radius: 26px;
           }
 
           .info-card,
           .participation-card {
-            padding: 1rem;
-          }
-
-          .contact-method {
-            gap: 0.75rem;
-          }
-
-          .method-icon {
-            width: 40px;
-            height: 40px;
-          }
-
-          .method-title {
-            font-size: 1rem;
-          }
-
-          .method-text {
-            font-size: 0.9rem;
-          }
-
-          .step {
-            gap: 0.75rem;
-          }
-
-          .step-number {
-            width: 28px;
-            height: 28px;
-            font-size: 0.8rem;
+            padding: 1.5rem;
           }
         }
 
@@ -879,73 +860,24 @@ const Contacto = () => {
           }
 
           .form-section {
-            padding: 0.75rem;
-          }
-
-          .hero-title {
-            font-size: clamp(1.3rem, 6vw, 1.8rem);
-          }
-
-          .form-input,
-          .form-select,
-          .form-textarea {
-            padding: 14px 12px;
-          }
-
-          .submit-button {
-            padding: 18px 20px;
-            font-size: 0.95rem;
-          }
-
-          .info-card,
-          .participation-card {
-            padding: 0.75rem;
+            padding: 1rem;
           }
         }
 
-        /* Mejoras específicas para dispositivos táctiles */
+        /* Touch device optimizations */
         @media (hover: none) and (pointer: coarse) {
           .form-input,
           .form-select,
           .form-textarea {
-            min-height: 44px; /* Tamaño mínimo recomendado para táctil */
+            min-height: 48px;
           }
 
           .submit-button:hover {
-            transform: none; /* Desactivar hover en dispositivos táctiles */
+            transform: none;
           }
 
           .submit-button:active {
             transform: scale(0.98);
-          }
-        }
-
-        /* Orientación landscape en móviles */
-        @media screen and (max-width: 768px) and (orientation: landscape) {
-          .hero-section {
-            padding: 1rem 0;
-          }
-
-          .main-section {
-            padding: 1.5rem 0;
-          }
-        }
-
-        /* Mejoras para accesibilidad en móviles */
-        @media screen and (max-width: 768px) {
-          .form-label {
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-          }
-
-          .alert {
-            padding: 0.75rem 1rem;
-            font-size: 0.9rem;
-          }
-
-          .form-disclaimer {
-            font-size: 0.8rem;
-            padding: 0 0.5rem;
           }
         }
       `}</style>

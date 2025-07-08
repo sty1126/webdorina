@@ -1,22 +1,22 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Search, Calendar, Eye, ArrowRight, ChevronDown } from "lucide-react";
 
-// Estilos corregidos para ocupar toda la pantalla
+// Estilos con paleta de colores vibrantes - Verde y Amarillo
 const styles = {
   container: {
     width: "100vw",
     minHeight: "100vh",
     margin: 0,
     padding: 0,
-    paddingTop: "80px", // Agregar esta línea
+    paddingTop: "80px",
     overflowX: "hidden",
     position: "relative",
     fontFamily:
       '"Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     boxSizing: "border-box",
-    background: "#f8fafc",
+    background: "linear-gradient(135deg, #f0f9f0 0%, #fffbf0 100%)",
   },
   backgroundOverlay: {
     position: "absolute",
@@ -25,9 +25,9 @@ const styles = {
     right: 0,
     bottom: 0,
     background: `
-      radial-gradient(circle at 20% 20%, rgba(249, 185, 29, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 80% 80%, rgba(18, 155, 165, 0.06) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(86, 150, 56, 0.04) 0%, transparent 40%)
+      radial-gradient(circle at 20% 20%, rgba(86, 150, 56, 0.12) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(249, 185, 29, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(86, 150, 56, 0.06) 0%, transparent 40%)
     `,
     pointerEvents: "none",
     zIndex: 0,
@@ -35,12 +35,13 @@ const styles = {
   containerInner: {
     maxWidth: "1200px",
     margin: "0 auto",
-    padding: "0 24px", // Cambiar de 48px a 24px
+    padding: "0 24px",
     width: "100%",
     boxSizing: "border-box",
   },
   header: {
-    background: "linear-gradient(135deg, #24354b 0%, #129ba5 100%)",
+    background:
+      "linear-gradient(135deg, rgba(86, 150, 56, 0.9) 0%, rgba(249, 185, 29, 0.9) 100%)",
     padding: "4rem 0",
     position: "relative",
     overflow: "hidden",
@@ -65,27 +66,29 @@ const styles = {
     marginBottom: "1.5rem",
     lineHeight: 1.2,
     margin: 0,
+    textShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
   },
   subtitle: {
     fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)",
-    color: "rgba(255, 255, 255, 0.9)",
+    color: "rgba(255, 255, 255, 0.95)",
     lineHeight: 1.6,
     margin: 0,
+    textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
   },
   filtersSection: {
     position: "sticky",
     top: 0,
     zIndex: 40,
-    background: "rgba(255, 255, 255, 0.95)",
-    backdropFilter: "blur(15px)",
-    borderBottom: "1px solid #e2e8f0",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+    background: "rgba(255, 255, 255, 0.98)",
+    backdropFilter: "blur(20px)",
+    borderBottom: "2px solid rgba(86, 150, 56, 0.85)",
+    boxShadow: "0 8px 32px rgba(86, 150, 56, 0.2)",
     padding: "2rem 0",
   },
   filtersContainer: {
     maxWidth: "1200px",
     margin: "0 auto",
-    padding: "0 24px", // Cambiar de 48px a 24px
+    padding: "0 24px",
     display: "flex",
     flexDirection: "column",
     gap: "1.5rem",
@@ -104,20 +107,21 @@ const styles = {
     width: "100%",
     alignItems: "center",
     justifyContent: "space-between",
-    borderRadius: "8px",
-    border: "2px solid #e2e8f0",
+    borderRadius: "12px",
+    border: "2px solid rgba(86, 150, 56, 0.6)",
     backgroundColor: "white",
     padding: "0 1.5rem",
     fontSize: "1rem",
     cursor: "pointer",
     outline: "none",
     transition: "all 0.3s ease",
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 4px 12px rgba(86, 150, 56, 0.15)",
     fontWeight: "500",
   },
   selectFocus: {
-    borderColor: "#f9b91d",
-    boxShadow: "0 0 0 3px rgba(249, 185, 29, 0.1)",
+    borderColor: "rgba(249, 185, 29, 0.8)",
+    boxShadow: "0 0 0 3px rgba(249, 185, 29, 0.15)",
+    transform: "translateY(-2px)",
   },
   selectDropdown: {
     position: "absolute",
@@ -127,9 +131,9 @@ const styles = {
     width: "100%",
     marginTop: "0.5rem",
     backgroundColor: "white",
-    border: "2px solid #e2e8f0",
-    borderRadius: "8px",
-    boxShadow: "0 10px 25px rgba(0, 0, 0, 0.15)",
+    border: "2px solid rgba(86, 150, 56, 0.85)",
+    borderRadius: "12px",
+    boxShadow: "0 20px 40px rgba(86, 150, 56, 0.25)",
     maxHeight: "15rem",
     overflowY: "auto",
   },
@@ -137,7 +141,7 @@ const styles = {
     padding: "0.75rem 1.5rem",
     fontSize: "0.875rem",
     cursor: "pointer",
-    borderBottom: "1px solid #f3f4f6",
+    borderBottom: "1px solid rgba(86, 150, 56, 0.1)",
     transition: "all 0.2s ease",
   },
   searchContainer: {
@@ -149,51 +153,52 @@ const styles = {
     display: "flex",
     height: "3rem",
     width: "100%",
-    borderRadius: "8px",
-    border: "2px solid #e2e8f0",
+    borderRadius: "12px",
+    border: "2px solid rgba(86, 150, 56, 0.85)",
     backgroundColor: "white",
     paddingLeft: "3rem",
     paddingRight: "1rem",
     fontSize: "1rem",
     outline: "none",
     transition: "all 0.3s ease",
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 4px 12px rgba(86, 150, 56, 0.2)",
   },
   searchInputFocus: {
-    borderColor: "#129ba5",
-    boxShadow: "0 0 0 3px rgba(18, 155, 165, 0.1)",
+    borderColor: "rgba(249, 185, 29, 0.85)",
+    boxShadow: "0 0 0 4px rgba(249, 185, 29, 0.2)",
+    transform: "translateY(-2px)",
   },
   searchIcon: {
     position: "absolute",
     left: "1rem",
     top: "50%",
     transform: "translateY(-50%)",
-    color: "#6b7280",
+    color: "rgba(86, 150, 56, 0.85)",
     width: "1.25rem",
     height: "1.25rem",
   },
   main: {
     padding: "4rem 0",
-    background: "#f8fafc",
+    background: "linear-gradient(135deg, #f0f9f0 0%, #fffbf0 100%)",
   },
   mainContainer: {
     maxWidth: "1200px",
     margin: "0 auto",
-    padding: "0 24px", // Cambiar de 48px a 24px
+    padding: "0 24px",
     width: "100%",
     boxSizing: "border-box",
   },
   resultsText: {
     marginBottom: "2rem",
-    color: "#4b5563",
+    color: "#24354b",
     fontSize: "1rem",
-    fontWeight: "500",
+    fontWeight: "600",
     textAlign: "center",
-    padding: "1rem 2rem",
+    padding: "1.5rem 2rem",
     backgroundColor: "white",
-    borderRadius: "8px",
-    border: "1px solid #e2e8f0",
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+    borderRadius: "16px",
+    border: "2px solid rgba(86, 150, 56, 0.85)",
+    boxShadow: "0 8px 24px rgba(86, 150, 56, 0.15)",
   },
   grid: {
     display: "grid",
@@ -201,19 +206,20 @@ const styles = {
     gap: "2rem",
   },
   card: {
-    borderRadius: "16px",
-    border: "1px solid #e2e8f0",
+    borderRadius: "20px",
+    border: "2px solid rgba(86, 150, 56, 0.85)",
     backgroundColor: "white",
     color: "#111827",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+    boxShadow: "0 8px 24px rgba(86, 150, 56, 0.15)",
     overflow: "hidden",
-    transition: "all 0.3s ease",
+    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
     cursor: "pointer",
+    position: "relative",
   },
   cardHover: {
-    boxShadow: "0 20px 25px rgba(0, 0, 0, 0.1)",
-    transform: "translateY(-4px)",
-    borderColor: "#f9b91d",
+    boxShadow: "0 20px 40px rgba(249, 185, 29, 0.3)",
+    transform: "translateY(-8px)",
+    borderColor: "rgba(249, 185, 29, 0.85)",
   },
   cardImage: {
     width: "100%",
@@ -234,14 +240,14 @@ const styles = {
     left: "1rem",
     display: "inline-flex",
     alignItems: "center",
-    borderRadius: "9999px",
+    borderRadius: "50px",
     border: "2px solid",
-    padding: "0.375rem 0.875rem",
+    padding: "0.5rem 1rem",
     fontSize: "0.75rem",
     fontWeight: "700",
     textTransform: "uppercase",
     letterSpacing: "0.05em",
-    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
   },
   cardContent: {
     padding: "2rem",
@@ -251,11 +257,11 @@ const styles = {
     fontWeight: "700",
     lineHeight: "1.4",
     marginBottom: "0.75rem",
-    color: "#111827",
+    color: "#24354b",
     transition: "color 0.3s ease",
   },
   cardTitleHover: {
-    color: "#f9b91d",
+    color: "rgba(249, 185, 29, 0.85)",
   },
   cardMeta: {
     display: "flex",
@@ -279,32 +285,32 @@ const styles = {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: "0.5rem",
+    borderRadius: "12px",
     fontSize: "0.875rem",
-    fontWeight: "600",
+    fontWeight: "700",
     transition: "all 0.3s ease",
     cursor: "pointer",
     outline: "none",
     width: "100%",
-    padding: "0.75rem 1.5rem",
-    border: "2px solid #e5e7eb",
-    backgroundColor: "white",
-    color: "#374151",
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+    padding: "1rem 1.5rem",
+    border: "2px solid rgba(86, 150, 56, 0.6)",
+    background:
+      "linear-gradient(135deg, rgba(86, 150, 56, 0.9) 0%, rgba(249, 185, 29, 0.9) 100%)",
+    color: "white",
+    boxShadow: "0 6px 20px rgba(86, 150, 56, 0.25)",
   },
   buttonHover: {
-    backgroundColor: "#f9b91d",
-    color: "#24354b",
-    borderColor: "#f9b91d",
-    transform: "translateY(-1px)",
-    boxShadow: "0 4px 6px rgba(249, 185, 29, 0.25)",
+    transform: "translateY(-3px)",
+    boxShadow: "0 12px 30px rgba(249, 185, 29, 0.4)",
+    borderColor: "rgba(249, 185, 29, 0.85)",
   },
   emptyState: {
     textAlign: "center",
     padding: "4rem 0",
     backgroundColor: "white",
-    borderRadius: "16px",
-    border: "1px solid #e2e8f0",
+    borderRadius: "20px",
+    border: "2px solid rgba(86, 150, 56, 0.85)",
+    boxShadow: "0 8px 24px rgba(86, 150, 56, 0.15)",
   },
   emptyIcon: {
     fontSize: "4rem",
@@ -314,7 +320,7 @@ const styles = {
     fontSize: "1.5rem",
     fontWeight: "700",
     marginBottom: "0.5rem",
-    color: "#111827",
+    color: "#24354b",
   },
   emptyText: {
     color: "#6b7280",
@@ -322,7 +328,7 @@ const styles = {
   },
 };
 
-// Componentes UI
+// Componentes UI actualizados
 const Button = ({ children, onClick, style = {} }) => {
   const [isHovered, setIsHovered] = useState(false);
   return (
@@ -356,7 +362,12 @@ const Select = ({ children, value, onValueChange, placeholder }) => {
       >
         <span>{value || placeholder}</span>
         <ChevronDown
-          style={{ width: "1.25rem", height: "1.25rem", opacity: 0.6 }}
+          style={{
+            width: "1.25rem",
+            height: "1.25rem",
+            opacity: 0.7,
+            color: "rgba(86, 150, 56, 0.85)",
+          }}
         />
       </div>
       {isOpen && (
@@ -382,8 +393,9 @@ const SelectItem = ({ children, onClick }) => {
     <div
       style={{
         ...styles.selectItem,
-        backgroundColor: isHovered ? "#f9b91d" : "white",
-        color: isHovered ? "#24354b" : "#374151",
+        backgroundColor: isHovered ? "rgba(86, 150, 56, 0.85)" : "white",
+        color: isHovered ? "white" : "#24354b",
+        fontWeight: isHovered ? "600" : "400",
       }}
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
@@ -438,15 +450,15 @@ const Badge = ({ children, type }) => {
     switch (type) {
       case "Legislativo":
         return {
-          backgroundColor: "#f9b91d",
-          color: "#24354b",
-          borderColor: "#f9b91d",
+          backgroundColor: "rgba(86, 150, 56, 0.85)",
+          color: "white",
+          borderColor: "rgba(86, 150, 56, 0.85)",
         };
       case "Evento":
         return {
-          backgroundColor: "#129ba5",
-          color: "white",
-          borderColor: "#129ba5",
+          backgroundColor: "rgba(249, 185, 29, 0.85)",
+          color: "#24354b",
+          borderColor: "rgba(249, 185, 29, 0.85)",
         };
       case "Comunicado":
         return {
@@ -456,15 +468,15 @@ const Badge = ({ children, type }) => {
         };
       case "Video":
         return {
-          backgroundColor: "#569638",
+          backgroundColor: "#ff1f29",
           color: "white",
-          borderColor: "#569638",
+          borderColor: "#ff1f29",
         };
       default:
         return {
-          backgroundColor: "#f3f4f6",
-          color: "#374151",
-          borderColor: "#d1d5db",
+          backgroundColor: "rgba(86, 150, 56, 0.85)",
+          color: "white",
+          borderColor: "rgba(86, 150, 56, 0.85)",
         };
     }
   };
@@ -474,7 +486,7 @@ const Badge = ({ children, type }) => {
   );
 };
 
-// Datos de ejemplo
+// Datos de ejemplo (sin cambios)
 const noticias = [
   {
     id: 1,
@@ -548,6 +560,11 @@ export default function NoticiasPage() {
   const [filtroTipo, setFiltroTipo] = useState("Todos");
   const [busqueda, setBusqueda] = useState("");
   const [ordenamiento, setOrdenamiento] = useState("reciente");
+
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, []);
 
   const noticiasFiltradas = useMemo(() => {
     let resultado = noticias;
@@ -634,7 +651,7 @@ export default function NoticiasPage() {
               <Select
                 value={filtroTipo}
                 onValueChange={setFiltroTipo}
-                placeholder="Tipo de contenido"
+                placeholder="Selecciona tipo de contenido"
               >
                 <SelectItem value="Todos">Todos</SelectItem>
                 <SelectItem value="Legislativo">Legislativo</SelectItem>
@@ -647,7 +664,7 @@ export default function NoticiasPage() {
               <Select
                 value={ordenamiento}
                 onValueChange={setOrdenamiento}
-                placeholder="Ordenar por"
+                placeholder="Selecciona orden"
               >
                 <SelectItem value="reciente">Más reciente</SelectItem>
                 <SelectItem value="antiguo">Más antiguo</SelectItem>
@@ -699,7 +716,13 @@ export default function NoticiasPage() {
                         gap: "0.5rem",
                       }}
                     >
-                      <Calendar style={{ width: "1rem", height: "1rem" }} />
+                      <Calendar
+                        style={{
+                          width: "1rem",
+                          height: "1rem",
+                          color: "rgba(86, 150, 56, 0.85)",
+                        }}
+                      />
                       {formatearFecha(noticia.fecha)}
                     </div>
                     <div
@@ -709,7 +732,13 @@ export default function NoticiasPage() {
                         gap: "0.5rem",
                       }}
                     >
-                      <Eye style={{ width: "1rem", height: "1rem" }} />
+                      <Eye
+                        style={{
+                          width: "1rem",
+                          height: "1rem",
+                          color: "rgba(86, 150, 56, 0.85)",
+                        }}
+                      />
                       {noticia.vistas.toLocaleString()}
                     </div>
                   </div>

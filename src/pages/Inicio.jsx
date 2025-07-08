@@ -302,8 +302,8 @@ const Inicio = () => {
               <p className="sobre-description">
                 Representante a la Cámara por Bolívar, líder palenquera
                 comprometida con la defensa de los derechos étnicos y el
-                desarrollo territorial. Con una trayectoria sólida en gestión
-                pública y liderazgo comunitario.
+                desarrollo territorial. Con sede de trabajo en Bogotá y una
+                trayectoria sólida en gestión pública y liderazgo comunitario.
               </p>
 
               <p className="sobre-subdescription">
@@ -588,7 +588,7 @@ const Inicio = () => {
                 </div>
                 <div className="footer-link">
                   <MapPin size={16} style={{ color: "#f9b91d" }} />
-                  <span>San Basilio de Palenque, Bolívar</span>
+                  <span>Bogotá, Colombia</span>
                 </div>
               </div>
             </div>
@@ -722,7 +722,7 @@ const Inicio = () => {
           width: 100%;
           max-width: 1400px;
           margin: 0 auto;
-          padding: ${isMobile ? "1.5rem 1rem" : "2rem 2rem"};
+          padding: ${isMobile ? "2rem 1rem 3rem" : "2rem 2rem"};
           display: grid;
           grid-template-columns: ${isMobile ? "1fr" : "1fr 1fr"};
           gap: ${isMobile ? "1.5rem" : "0.5rem"};
@@ -765,7 +765,7 @@ const Inicio = () => {
         .hero-right {
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-end;
           order: ${isMobile ? "1" : "2"};
           transform: ${isVisible ? "translateX(0)" : "translateX(50px)"};
           opacity: ${isVisible ? 1 : 0};
@@ -773,27 +773,28 @@ const Inicio = () => {
           height: 100%;
           position: relative;
           z-index: 2;
+          width: 100%;
         }
 
         .hero-image-container {
           position: relative;
-          width: ${isMobile ? "380px" : "580px"};
-          height: ${isMobile ? "450px" : "600px"};
+          width: 100%;
+          height: ${isMobile ? "500px" : "600px"};
           max-width: 100%;
-          overflow: visible;
+          overflow: hidden;
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-end;
         }
 
         .hero-dorina-image {
-          width: 100%;
+          width: 130%;
           height: 100%;
-          object-fit: ${isMobile ? "cover" : "cover"};
-          object-position: ${isMobile ? "0% center" : "0% center"};
+          object-fit: cover;
+          object-position: 20% center;
           filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
           transform: none;
-          max-width: 100%;
+          max-width: none;
           max-height: 100%;
         }
 
@@ -861,6 +862,8 @@ const Inicio = () => {
           transform: ${isVisible ? "translateY(0)" : "translateY(30px)"};
           opacity: ${isVisible ? 1 : 0};
           transition: all 1s ease-out 0.9s;
+          margin-bottom: ${isMobile ? "2rem" : "0"};
+          padding-bottom: ${isMobile ? "1rem" : "0"};
         }
 
         .social-icon {

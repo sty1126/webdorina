@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   FileText,
   Users,
@@ -11,20 +11,20 @@ import {
   Send,
 } from "lucide-react";
 
-// Estilos corregidos para ocupar toda la pantalla
+// Estilos con nueva paleta de colores vibrantes
 const styles = {
   container: {
     width: "100vw",
     minHeight: "100vh",
     margin: 0,
     padding: 0,
-    paddingTop: "80px", // Agregar esta línea
+    paddingTop: "80px",
     overflowX: "hidden",
     position: "relative",
     fontFamily:
       '"Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     boxSizing: "border-box",
-    background: "#f8fafc",
+    background: "linear-gradient(135deg, #f8fafc 0%, #fff1e6 100%)",
   },
   backgroundOverlay: {
     position: "absolute",
@@ -33,9 +33,9 @@ const styles = {
     right: 0,
     bottom: 0,
     background: `
-      radial-gradient(circle at 30% 30%, rgba(86, 150, 56, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 70% 70%, rgba(249, 185, 29, 0.06) 0%, transparent 40%),
-      radial-gradient(circle at 50% 80%, rgba(18, 155, 165, 0.04) 0%, transparent 40%)
+      radial-gradient(circle at 30% 30%, rgba(247, 147, 30, 0.12) 0%, transparent 40%),
+      radial-gradient(circle at 70% 70%, rgba(249, 185, 29, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 50% 80%, rgba(255, 31, 41, 0.06) 0%, transparent 40%)
     `,
     pointerEvents: "none",
     zIndex: 0,
@@ -43,12 +43,13 @@ const styles = {
   containerInner: {
     maxWidth: "1200px",
     margin: "0 auto",
-    padding: "0 24px", // Cambiar de 48px a 24px
+    padding: "0 24px",
     width: "100%",
     boxSizing: "border-box",
   },
   header: {
-    background: "linear-gradient(135deg, #24354b 0%, #129ba5 100%)",
+    background:
+      "linear-gradient(135deg, rgba(247, 147, 30, 0.9) 0%, rgba(255, 31, 41, 0.9) 100%)",
     padding: "4rem 0",
     position: "relative",
     overflow: "hidden",
@@ -73,27 +74,29 @@ const styles = {
     marginBottom: "1.5rem",
     lineHeight: 1.2,
     margin: 0,
+    textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
   },
   subtitle: {
     fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)",
-    color: "rgba(255, 255, 255, 0.9)",
+    color: "rgba(255, 255, 255, 0.95)",
     lineHeight: 1.6,
     margin: 0,
+    textShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
   },
   filtersSection: {
     position: "sticky",
     top: 0,
     zIndex: 40,
-    background: "rgba(255, 255, 255, 0.95)",
-    backdropFilter: "blur(15px)",
-    borderBottom: "1px solid #e2e8f0",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+    background: "rgba(255, 255, 255, 0.98)",
+    backdropFilter: "blur(20px)",
+    borderBottom: "2px solid rgba(247, 147, 30, 0.6)",
+    boxShadow: "0 8px 32px rgba(247, 147, 30, 0.15)",
     padding: "2rem 0",
   },
   filtersContainer: {
     maxWidth: "1200px",
     margin: "0 auto",
-    padding: "0 24px", // Cambiar de 48px a 24px
+    padding: "0 24px",
     display: "flex",
     flexDirection: "column",
     gap: "1.5rem",
@@ -112,20 +115,21 @@ const styles = {
     width: "100%",
     alignItems: "center",
     justifyContent: "space-between",
-    borderRadius: "8px",
-    border: "2px solid #e2e8f0",
+    borderRadius: "12px",
+    border: "2px solid rgba(247, 147, 30, 0.6)",
     backgroundColor: "white",
     padding: "0 1.5rem",
     fontSize: "1rem",
     cursor: "pointer",
     outline: "none",
     transition: "all 0.3s ease",
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 4px 12px rgba(247, 147, 30, 0.15)",
     fontWeight: "500",
   },
   selectFocus: {
-    borderColor: "#569638",
-    boxShadow: "0 0 0 3px rgba(86, 150, 56, 0.1)",
+    borderColor: "rgba(255, 31, 41, 0.7)",
+    boxShadow: "0 0 0 3px rgba(255, 31, 41, 0.15)",
+    transform: "translateY(-2px)",
   },
   selectDropdown: {
     position: "absolute",
@@ -135,9 +139,9 @@ const styles = {
     width: "100%",
     marginTop: "0.5rem",
     backgroundColor: "white",
-    border: "2px solid #e2e8f0",
-    borderRadius: "8px",
-    boxShadow: "0 10px 25px rgba(0, 0, 0, 0.15)",
+    border: "2px solid rgba(247, 147, 30, 0.6)",
+    borderRadius: "12px",
+    boxShadow: "0 20px 40px rgba(247, 147, 30, 0.25)",
     maxHeight: "15rem",
     overflowY: "auto",
   },
@@ -145,7 +149,7 @@ const styles = {
     padding: "0.75rem 1.5rem",
     fontSize: "0.875rem",
     cursor: "pointer",
-    borderBottom: "1px solid #f3f4f6",
+    borderBottom: "1px solid rgba(247, 147, 30, 0.1)",
     transition: "all 0.2s ease",
   },
   searchContainer: {
@@ -157,51 +161,52 @@ const styles = {
     display: "flex",
     height: "3rem",
     width: "100%",
-    borderRadius: "8px",
-    border: "2px solid #e2e8f0",
+    borderRadius: "12px",
+    border: "2px solid rgba(247, 147, 30, 0.6)",
     backgroundColor: "white",
     paddingLeft: "3rem",
     paddingRight: "1rem",
     fontSize: "1rem",
     outline: "none",
     transition: "all 0.3s ease",
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 4px 12px rgba(247, 147, 30, 0.2)",
   },
   searchInputFocus: {
-    borderColor: "#f9b91d",
-    boxShadow: "0 0 0 3px rgba(249, 185, 29, 0.1)",
+    borderColor: "#ff1f29",
+    boxShadow: "0 0 0 4px rgba(255, 31, 41, 0.2)",
+    transform: "translateY(-2px)",
   },
   searchIcon: {
     position: "absolute",
     left: "1rem",
     top: "50%",
     transform: "translateY(-50%)",
-    color: "#6b7280",
+    color: "rgba(247, 147, 30, 0.8)",
     width: "1.25rem",
     height: "1.25rem",
   },
   main: {
     padding: "4rem 0",
-    background: "#f8fafc",
+    background: "linear-gradient(135deg, #fff1e6 0%, #f8fafc 100%)",
   },
   mainContainer: {
     maxWidth: "1200px",
     margin: "0 auto",
-    padding: "0 24px", // Cambiar de 48px a 24px
+    padding: "0 24px",
     width: "100%",
     boxSizing: "border-box",
   },
   resultsText: {
     marginBottom: "2rem",
-    color: "#4b5563",
+    color: "#24354b",
     fontSize: "1rem",
-    fontWeight: "500",
+    fontWeight: "600",
     textAlign: "center",
-    padding: "1rem 2rem",
+    padding: "1.5rem 2rem",
     backgroundColor: "white",
-    borderRadius: "8px",
-    border: "1px solid #e2e8f0",
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+    borderRadius: "16px",
+    border: "2px solid rgba(247, 147, 30, 0.6)",
+    boxShadow: "0 8px 24px rgba(247, 147, 30, 0.15)",
   },
   grid: {
     display: "grid",
@@ -209,24 +214,26 @@ const styles = {
     gap: "2rem",
   },
   card: {
-    borderRadius: "16px",
-    border: "1px solid #e2e8f0",
+    borderRadius: "20px",
+    border: "2px solid rgba(247, 147, 30, 0.6)",
     backgroundColor: "white",
     color: "#111827",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+    boxShadow: "0 8px 24px rgba(247, 147, 30, 0.15)",
     overflow: "hidden",
-    transition: "all 0.3s ease",
+    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
     cursor: "pointer",
+    position: "relative",
   },
   cardHover: {
-    boxShadow: "0 20px 25px rgba(0, 0, 0, 0.1)",
-    transform: "translateY(-4px)",
-    borderColor: "#569638",
+    boxShadow: "0 20px 40px rgba(255, 31, 41, 0.25)",
+    transform: "translateY(-8px)",
+    borderColor: "#ff1f29",
   },
   cardHeader: {
     padding: "2rem 2rem 1rem 2rem",
-    borderBottom: "1px solid #e2e8f0",
-    backgroundColor: "#f9fafb",
+    borderBottom: "2px solid rgba(247, 147, 30, 0.2)",
+    background:
+      "linear-gradient(135deg, rgba(247, 147, 30, 0.05) 0%, rgba(255, 31, 41, 0.05) 100%)",
   },
   cardContent: {
     padding: "1.5rem 2rem 2rem 2rem",
@@ -236,11 +243,11 @@ const styles = {
     fontWeight: "700",
     lineHeight: "1.4",
     marginBottom: "0.75rem",
-    color: "#111827",
+    color: "#24354b",
     transition: "color 0.3s ease",
   },
   cardTitleHover: {
-    color: "#569638",
+    color: "#ff1f29",
   },
   cardMeta: {
     display: "flex",
@@ -266,55 +273,55 @@ const styles = {
     right: "1rem",
     display: "inline-flex",
     alignItems: "center",
-    borderRadius: "9999px",
+    borderRadius: "50px",
     border: "2px solid",
-    padding: "0.375rem 0.875rem",
+    padding: "0.5rem 1rem",
     fontSize: "0.75rem",
     fontWeight: "700",
     textTransform: "uppercase",
     letterSpacing: "0.05em",
-    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
   },
   statusBadge: {
     display: "inline-flex",
     alignItems: "center",
-    borderRadius: "9999px",
-    border: "1px solid",
-    padding: "0.25rem 0.75rem",
+    borderRadius: "50px",
+    border: "2px solid",
+    padding: "0.375rem 1rem",
     fontSize: "0.75rem",
-    fontWeight: "600",
+    fontWeight: "700",
     marginBottom: "0.75rem",
   },
   button: {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: "0.5rem",
+    borderRadius: "12px",
     fontSize: "0.875rem",
-    fontWeight: "600",
+    fontWeight: "700",
     transition: "all 0.3s ease",
     cursor: "pointer",
     outline: "none",
     width: "100%",
-    padding: "0.75rem 1.5rem",
-    border: "2px solid #e5e7eb",
-    backgroundColor: "white",
-    color: "#374151",
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+    padding: "1rem 1.5rem",
+    border: "2px solid rgba(247, 147, 30, 0.6)",
+    background:
+      "linear-gradient(135deg, rgba(247, 147, 30, 0.9) 0%, rgba(255, 31, 41, 0.9) 100%)",
+    color: "white",
+    boxShadow: "0 6px 20px rgba(247, 147, 30, 0.25)",
   },
   buttonHover: {
-    backgroundColor: "#569638",
-    color: "white",
-    borderColor: "#569638",
-    transform: "translateY(-1px)",
-    boxShadow: "0 4px 6px rgba(86, 150, 56, 0.25)",
+    transform: "translateY(-3px)",
+    boxShadow: "0 12px 30px rgba(255, 31, 41, 0.4)",
+    borderColor: "#ff1f29",
   },
   emptyState: {
     textAlign: "center",
     padding: "4rem 0",
     backgroundColor: "white",
-    borderRadius: "16px",
-    border: "1px solid #e2e8f0",
+    borderRadius: "20px",
+    border: "2px solid rgba(247, 147, 30, 0.6)",
+    boxShadow: "0 8px 24px rgba(247, 147, 30, 0.15)",
   },
   emptyIcon: {
     fontSize: "4rem",
@@ -324,7 +331,7 @@ const styles = {
     fontSize: "1.5rem",
     fontWeight: "700",
     marginBottom: "0.5rem",
-    color: "#111827",
+    color: "#24354b",
   },
   emptyText: {
     color: "#6b7280",
@@ -332,49 +339,51 @@ const styles = {
   },
   citizenSection: {
     marginTop: "3rem",
-    backgroundColor: "rgba(254, 243, 199, 0.8)",
-    border: "1px solid rgba(251, 191, 36, 0.3)",
-    borderRadius: "1rem",
-    padding: "2rem",
+    background:
+      "linear-gradient(135deg, rgba(247, 147, 30, 0.9) 0%, rgba(255, 31, 41, 0.9) 100%)",
+    borderRadius: "20px",
+    padding: "3rem 2rem",
     textAlign: "center",
+    boxShadow: "0 20px 40px rgba(247, 147, 30, 0.3)",
   },
   citizenTitle: {
-    fontSize: "1.5rem",
+    fontSize: "1.8rem",
     fontWeight: "700",
-    color: "#111827",
-    marginBottom: "0.75rem",
+    color: "white",
+    marginBottom: "1rem",
+    textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
   },
   citizenText: {
-    fontSize: "1rem",
-    color: "#6b7280",
+    fontSize: "1.1rem",
+    color: "rgba(255, 255, 255, 0.95)",
     lineHeight: "1.6",
-    marginBottom: "1.5rem",
+    marginBottom: "2rem",
+    textShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
   },
   citizenButton: {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: "0.5rem",
-    fontSize: "1rem",
-    fontWeight: "600",
+    borderRadius: "50px",
+    fontSize: "1.1rem",
+    fontWeight: "700",
     transition: "all 0.3s ease",
     cursor: "pointer",
     outline: "none",
-    padding: "0.875rem 2rem",
-    backgroundColor: "#f9b91d",
-    color: "#24354b",
-    border: "2px solid #f9b91d",
-    boxShadow: "0 4px 6px rgba(249, 185, 29, 0.25)",
+    padding: "1.25rem 2.5rem",
+    backgroundColor: "white",
+    color: "rgba(247, 147, 30, 0.8)",
+    border: "3px solid white",
+    boxShadow: "0 8px 25px rgba(0, 0, 0, 0.2)",
   },
   citizenButtonHover: {
-    backgroundColor: "#f59e0b",
-    borderColor: "#f59e0b",
-    transform: "translateY(-2px)",
-    boxShadow: "0 8px 25px rgba(249, 185, 29, 0.4)",
+    transform: "translateY(-4px) scale(1.05)",
+    boxShadow: "0 15px 35px rgba(0, 0, 0, 0.3)",
+    backgroundColor: "#fff1e6",
   },
 };
 
-// Componentes UI
+// Componentes UI actualizados
 const Button = ({ children, onClick, style = {} }) => {
   const [isHovered, setIsHovered] = useState(false);
   return (
@@ -425,7 +434,12 @@ const Select = ({ children, value, onValueChange, placeholder }) => {
       >
         <span>{value || placeholder}</span>
         <ChevronDown
-          style={{ width: "1.25rem", height: "1.25rem", opacity: 0.6 }}
+          style={{
+            width: "1.25rem",
+            height: "1.25rem",
+            opacity: 0.7,
+            color: "rgba(247, 147, 30, 0.8)",
+          }}
         />
       </div>
       {isOpen && (
@@ -451,8 +465,9 @@ const SelectItem = ({ children, onClick }) => {
     <div
       style={{
         ...styles.selectItem,
-        backgroundColor: isHovered ? "#569638" : "white",
-        color: isHovered ? "white" : "#374151",
+        backgroundColor: isHovered ? "rgba(247, 147, 30, 0.8)" : "white",
+        color: isHovered ? "white" : "#24354b",
+        fontWeight: isHovered ? "600" : "400",
       }}
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
@@ -492,21 +507,21 @@ const Badge = ({ children, type }) => {
     switch (type) {
       case "Proyecto de Ley":
         return {
-          backgroundColor: "#569638",
+          backgroundColor: "rgba(247, 147, 30, 0.8)",
           color: "white",
-          borderColor: "#569638",
+          borderColor: "rgba(247, 147, 30, 0.8)",
         };
       case "Proposición":
+        return {
+          backgroundColor: "rgba(255, 31, 41, 0.8)",
+          color: "white",
+          borderColor: "rgba(255, 31, 41, 0.8)",
+        };
+      case "Moción":
         return {
           backgroundColor: "#f9b91d",
           color: "#24354b",
           borderColor: "#f9b91d",
-        };
-      case "Moción":
-        return {
-          backgroundColor: "#129ba5",
-          color: "white",
-          borderColor: "#129ba5",
         };
       case "Citación":
         return {
@@ -516,9 +531,9 @@ const Badge = ({ children, type }) => {
         };
       default:
         return {
-          backgroundColor: "#f3f4f6",
-          color: "#374151",
-          borderColor: "#d1d5db",
+          backgroundColor: "rgba(247, 147, 30, 0.8)",
+          color: "white",
+          borderColor: "rgba(247, 147, 30, 0.8)",
         };
     }
   };
@@ -533,33 +548,33 @@ const StatusBadge = ({ status }) => {
     switch (status) {
       case "Aprobado":
         return {
-          backgroundColor: "rgba(34, 197, 94, 0.1)",
-          color: "#16a34a",
-          borderColor: "#16a34a",
+          backgroundColor: "#569638",
+          color: "white",
+          borderColor: "#569638",
         };
       case "En revisión":
         return {
-          backgroundColor: "rgba(249, 185, 29, 0.1)",
-          color: "#f59e0b",
-          borderColor: "#f59e0b",
+          backgroundColor: "#f9b91d",
+          color: "#24354b",
+          borderColor: "#f9b91d",
         };
       case "Presentado":
         return {
-          backgroundColor: "rgba(59, 130, 246, 0.1)",
-          color: "#3b82f6",
-          borderColor: "#3b82f6",
+          backgroundColor: "rgba(247, 147, 30, 0.8)",
+          color: "white",
+          borderColor: "rgba(247, 147, 30, 0.8)",
         };
       case "Archivado":
         return {
-          backgroundColor: "rgba(107, 114, 128, 0.1)",
-          color: "#6b7280",
+          backgroundColor: "#6b7280",
+          color: "white",
           borderColor: "#6b7280",
         };
       default:
         return {
-          backgroundColor: "#f3f4f6",
-          color: "#374151",
-          borderColor: "#d1d5db",
+          backgroundColor: "rgba(247, 147, 30, 0.8)",
+          color: "white",
+          borderColor: "rgba(247, 147, 30, 0.8)",
         };
     }
   };
@@ -571,7 +586,7 @@ const StatusBadge = ({ status }) => {
   );
 };
 
-// Datos de ejemplo
+// Datos de ejemplo (sin cambios)
 const documentos = [
   {
     id: 1,
@@ -677,6 +692,11 @@ export default function DocumentosLegislativos() {
   const [busqueda, setBusqueda] = useState("");
   const [ordenamiento, setOrdenamiento] = useState("reciente");
 
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
   const documentosFiltrados = useMemo(() => {
     let resultado = documentos;
 
@@ -767,7 +787,7 @@ export default function DocumentosLegislativos() {
               <Select
                 value={filtroTipo}
                 onValueChange={setFiltroTipo}
-                placeholder="Tipo de documento"
+                placeholder="Selecciona tipo de documento"
               >
                 <SelectItem value="Todos">Todos</SelectItem>
                 <SelectItem value="Proyecto de Ley">
@@ -782,7 +802,7 @@ export default function DocumentosLegislativos() {
               <Select
                 value={filtroEstado}
                 onValueChange={setFiltroEstado}
-                placeholder="Estado"
+                placeholder="Selecciona estado"
               >
                 <SelectItem value="Todos">Todos</SelectItem>
                 <SelectItem value="Aprobado">Aprobado</SelectItem>
@@ -795,7 +815,7 @@ export default function DocumentosLegislativos() {
               <Select
                 value={ordenamiento}
                 onValueChange={setOrdenamiento}
-                placeholder="Ordenar por"
+                placeholder="Selecciona orden"
               >
                 <SelectItem value="reciente">Más reciente</SelectItem>
                 <SelectItem value="antiguo">Más antiguo</SelectItem>
@@ -842,7 +862,13 @@ export default function DocumentosLegislativos() {
                         gap: "0.5rem",
                       }}
                     >
-                      <Calendar style={{ width: "1rem", height: "1rem" }} />
+                      <Calendar
+                        style={{
+                          width: "1rem",
+                          height: "1rem",
+                          color: "rgba(247, 147, 30, 0.8)",
+                        }}
+                      />
                       {formatearFecha(documento.fecha)}
                     </div>
                     <div
@@ -852,7 +878,13 @@ export default function DocumentosLegislativos() {
                         gap: "0.5rem",
                       }}
                     >
-                      <Users style={{ width: "1rem", height: "1rem" }} />
+                      <Users
+                        style={{
+                          width: "1rem",
+                          height: "1rem",
+                          color: "rgba(247, 147, 30, 0.8)",
+                        }}
+                      />
                       {documento.comision}
                     </div>
                   </div>
