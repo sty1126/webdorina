@@ -13,7 +13,6 @@ import {
   X,
   Scale,
   GraduationCap,
-  Heart,
   BookOpenCheck,
   Users,
   MessageSquare,
@@ -37,6 +36,9 @@ const Inicio = () => {
   const isTinyMobile = screenSize.width < 360;
 
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+
     setIsVisible(true);
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % 3);
@@ -201,15 +203,33 @@ const Inicio = () => {
 
   return (
     <div className="inicio-container">
-      {/* Hero Section */}
+      {/* Hero Section - Reconstruido con elementos separados */}
       <section className="hero-section">
+        {/* Fondo azul */}
+        <div className="hero-background">
+          <img
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fondo-inicio-ZXaKQLrAMLFN07GncBLsPMuvZ83Lu5.png"
+            alt="Fondo"
+            className="hero-bg-image"
+          />
+        </div>
+
+        {/* Overlay para mejorar contraste */}
         <div className="hero-overlay" />
 
+        {/* Contenido del hero */}
         <div className="hero-content">
-          <div className="hero-text-container">
-            {!isMobile && <div className="hero-spacer" />}
-            {isMobile && <div className="hero-spacer-mobile" />}
+          {/* Lado izquierdo - Título */}
+          <div className="hero-left">
+            <div className="hero-title-container">
+              <img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/titulo-inicio-ZKwLttdqh0QNHp51trtLDNLmK9SCuq.png"
+                alt="Dorina Hernández"
+                className="hero-title-image"
+              />
+            </div>
 
+            {/* Botones */}
             <div className="hero-buttons">
               <button
                 className="hero-button primary"
@@ -242,12 +262,21 @@ const Inicio = () => {
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Decorative Elements */}
-        <div className="hero-decorations">
-          <div className="decoration-1" />
-          <div className="decoration-2" />
+          {/* Lado derecho - Imagen de Dorina */}
+          <div className="hero-right">
+            <div className="hero-image-container">
+              <img
+                src={
+                  isMobile
+                    ? "media/dorina-inicio-mobile.png"
+                    : "media/dorina-inicio.png"
+                }
+                alt="Dorina Hernández"
+                className="hero-dorina-image"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Colombian Flag Line */}
@@ -654,81 +683,135 @@ const Inicio = () => {
           box-sizing: border-box;
         }
 
-        /* Hero Section */
+        /* Hero Section - Optimizado para mejor proporción */
         .hero-section {
-          background: url("${isMobile
-            ? "media/heroMobile-inicio.png"
-            : "media/hero-inicio.png"}");
-          background-size: ${isMobile ? "100%" : "cover"};
-          background-position: ${isMobile ? "center top" : "center center"};
-          background-repeat: no-repeat;
-          min-height: ${isSmallMobile ? "60vh" : isMobile ? "70vh" : "85vh"};
+          min-height: ${isSmallMobile ? "65vh" : isMobile ? "70vh" : "75vh"};
+          max-height: ${isMobile ? "80vh" : "85vh"};
           display: flex;
-          align-items: ${isMobile ? "flex-end" : "center"};
+          align-items: center;
           justify-content: center;
           position: relative;
           width: 100%;
           padding: 0;
           margin: 0;
           z-index: 1;
+          overflow: hidden;
+        }
+
+        .hero-background {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+        }
+
+        .hero-bg-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
         }
 
         .hero-overlay {
           position: absolute;
           inset: 0;
           background: rgba(0, 0, 0, 0.1);
-          z-index: 0;
+          z-index: 1;
         }
 
         .hero-content {
           width: 100%;
-          max-width: ${isMobile ? "100%" : "1400px"};
+          max-width: 1400px;
           margin: 0 auto;
-          padding: ${isMobile ? "0 1.5rem 1rem" : "0 3rem"};
-          display: flex;
-          align-items: ${isMobile ? "flex-end" : "center"};
-          justify-content: ${isMobile ? "center" : "flex-start"};
+          padding: ${isMobile ? "1.5rem 1rem" : "2rem 2rem"};
+          display: grid;
+          grid-template-columns: ${isMobile ? "1fr" : "1fr 1fr"};
+          gap: ${isMobile ? "1.5rem" : "0.5rem"};
+          align-items: center;
           position: relative;
-          z-index: 1;
-          min-height: ${isMobile ? "100vh" : "60vh"};
+          z-index: 2;
+          height: 100%;
         }
 
-        .hero-text-container {
-          transform: ${isVisible ? "translateX(0)" : "translateX(-50px)"};
-          opacity: ${isVisible ? 1 : 0};
-          transition: all 1s ease-out;
+        .hero-left {
           display: flex;
           flex-direction: column;
           align-items: ${isMobile ? "center" : "flex-start"};
-          justify-content: flex-end;
-          width: 100%;
-          max-width: ${isMobile ? "100%" : "480px"};
+          justify-content: center;
           text-align: ${isMobile ? "center" : "left"};
-          padding-bottom: ${isMobile ? "1rem" : "4rem"};
+          order: ${isMobile ? "2" : "1"};
+          z-index: 3;
         }
 
-        .hero-spacer {
-          height: 60vh;
-          width: 100%;
+        .hero-title-container {
+          margin-bottom: ${isMobile ? "1.5rem" : "2rem"};
+          transform: ${isVisible ? "translateX(0)" : "translateX(-50px)"};
+          opacity: ${isVisible ? 1 : 0};
+          transition: all 1s ease-out;
         }
 
-        .hero-spacer-mobile {
-          height: 50vh;
+        .hero-title-image {
+          width: ${isTinyMobile
+            ? "280px"
+            : isSmallMobile
+            ? "320px"
+            : isMobile
+            ? "380px"
+            : "600px"};
+          height: auto;
+          max-width: 100%;
+          filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+        }
+
+        .hero-right {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          order: ${isMobile ? "1" : "2"};
+          transform: ${isVisible ? "translateX(0)" : "translateX(50px)"};
+          opacity: ${isVisible ? 1 : 0};
+          transition: all 1s ease-out 0.3s;
+          height: 100%;
+          position: relative;
+          z-index: 2;
+        }
+
+        .hero-image-container {
+          position: relative;
+          width: ${isMobile ? "380px" : "580px"};
+          height: ${isMobile ? "450px" : "600px"};
+          max-width: 100%;
+          overflow: visible;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .hero-dorina-image {
           width: 100%;
+          height: 100%;
+          object-fit: ${isMobile ? "cover" : "cover"};
+          object-position: ${isMobile ? "0% center" : "0% center"};
+          filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+          transform: none;
+          max-width: 100%;
+          max-height: 100%;
         }
 
         .hero-buttons {
           display: flex;
           gap: ${isMobile ? "12px" : "15px"};
-          margin-bottom: 24px;
+          margin-bottom: 20px;
           flex-wrap: wrap;
           justify-content: ${isMobile ? "center" : "flex-start"};
           width: 100%;
           align-items: center;
+          transform: ${isVisible ? "translateY(0)" : "translateY(30px)"};
+          opacity: ${isVisible ? 1 : 0};
+          transition: all 1s ease-out 0.6s;
         }
 
         .hero-button {
-          padding: ${isMobile ? "14px 20px" : "12px 24px"};
+          padding: ${isMobile ? "12px 18px" : "12px 24px"};
           border-radius: 25px;
           border: none;
           font-size: ${isMobile ? "13px" : "14px"};
@@ -770,16 +853,19 @@ const Inicio = () => {
 
         .hero-social {
           display: flex;
-          gap: ${isMobile ? "12px" : "10px"};
+          gap: ${isMobile ? "10px" : "10px"};
           flex-wrap: wrap;
           justify-content: ${isMobile ? "center" : "flex-start"};
           width: 100%;
           align-items: center;
+          transform: ${isVisible ? "translateY(0)" : "translateY(30px)"};
+          opacity: ${isVisible ? 1 : 0};
+          transition: all 1s ease-out 0.9s;
         }
 
         .social-icon {
-          width: ${isMobile ? "44px" : "40px"};
-          height: ${isMobile ? "44px" : "40px"};
+          width: ${isMobile ? "40px" : "40px"};
+          height: ${isMobile ? "40px" : "40px"};
           background: white;
           border-radius: 50%;
           display: flex;
@@ -800,36 +886,6 @@ const Inicio = () => {
             color-mix(in srgb, var(--social-color) 40%, transparent);
         }
 
-        .hero-decorations {
-          display: ${isMobile ? "none" : "block"};
-        }
-
-        .decoration-1 {
-          position: absolute;
-          top: 20%;
-          left: 8%;
-          width: 60px;
-          height: 60px;
-          background: linear-gradient(135deg, #f9b91d, #569638);
-          border-radius: 50%;
-          opacity: 0.03;
-          animation: float 8s ease-in-out infinite;
-          z-index: 1;
-        }
-
-        .decoration-2 {
-          position: absolute;
-          bottom: 30%;
-          right: 12%;
-          width: 40px;
-          height: 40px;
-          background: linear-gradient(135deg, #129ba5, #24354b);
-          border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-          opacity: 0.02;
-          animation: float 10s ease-in-out infinite reverse;
-          z-index: 1;
-        }
-
         .colombia-flag {
           position: absolute;
           bottom: 0;
@@ -845,6 +901,7 @@ const Inicio = () => {
             #ce1126 75%,
             #ce1126 100%
           );
+          z-index: 3;
         }
 
         /* Eslogan Section */
@@ -1607,11 +1664,21 @@ const Inicio = () => {
         /* Media Queries específicas para Android */
         @media screen and (max-width: 480px) {
           .hero-section {
-            min-height: 60vh;
+            min-height: 65vh;
+            max-height: 75vh;
           }
 
           .hero-content {
-            padding: 0 12px 1rem;
+            padding: 1.5rem 12px;
+          }
+
+          .hero-title-image {
+            width: 300px;
+          }
+
+          .hero-image-container {
+            width: 260px;
+            height: 320px;
           }
         }
 
@@ -1626,11 +1693,20 @@ const Inicio = () => {
             max-width: 280px;
             justify-content: center;
           }
+
+          .hero-title-image {
+            width: 260px;
+          }
+
+          .hero-image-container {
+            width: 240px;
+            height: 300px;
+          }
         }
 
         @media screen and (orientation: landscape) and (max-height: 500px) {
           .hero-section {
-            min-height: 100vh;
+            min-height: 90vh;
           }
         }
 
@@ -1693,6 +1769,16 @@ const Inicio = () => {
           .participacion-section {
             width: 100%;
             overflow-x: hidden;
+          }
+
+          .hero-content {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            text-align: center;
+          }
+
+          .hero-left {
+            align-items: center;
           }
         }
 

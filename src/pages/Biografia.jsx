@@ -20,6 +20,9 @@ const Biografia = () => {
   const [activeSection, setActiveSection] = useState(0);
 
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+
     setIsVisible(true);
     const observer = new IntersectionObserver(
       (entries) => {
@@ -161,6 +164,7 @@ const Biografia = () => {
         minHeight: "100vh",
         margin: 0,
         padding: 0,
+        paddingTop: "80px", // Agregar padding para compensar header fijo
         overflowX: "hidden",
         fontFamily:
           "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
@@ -207,6 +211,7 @@ const Biografia = () => {
             margin: "0 auto",
             position: "relative",
             zIndex: 2,
+            padding: "0 24px", // Mejorar padding para móviles
           }}
         >
           <div
@@ -432,6 +437,7 @@ const Biografia = () => {
           style={{
             maxWidth: "1200px",
             margin: "0 auto",
+            padding: "0 24px", // Mejorar padding para móviles
           }}
         >
           <div style={{ textAlign: "center", marginBottom: "2rem" }}>
@@ -687,6 +693,7 @@ const Biografia = () => {
             margin: "0 auto",
             position: "relative",
             zIndex: 2,
+            padding: "0 24px", // Mejorar padding para móviles
           }}
         >
           <div style={{ textAlign: "center", marginBottom: "2rem" }}>
@@ -1018,6 +1025,7 @@ const Biografia = () => {
           style={{
             maxWidth: "1200px",
             margin: "0 auto",
+            padding: "0 24px", // Mejorar padding para móviles
           }}
         >
           <div style={{ textAlign: "center", marginBottom: "2rem" }}>
@@ -1200,6 +1208,7 @@ const Biografia = () => {
             margin: "0 auto",
             position: "relative",
             zIndex: 2,
+            padding: "0 24px", // Mejorar padding para móviles
           }}
         >
           <div style={{ textAlign: "center", marginBottom: "2rem" }}>
@@ -1551,6 +1560,7 @@ const Biografia = () => {
           style={{
             maxWidth: "1200px",
             margin: "0 auto",
+            padding: "0 24px", // Mejorar padding para móviles
           }}
         >
           <div style={{ textAlign: "center", marginBottom: "2rem" }}>
