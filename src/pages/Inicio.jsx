@@ -765,7 +765,7 @@ const Inicio = () => {
         .hero-right {
           display: flex;
           align-items: center;
-          justify-content: flex-end;
+          justify-content: ${isMobile ? "center" : "flex-end"};
           order: ${isMobile ? "1" : "2"};
           transform: ${isVisible ? "translateX(0)" : "translateX(50px)"};
           opacity: ${isVisible ? 1 : 0};
@@ -784,7 +784,7 @@ const Inicio = () => {
           overflow: hidden;
           display: flex;
           align-items: center;
-          justify-content: flex-end;
+          justify-content: ${isMobile ? "center" : "flex-end"};
         }
 
         .hero-dorina-image {
