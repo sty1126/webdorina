@@ -18,11 +18,13 @@ import {
   MessageSquare,
   Send,
   HandHeart,
+  Heart,
 } from "lucide-react";
 
 const Inicio = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [showSurveyModal, setShowSurveyModal] = useState(false);
   const [screenSize, setScreenSize] = useState({
     width: typeof window !== "undefined" ? window.innerWidth : 1200,
     height: typeof window !== "undefined" ? window.innerHeight : 800,
@@ -40,10 +42,17 @@ const Inicio = () => {
     window.scrollTo(0, 0);
 
     setIsVisible(true);
+    const modalTimer = setTimeout(() => {
+      setShowSurveyModal(true);
+    }, 1500);
+
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % 3);
     }, 4000);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(modalTimer); // Clear the modal timer
+    };
   }, []);
 
   // Detectar cambios de tamaño de pantalla con debounce
@@ -203,6 +212,46 @@ const Inicio = () => {
 
   return (
     <div className="inicio-container">
+      {showSurveyModal && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowSurveyModal(false)}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-icon">
+              <Heart size={48} color="white" fill="white" />
+            </div>
+
+            <h2 className="modal-title">
+              ¡Haz parte de nuestra Red del Corazón del Pueblo!
+            </h2>
+
+            <p className="modal-description">
+              Te invito a hacer parte de esta Red del Corazón del Pueblo, un
+              espacio vivo donde caminamos juntos para transformar realidades.
+              Tu voz es fundamental para construir el futuro que soñamos.
+            </p>
+
+            <a
+              href="https://docs.google.com/forms/d/1qc2i9cjAug1U_rpUBnjmGfAPN-12epUEJR5Um_8weA4/viewform?edit_requested=true"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="modal-button"
+            >
+              Llenar Encuesta
+              <ChevronRight size={20} />
+            </a>
+
+            <button
+              className="modal-skip"
+              onClick={() => setShowSurveyModal(false)}
+            >
+              Ahora no
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section - Reconstruido con elementos separados */}
       <section className="hero-section">
         {/* Fondo azul */}
@@ -683,6 +732,143 @@ const Inicio = () => {
           box-sizing: border-box;
         }
 
+        /* Survey Modal Styles */
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.75);
+          backdrop-filter: blur(4px);
+          display: flex;
+          align-items: flex-start; /* Changed from center to flex-start to position at top */
+          justify-content: center; /* Ensuring horizontal centering */
+          z-index: 999999; /* Increased z-index even more to ensure it's on top */
+          padding: ${isMobile ? "1rem" : "2rem"};
+          padding-top: ${isMobile
+            ? "2rem"
+            : "3rem"}; /* Added extra top padding */
+          animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+          background: linear-gradient(135deg, #569638 0%, #569638 100%);
+          border-radius: 20px;
+          padding: ${isMobile ? "2rem 1.5rem" : "3rem 2.5rem"};
+          max-width: 500px;
+          width: calc(100% - 2rem); /* Changed to calc to account for padding */
+          position: relative;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+          animation: slideUp 0.4s ease-out;
+          text-align: center;
+          border: 2px solid rgba(255, 255, 255, 0.2);
+          margin: 0 auto; /* Added margin auto to ensure centering */
+        }
+
+        /* Removed modal-close button styles completely */
+
+        .modal-icon {
+          width: 80px;
+          height: 80px;
+          background: rgba(249, 185, 29, 0.9);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 1.5rem;
+          box-shadow: 0 8px 20px rgba(249, 185, 29, 0.4);
+          animation: pulse 2s ease-in-out infinite;
+        }
+
+        .modal-title {
+          font-size: ${isMobile ? "1.5rem" : "1.8rem"};
+          font-weight: 700;
+          color: white;
+          margin-bottom: 1rem;
+          line-height: 1.3;
+        }
+
+        .modal-description {
+          font-size: ${isMobile ? "1rem" : "1.1rem"};
+          color: rgba(255, 255, 255, 0.95);
+          line-height: 1.6;
+          margin-bottom: 2rem;
+        }
+
+        .modal-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          background: #f9b91d;
+          color: white;
+          padding: ${isMobile ? "14px 28px" : "16px 32px"};
+          border-radius: 50px;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: ${isMobile ? "1rem" : "1.1rem"};
+          transition: all 0.3s ease;
+          box-shadow: 0 8px 25px rgba(249, 185, 29, 0.4);
+          border: none;
+          cursor: pointer;
+          width: 100%;
+          max-width: 300px;
+          margin: 0 auto;
+        }
+
+        .modal-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 30px rgba(249, 185, 29, 0.5);
+          background: #ffc940;
+        }
+
+        .modal-skip {
+          background: transparent;
+          border: none;
+          color: rgba(255, 255, 255, 0.8);
+          font-size: ${isMobile ? "0.9rem" : "1rem"};
+          cursor: pointer;
+          margin-top: 1rem;
+          padding: 8px;
+          transition: all 0.3s ease;
+        }
+
+        .modal-skip:hover {
+          color: white;
+          text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes slideUp {
+          from {
+            transform: translateY(30px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+
+        @keyframes pulse {
+          0%,
+          100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+        }
+
         /* Hero Section - Optimizado para mejor proporción */
         .hero-section {
           min-height: ${isSmallMobile ? "65vh" : isMobile ? "70vh" : "75vh"};
@@ -789,7 +975,7 @@ const Inicio = () => {
 
         .hero-dorina-image {
           width: 130%;
-          height: 100%;
+          height: 130%;
           object-fit: cover;
           object-position: 20% center;
           filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
@@ -910,7 +1096,7 @@ const Inicio = () => {
         /* Eslogan Section */
         .eslogan-section {
           padding: ${isMobile ? "1.5rem 0" : "2rem 0"};
-          background: linear-gradient(135deg, #f9b91d 0%, #f9b91d 100%);
+          background: linear-gradient(135deg, #f9b91d, #f9b91d);
           text-align: center;
         }
 
@@ -1710,22 +1896,6 @@ const Inicio = () => {
         @media screen and (orientation: landscape) and (max-height: 500px) {
           .hero-section {
             min-height: 90vh;
-          }
-        }
-
-        /* Mejoras para dispositivos Android */
-        @media screen and (-webkit-min-device-pixel-ratio: 1) {
-          .inicio-container {
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-          }
-        }
-
-        /* Soporte para pantallas de alta densidad */
-        @media screen and (-webkit-min-device-pixel-ratio: 2) {
-          .colombia-flag,
-          .footer-flag {
-            height: 4px;
           }
         }
 
