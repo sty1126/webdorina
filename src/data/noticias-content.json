@@ -1,17 +1,13 @@
 {
   "noticias": [
     {
-      "noticias": [
-        {
-          "id": 1,
-          "titulo": "A LAS VICTIMAS SE LES RESPETA: DORINA HERNÁNDEZ ANUNCIA ACCIONES CONTRA POLO POLO",
-          "descripcion": "La representante Dorina Hernández anuncia acciones contra el congresista Polo Polo por incumplir la sentencia T-375 de 2025 de la Corte Constitucional en relación a la reinstalación de la obra 'Mujeres con las botas bien puestas' del colectivo Madres de Falsos Positivos. Hernández radicará una queja formal ante la Comisión de Ética y reafirma su compromiso con las víctimas de falsos positivos.",
-          "fecha": "2025-12-09",
-          "tipo": "Comunicado",
-          "imagen": "https://drive.google.com/file/d/1D1bcq9CVDyFXLlK60DQwJZLxJ6dnxRE7/view?usp=sharing",
-          "vistas": 0
-        }
-      ]
+      "id": 1,
+      "titulo": "A LAS VICTIMAS SE LES RESPETA: DORINA HERNÁNDEZ ANUNCIA ACCIONES CONTRA POLO POLO",
+      "descripcion": "La representante Dorina Hernández anuncia acciones contra el congresista Polo Polo por incumplir la sentencia T-375 de 2025 de la Corte Constitucional en relación a la reinstalación de la obra 'Mujeres con las botas bien puestas' del colectivo Madres de Falsos Positivos. Hernández radicará una queja formal ante la Comisión de Ética y reafirma su compromiso con las víctimas de falsos positivos.",
+      "fecha": "2025-12-09",
+      "tipo": "Comunicado",
+      "imagen": "https://drive.google.com/file/d/1D1bcq9CVDyFXLlK60DQwJZLxJ6dnxRE7/view?usp=sharing",
+      "vistas": 0
     }
   ]
 }
