@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import { useState } from "react";
 import { Calendar, Eye, ArrowRight } from "lucide-react";
 
 const Badge = ({ children, type }) => {
@@ -189,7 +191,14 @@ const NoticiasCard = ({ noticia }) => {
           </div>
         </div>
         <p style={styles.cardDescription}>{noticia.descripcion}</p>
-        <button style={styles.button}>
+        <button
+          style={styles.button}
+          onClick={() => {
+            if (noticia.link) {
+              window.open(noticia.link, "_blank");
+            }
+          }}
+        >
           Ver más
           <ArrowRight
             style={{ marginLeft: "0.5rem", width: "1rem", height: "1rem" }}
