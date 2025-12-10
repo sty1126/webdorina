@@ -1,0 +1,70 @@
+{
+  "page": {
+    "title": "Participa / Contáctanos",
+    "subtitle": "Tu voz es importante. Comparte tus ideas, propuestas o inquietudes para fortalecer nuestro trabajo político."
+  },
+  "contactMethods": [
+    {
+      "id": "email1",
+      "icon": "Mail",
+      "title": "Correo electrónico",
+      "type": "email",
+      "data": "contacto@dorinahernandez.com",
+      "label": "contacto@dorinahernandez.com"
+    },
+    {
+      "id": "email2",
+      "type": "email",
+      "data": "info@dorinahernandez.com",
+      "label": "info@dorinahernandez.com"
+    },
+    {
+      "id": "phone",
+      "icon": "Phone",
+      "title": "Teléfono",
+      "type": "phone",
+      "data": "+573051234567",
+      "label": "+57 (5) 123-4567",
+      "hours": "Lunes a Viernes: 8:00 AM - 5:00 PM"
+    },
+    {
+      "id": "whatsapp",
+      "icon": "MessageCircle",
+      "title": "WhatsApp",
+      "type": "whatsapp",
+      "data": "573051234567",
+      "label": "Enviar mensaje por WhatsApp"
+    },
+    {
+      "id": "location1",
+      "icon": "MapPin",
+      "title": "Ubicación",
+      "type": "location",
+      "data": "Bogotá, Colombia",
+      "label": "Bogotá, Colombia"
+    },
+    {
+      "id": "location2",
+      "type": "location",
+      "data": "Bolívar, Colombia",
+      "label": "Bolívar, Colombia"
+    }
+  ],
+  "participationSteps": [
+    {
+      "number": 1,
+      "title": "Comparte tu idea",
+      "description": "Envíanos tus propuestas para mejorar nuestras comunidades"
+    },
+    {
+      "number": 2,
+      "title": "Revisamos tu propuesta",
+      "description": "Nuestro equipo analiza cada mensaje recibido"
+    },
+    {
+      "number": 3,
+      "title": "Te contactamos",
+      "description": "Nos ponemos en contacto para dar seguimiento"
+    }
+  ]
+}

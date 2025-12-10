@@ -1,0 +1,58 @@
+{
+  "noticias": [
+    {
+      "id": 1,
+      "titulo": "Nueva Ley de Protección Ambiental aprobada en primer debate",
+      "descripcion": "La representante Dorina Hernández presenta proyecto de ley que busca fortalecer la protección de ecosistemas locales y promover el desarrollo sostenible en toda la región.",
+      "fecha": "2024-01-15",
+      "tipo": "Legislativo",
+      "imagen": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400&h=250&fit=crop",
+      "vistas": 1250
+    },
+    {
+      "id": 2,
+      "titulo": "Inauguración del Centro Comunitario en el barrio San José",
+      "descripcion": "Con la presencia de más de 200 vecinos, se inauguró el nuevo centro comunitario que beneficiará a familias de la localidad con programas educativos y culturales.",
+      "fecha": "2024-01-12",
+      "tipo": "Evento",
+      "imagen": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=250&fit=crop",
+      "vistas": 890
+    },
+    {
+      "id": 3,
+      "titulo": "Comunicado: Gestión de recursos para mejoramiento vial",
+      "descripcion": "La representante anuncia la gestión exitosa de recursos por valor de 2.5 millones para el mejoramiento de vías en sectores rurales del municipio.",
+      "fecha": "2024-01-10",
+      "tipo": "Comunicado",
+      "imagen": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=250&fit=crop",
+      "vistas": 650
+    },
+    {
+      "id": 4,
+      "titulo": "Video: Sesión plenaria sobre educación rural",
+      "descripcion": "Intervención completa en el Congreso sobre la necesidad de fortalecer la educación en zonas rurales del departamento y garantizar acceso equitativo.",
+      "fecha": "2024-01-08",
+      "tipo": "Video",
+      "imagen": "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&h=250&fit=crop",
+      "vistas": 2100
+    },
+    {
+      "id": 5,
+      "titulo": "Reunión con líderes comunitarios de la zona norte",
+      "descripcion": "Espacio de diálogo y construcción colectiva para identificar las principales necesidades de la comunidad y establecer un plan de trabajo conjunto.",
+      "fecha": "2024-01-05",
+      "tipo": "Evento",
+      "imagen": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=400&h=250&fit=crop",
+      "vistas": 420
+    },
+    {
+      "id": 6,
+      "titulo": "Proyecto de ley para el fortalecimiento de la salud pública",
+      "descripcion": "Nueva propuesta legislativa busca mejorar el acceso a servicios de salud en municipios rurales y garantizar atención médica de calidad.",
+      "fecha": "2024-01-03",
+      "tipo": "Legislativo",
+      "imagen": "https://images.unsplash.com/photo-1576091160399-112ba8d307ca884978?w=400&h=250&fit=crop",
+      "vistas": 980
+    }
+  ]
+}

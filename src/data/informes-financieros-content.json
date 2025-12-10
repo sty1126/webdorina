@@ -1,0 +1,76 @@
+{
+  "informes": [
+    {
+      "id": 1,
+      "titulo": "Declaración de Renta 2024",
+      "tipo": "Declaración Tributaria",
+      "fecha": "2024-03-15",
+      "ano": 2024,
+      "descripcion": "Declaración anual de renta correspondiente al año gravable 2024",
+      "url": "#",
+      "icono": "Receipt",
+      "tamano": "2.3 MB",
+      "descargas": 1250
+    },
+    {
+      "id": 2,
+      "titulo": "Informe de Ingresos y Gastos Q4 2024",
+      "tipo": "Informe Financiero",
+      "fecha": "2024-12-31",
+      "ano": 2024,
+      "descripcion": "Detalle de ingresos y gastos del cuarto trimestre 2024",
+      "url": "#",
+      "icono": "FileText",
+      "tamano": "1.8 MB",
+      "descargas": 890
+    },
+    {
+      "id": 3,
+      "titulo": "Declaración de Bienes y Rentas 2024",
+      "tipo": "Declaración Patrimonial",
+      "fecha": "2024-02-28",
+      "ano": 2024,
+      "descripcion": "Declaración jurada de bienes y rentas actualizada",
+      "url": "#",
+      "icono": "FileText",
+      "tamano": "3.1 MB",
+      "descargas": 2100
+    },
+    {
+      "id": 4,
+      "titulo": "Declaración de Renta 2023",
+      "tipo": "Declaración Tributaria",
+      "fecha": "2023-03-15",
+      "ano": 2023,
+      "descripcion": "Declaración anual de renta correspondiente al año gravable 2023",
+      "url": "#",
+      "icono": "Receipt",
+      "tamano": "2.1 MB",
+      "descargas": 1850
+    },
+    {
+      "id": 5,
+      "titulo": "Informe Anual de Gestión Financiera 2023",
+      "tipo": "Informe Anual",
+      "fecha": "2023-12-31",
+      "ano": 2023,
+      "descripcion": "Resumen completo de la gestión financiera durante el año 2023",
+      "url": "#",
+      "icono": "FileText",
+      "tamano": "4.2 MB",
+      "descargas": 3200
+    },
+    {
+      "id": 8,
+      "titulo": "Declaración de Renta 2022",
+      "tipo": "Declaración Tributaria",
+      "fecha": "2022-03-15",
+      "ano": 2022,
+      "descripcion": "Declaración anual de renta correspondiente al año gravable 2022",
+      "url": "#",
+      "icono": "Receipt",
+      "tamano": "2.0 MB",
+      "descargas": 2100
+    }
+  ]
+}

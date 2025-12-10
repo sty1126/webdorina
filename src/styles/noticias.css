@@ -1,0 +1,21 @@
+* {
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 768px) {
+  .noticias-container {
+    padding: 0 16px !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .noticias-container {
+    padding: 0 12px !important;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .noticias-container {
+    padding: 0 8px !important;
+  }
+}

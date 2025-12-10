@@ -1,0 +1,350 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+.contacto-container {
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  padding-top: 80px;
+  overflow-x: hidden;
+  position: relative;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #e6f3ff 0%, #f0f9ff 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 48px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #103a99 0%, #0dc1d3 100%);
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.6;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Main Section */
+.main-section {
+  padding: 4rem 0;
+  background: linear-gradient(135deg, #e6f3ff 0%, #f0f9ff 100%);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* Contact Section */
+.contact-section {
+  width: 100%;
+}
+
+.contact-card {
+  background: white;
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 20px 40px rgba(16, 58, 153, 0.15);
+  border: 2px solid rgba(13, 193, 211, 0.85);
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(
+    135deg,
+    rgba(16, 58, 153, 0.9) 0%,
+    rgba(13, 193, 211, 0.9) 100%
+  );
+}
+
+.contact-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: rgba(16, 58, 153, 0.85);
+  margin-bottom: 0.75rem;
+}
+
+.contact-description {
+  color: #64748b;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+}
+
+.contact-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.contact-method-group {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.method-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #0dc1d3 0%, #103a99 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(13, 193, 211, 0.3);
+}
+
+.method-content {
+  flex: 1;
+}
+
+.method-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: rgba(16, 58, 153, 0.85);
+  margin-bottom: 0.75rem;
+}
+
+.method-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.method-link {
+  color: #0dc1d3;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.method-link:hover {
+  color: #103a99;
+  text-decoration: underline;
+  transform: translateX(4px);
+}
+
+.method-hours {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.contact-note {
+  background: linear-gradient(
+    135deg,
+    rgba(13, 193, 211, 0.1) 0%,
+    rgba(16, 58, 153, 0.05) 100%
+  );
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 4px solid #0dc1d3;
+}
+
+.contact-note p {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Participation Section */
+.participation-section {
+  width: 100%;
+}
+
+.participation-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 15px 35px rgba(16, 58, 153, 0.12);
+  border: 2px solid rgba(13, 193, 211, 0.85);
+}
+
+.participation-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: rgba(16, 58, 153, 0.85);
+  margin-bottom: 2rem;
+}
+
+.participation-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.step {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #0dc1d3 0%, #103a99 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  box-shadow: 0 6px 15px rgba(13, 193, 211, 0.4);
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(16, 58, 153, 0.85);
+  margin-bottom: 0.5rem;
+}
+
+.step-text {
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+  .contacto-container {
+    padding-top: 70px;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  .hero-section {
+    padding: 2.5rem 0;
+  }
+
+  .main-section {
+    padding: 2.5rem 0;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .contact-card,
+  .participation-card {
+    padding: 2rem;
+    border-radius: 16px;
+  }
+
+  .contact-title,
+  .participation-title {
+    font-size: 1.5rem;
+  }
+
+  .method-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .step-number {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .contacto-container {
+    padding-top: 60px;
+  }
+
+  .container {
+    padding: 0 12px;
+  }
+
+  .hero-section {
+    padding: 2rem 0;
+  }
+
+  .contact-card,
+  .participation-card {
+    padding: 1.5rem;
+  }
+
+  .contact-title,
+  .participation-title {
+    font-size: 1.3rem;
+  }
+
+  .contact-methods {
+    gap: 2rem;
+  }
+
+  .method-link {
+    font-size: 0.95rem;
+  }
+}

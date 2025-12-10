@@ -1,0 +1,192 @@
+{
+  "perfil": {
+    "nombre": "Dorina Hernández",
+    "apellido": "Palomino",
+    "titulo": "Cha Dorina",
+    "cargo": "Representante a la Cámara por Bolívar",
+    "descripcion": "Primera mujer palenquera en el Congreso de Colombia",
+    "fechaNacimiento": "22 de julio de 1966",
+    "lugarNacimiento": "Cartagena",
+    "residencia": "San Basilio de Palenque, Bolívar",
+    "email": "dorina.hernandez@camara.gov.co",
+    "telefono": "+(57) (601) 8770720 Ext: 3336",
+    "oficina": "309B - 310B, Edificio Nuevo del Congreso",
+    "fotoPrincipal": "media/dorina-principal.jpg"
+  },
+  "formacionAcademica": [
+    {
+      "year": "1992",
+      "title": "Licenciada en Administración Educativa",
+      "institution": "Universidad San Buenaventura, Cartagena",
+      "icon": "GraduationCap",
+      "color": "#007C88"
+    },
+    {
+      "year": "2001",
+      "title": "Magíster en Educación Comunitaria",
+      "institution": "Universidad Pedagógica, Bogotá",
+      "icon": "BookOpen",
+      "color": "#F89C1E"
+    },
+    {
+      "year": "2019",
+      "title": "Doctoranda en Ciencias de la Educación y Pedagogía Social",
+      "institution": "Universidad de Cartagena & Universidad de Granada (España)",
+      "icon": "Globe",
+      "color": "#007C88"
+    },
+    {
+      "year": "2022",
+      "title": "8vo. Semestre en Historia y Patrimonio",
+      "institution": "Universidad del Magdalena",
+      "icon": "BookOpen",
+      "color": "#F89C1E"
+    }
+  ],
+  "galeriaFormacion": [
+    {
+      "src": "media/imagen4.jpg",
+      "alt": "Graduación Universidad San Buenaventura"
+    },
+    {
+      "src": "media/imagen5.jpg",
+      "alt": "Magíster en Educación"
+    },
+    {
+      "src": "media/imagen6.jpeg",
+      "alt": "Estudios internacionales"
+    }
+  ],
+  "trayectoriaProfesional": [
+    {
+      "period": "1988",
+      "title": "Docente Líder en Recuperación de la Lengua",
+      "description": "Secretaría de Educación y Cultura de Bolívar",
+      "color": "#007C88"
+    },
+    {
+      "period": "1994-1998",
+      "title": "Coordinadora Nacional de Etnoeducación Afrocolombiana",
+      "description": "Ministerio de Educación Nacional de Colombia",
+      "color": "#F89C1E"
+    },
+    {
+      "period": "2001",
+      "title": "Directora de Cultura",
+      "description": "Gobernación de Bolívar - Reactivó el Concejo Departamental de Cultura",
+      "color": "#007C88"
+    },
+    {
+      "period": "2003-2004",
+      "title": "Ponente Declaratoria UNESCO",
+      "description": "San Basilio de Palenque como Patrimonio Inmaterial de la Humanidad",
+      "color": "#F89C1E"
+    },
+    {
+      "period": "2009",
+      "title": "Coordinadora Programa Especial de Etnoeducación",
+      "description": "Secretaría de Educación y Cultura de Bolívar + Docente Universidad de la Guajira",
+      "color": "#007C88"
+    },
+    {
+      "period": "2020",
+      "title": "Docente de Cátedra en Estudios Afrocolombianos",
+      "description": "Secretaría de Educación de Cartagena + Coordinadora Comité Patrimonio Inmaterial Champeta",
+      "color": "#F89C1E"
+    }
+  ],
+  "distinciones": [
+    {
+      "year": "2005",
+      "title": "Mujer del Año",
+      "entity": "Sociedad Bolivariana de Escritores Andinos y Cabildo Benkos Biohó",
+      "icon": "Award"
+    },
+    {
+      "year": "2006",
+      "title": "Premio en Gestión Cultural",
+      "entity": "Ministerio de Cultura de Colombia",
+      "icon": "Star"
+    },
+    {
+      "year": "2018",
+      "title": "Título Honorífico 'Cha Dorina'",
+      "entity": "XXXIII Festival de Tambores y Expresiones Culturales de Palenque",
+      "icon": "Heart"
+    },
+    {
+      "year": "2019",
+      "title": "Premio Calidad Turística de Bolívar",
+      "entity": "Gobernación de Bolívar",
+      "icon": "Globe"
+    },
+    {
+      "year": "2020",
+      "title": "Premio 'Comparte lo que somos'",
+      "entity": "Ministerio de Cultura de Colombia",
+      "icon": "Award"
+    },
+    {
+      "year": "2020",
+      "title": "Mención de Honor Decenio Afrodescendiente",
+      "entity": "Ministerio de Cultura - Enriquecimiento cultura ancestral",
+      "icon": "Star"
+    }
+  ],
+  "carreraPolitica": {
+    "congreso": {
+      "titulo": "Congreso de la República",
+      "periodo": "2022-2026",
+      "descripcion": "Representante por Bolívar (2022-2026) con 2.771.485 votos en lista cerrada del Pacto Histórico. Comisión Sexta de Transportes y Comunicaciones.",
+      "icon": "Building"
+    },
+    "movimiento": {
+      "titulo": "Movimiento 'Soy Porque Somos'",
+      "periodo": "Desde 2023",
+      "descripcion": "Presidenta desde diciembre de 2023. Respaldada por Polo Democrático Alternativo - Soy Porque Somos en su candidatura al Congreso.",
+      "icon": "Heart"
+    },
+    "comisiones": {
+      "principales": [
+        "Comisión Sexta de Transportes y Comunicaciones",
+        "Comisión Legal Afrocolombiana"
+      ],
+      "accidentales": [
+        "Seguimiento A-ire y Afinia",
+        "Sistema Nacional del Riesgo de Desastres",
+        "Relaciones con Venezuela"
+      ],
+      "periodo": "2022-2025"
+    }
+  },
+  "publicaciones": [
+    {
+      "title": "Cartilla de la lengua palenquera",
+      "description": "Coautora de esta importante obra para la preservación del idioma palenquero",
+      "icon": "BookOpen"
+    },
+    {
+      "title": "Lineamientos curriculares para la educación en comunidades negras",
+      "description": "Contribución fundamental para la etnoeducación afrocolombiana",
+      "icon": "GraduationCap"
+    },
+    {
+      "title": "Enfoque y perspectiva de la Etnoeducación y Cátedra de Estudios Afrocolombianos",
+      "description": "Obra clave para el desarrollo de la cátedra afrocolombiana",
+      "icon": "Globe"
+    },
+    {
+      "title": "Léxico Palenquero",
+      "description": "Miembro del equipo de investigación de este importante diccionario",
+      "icon": "BookOpen"
+    }
+  ],
+  "colores": {
+    "primary": "#007C88",
+    "secondary": "#F89C1E",
+    "beige": "#EAD9C5",
+    "beigeDark": "#E0CDB0",
+    "dark": "#1e293b",
+    "darkSecondary": "#334155"
+  }
+}

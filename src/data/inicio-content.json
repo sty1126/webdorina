@@ -1,0 +1,174 @@
+{
+  "hero": {
+    "backgroundImage": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fondo-inicio-ZXaKQLrAMLFN07GncBLsPMuvZ83Lu5.png",
+    "titleImage": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/titulo-inicio-ZKwLttdqh0QNHp51trtLDNLmK9SCuq.png",
+    "dorinaMobileImage": "media/dorina-inicio-mobile.png",
+    "dorinaDesktopImage": "media/dorina-inicio.png",
+    "buttons": [
+      {
+        "text": "Conoce mi trabajo",
+        "route": "/biografia",
+        "type": "primary"
+      },
+      {
+        "text": "Ver propuestas",
+        "route": "/propuestas",
+        "type": "secondary"
+      }
+    ]
+  },
+  "eslogan": {
+    "title": "\"Representando la voz de Palenque\""
+  },
+  "sobreMi": {
+    "badge": "Sobre la Representante",
+    "name": "Dorina Hernández Palomino",
+    "description": "Representante a la Cámara por Bolívar, líder palenquera comprometida con la defensa de los derechos étnicos y el desarrollo territorial. Con sede de trabajo en Bogotá y una trayectoria sólida en gestión pública y liderazgo comunitario.",
+    "subdescription": "Trabajando incansablemente por la equidad, la justicia social y el reconocimiento de las comunidades afrocolombianas en el Congreso de la República.",
+    "image": "media/sobremi-inicio.jpg?height=500&width=400",
+    "buttonText": "Ver biografía completa",
+    "buttonRoute": "/biografia"
+  },
+  "banderas": [
+    {
+      "icon": "Scale",
+      "title": "Justicia Étnico‑Racial",
+      "description": "Promoviendo la equidad y el reconocimiento de los derechos de las comunidades afrocolombianas.",
+      "color": "#5a9bb8"
+    },
+    {
+      "icon": "MapPin",
+      "title": "Territorio y Autonomía",
+      "description": "Defendiendo el territorio ancestral y el derecho de las comunidades a decidir sobre su tierra.",
+      "color": "#0dc1d3"
+    },
+    {
+      "icon": "GraduationCap",
+      "title": "Educación y Juventud Afro",
+      "description": "Promoviendo educación inclusiva y el liderazgo juvenil desde la identidad afrocolombiana.",
+      "color": "#f9b91d"
+    },
+    {
+      "icon": "BookOpenCheck",
+      "title": "Cultura y Memoria",
+      "description": "Preservando la lengua, tradiciones y memoria del pueblo palenquero y afrodescendiente.",
+      "color": "#f9b91d"
+    },
+    {
+      "icon": "Users",
+      "title": "Participación Comunitaria",
+      "description": "Impulsando la participación directa de las comunidades en la construcción de políticas públicas.",
+      "color": "#569638"
+    },
+    {
+      "icon": "HandHeart",
+      "title": "Mujer Negra y Liderazgo",
+      "description": "Empoderando a las mujeres negras y visibilizando sus luchas en todos los espacios sociales y políticos.",
+      "color": "#8e44ad"
+    }
+  ],
+  "achievements": [
+    {
+      "image": "media/representandoPalenque-inicio.png?height=120&width=120",
+      "title": "Representando Palenque",
+      "description": "Defendiendo los derechos de la comunidad afrocolombiana",
+      "color": "#569638"
+    },
+    {
+      "image": "media/compromisoSocial-inicio.jpeg?height=120&width=120",
+      "title": "Compromiso Social",
+      "description": "Trabajando por la equidad y la justicia social",
+      "color": "#f9b91d"
+    },
+    {
+      "image": "media/liderazgo-inicio.jpeg?height=120&width=120",
+      "title": "Liderazgo",
+      "description": "Experiencia comprobada en gestión pública",
+      "color": "#129ba5"
+    }
+  ],
+  "videos": [
+    {
+      "title": "Frente a Frente",
+      "description": "Cámara de Representantes",
+      "videoId": "U1N-QPqgQuY"
+    },
+    {
+      "title": "Soy porque Somos es un reconocimiento a la lucha afro",
+      "description": "W Radio Colombia",
+      "videoId": "KRDlE6PIBWE"
+    },
+    {
+      "title": "Algunos logros legislativos del 2022",
+      "description": "Cha Dorina",
+      "videoId": "SivSNzUD2qc"
+    },
+    {
+      "title": "Entre-Vistas con Alma de País",
+      "description": "Presidencia de la República",
+      "videoId": "RJ-jOuB1grs"
+    },
+    {
+      "title": "Pido la palabra",
+      "description": "Canal Congreso Colombia",
+      "videoId": "tFKjlfyGIU4"
+    },
+    {
+      "title": "Rueda de Prensa",
+      "description": "Canal Congreso Colombia",
+      "videoId": "e9me2bDYXz4"
+    }
+  ],
+  "socialMedia": [
+    {
+      "icon": "Facebook",
+      "color": "#1877F2",
+      "url": "https://web.facebook.com/chadorinahe"
+    },
+    {
+      "icon": "X",
+      "color": "#000000",
+      "url": "https://x.com/chadorinah?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor"
+    },
+    {
+      "icon": "Instagram",
+      "color": "#E4405F",
+      "url": "https://www.instagram.com/chadorinah/?hl=es"
+    },
+    {
+      "icon": "Youtube",
+      "color": "#FF0000",
+      "url": "https://www.youtube.com/@chadorina3864"
+    }
+  ],
+  "modal": {
+    "title": "¡Haz parte de nuestra Red del Corazón del Pueblo!",
+    "description": "Te invito a hacer parte de esta Red del Corazón del Pueblo, un espacio vivo donde caminamos juntos para transformar realidades. Tu voz es fundamental para construir el futuro que soñamos.",
+    "buttonText": "Llenar Encuesta",
+    "buttonUrl": "https://docs.google.com/forms/d/1qc2i9cjAug1U_rpUBnjmGfAPN-12epUEJR5Um_8weA4/viewform?edit_requested=true",
+    "skipText": "Ahora no"
+  },
+  "participacion": {
+    "title": "Haz parte del proyecto político de Dorina",
+    "description": "Comparte tus ideas y propuestas. Tu voz es importante para construir un futuro mejor para nuestras comunidades.",
+    "cardTitle": "Tu participación cuenta",
+    "cardText": "Queremos escuchar tus propuestas, inquietudes y sugerencias. Juntos podemos trabajar por el desarrollo de nuestros territorios.",
+    "buttonText": "Enviar propuesta",
+    "disclaimer": "Tu información será tratada confidencialmente de acuerdo con nuestra política de privacidad."
+  },
+  "footer": {
+    "contact": {
+      "title": "Contacto",
+      "email": "contacto@dorinahernandez.com",
+      "phone": "+57 (5) 123-4567",
+      "location": "Bogotá, Colombia"
+    },
+    "legal": [
+      "Aviso Legal",
+      "Política de Privacidad",
+      "Términos y Condiciones"
+    ],
+    "copyright": "Dorina Hernández Palomino. Todos los derechos reservados.",
+    "highlight": "Representando con orgullo a San Basilio de Palenque 🇨🇴"
+  }
+}

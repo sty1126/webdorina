@@ -1,0 +1,153 @@
+{
+  "pageTitle": "San Basilio de Palenque",
+  "pageSubtitle": "La primera comunidad afrocolombiana libre, corazón de resistencia cultural",
+  "heroStats": [
+    {
+      "icon": "MapPin",
+      "label": "Ubicación",
+      "value": "50 km de Cartagena"
+    },
+    {
+      "icon": "Users",
+      "label": "Población",
+      "value": "≈ 4,200 habitantes"
+    },
+    {
+      "icon": "Calendar",
+      "label": "Reconocimiento",
+      "value": "UNESCO 2005"
+    }
+  ],
+  "patrimonialContext": [
+    {
+      "title": "Ubicación Estratégica",
+      "description": "Centro poblado del departamento de Bolívar, bajo jurisdicción del municipio de Mahates. Ubicado cerca del Canal del Dique, a 50 km de Cartagena de Indias.",
+      "icon": "MapPin",
+      "bgColor": "#007C88",
+      "image": "media/benkos.avif"
+    },
+    {
+      "title": "Reconocimiento UNESCO",
+      "description": "Declarado en 2005 como Patrimonio Cultural e Inmaterial de la Humanidad por preservar lengua, música, rituales, medicina tradicional y organización social única.",
+      "icon": "Globe",
+      "bgColor": "#F89C1E",
+      "image": "media/mural.jpg"
+    },
+    {
+      "title": "Primera Comunidad Libre",
+      "description": "Reconocido como el primer pueblo libre de la América colonial, conservando tradiciones como el lenguaje, comida, baile y cultura propia de los africanos.",
+      "icon": "Heart",
+      "bgColor": "#007C88",
+      "image": ""
+    }
+  ],
+  "culturaViva": [
+    {
+      "title": "Lengua Palenquera",
+      "description": "Única lengua criolla de las Américas que combina base léxica española con características gramaticales de lenguas bantúes",
+      "icon": "BookOpen",
+      "color": "#007C88"
+    },
+    {
+      "title": "Música y Danza",
+      "description": "Mapalé, Son palenquero, Lumbalú, champeta y bullerengue - expresiones musicales con raíces africanas",
+      "icon": "Music",
+      "color": "#F89C1E"
+    },
+    {
+      "title": "Gastronomía Ancestral",
+      "description": "Dulces tradicionales como cocadas, bolas de maní y enyucado, comercializados por mujeres palenqueras",
+      "icon": "Utensils",
+      "color": "#007C88"
+    },
+    {
+      "title": "Organización Social",
+      "description": "Estructura comunitaria única que preserva tradiciones africanas y fortalece la cohesión social",
+      "icon": "Users",
+      "color": "#F89C1E"
+    }
+  ],
+  "culturaGallery": [
+    {
+      "image": "media/danzas.jpg",
+      "title": "Danzas Ancestrales",
+      "description": "Mapalé y bullerengue en las festividades"
+    },
+    {
+      "image": "media/dulces.jpg",
+      "title": "Dulces Tradicionales",
+      "description": "Cocadas y enyucados hechos por mujeres palenqueras"
+    }
+  ],
+  "legislativeSection": {
+    "quote": "Nuestra historia no solo se cuenta: se representa en el Congreso",
+    "image": "media/congreso.png",
+    "imageCaption": "Dorina en sesión del Congreso de la República"
+  },
+  "whyImportant": [
+    {
+      "area": "Representación",
+      "icon": "Building",
+      "color": "#F89C1E",
+      "title": "Primera Mujer Palenquera",
+      "description": "En ocupar una curul en el Congreso de la República de Colombia"
+    },
+    {
+      "area": "Liderazgo",
+      "icon": "Users",
+      "color": "#007C88",
+      "title": "Líder Afrodescendiente",
+      "description": "Símbolo de representación histórica y dignidad cultural"
+    },
+    {
+      "area": "Patrimonio",
+      "icon": "Globe",
+      "color": "#F89C1E",
+      "title": "Gestora UNESCO",
+      "description": "Principal artífice de la declaratoria de Palenque como Patrimonio de la Humanidad (2005)"
+    }
+  ],
+  "legislativeAchievements": [
+    {
+      "area": "Patrimonio",
+      "icon": "Shield",
+      "color": "#007C88",
+      "actions": "Impulsó políticas de salvaguarda de la lengua palenquera",
+      "bgColor": "rgba(0, 124, 136, 0.1)"
+    },
+    {
+      "area": "Cultura",
+      "icon": "Music",
+      "color": "#F89C1E",
+      "actions": "Apoyo a colectivos de música, trenzado y oralidad tradicional",
+      "bgColor": "rgba(248, 156, 30, 0.1)"
+    },
+    {
+      "area": "Educación",
+      "icon": "GraduationCap",
+      "color": "#007C88",
+      "actions": "Promotora del enfoque étnico en la política pública educativa",
+      "bgColor": "rgba(0, 124, 136, 0.1)"
+    },
+    {
+      "area": "Visibilidad",
+      "icon": "Eye",
+      "color": "#F89C1E",
+      "actions": "Denunció el racismo estructural y defendió la consulta previa",
+      "bgColor": "rgba(248, 156, 30, 0.1)"
+    }
+  ],
+  "dorinaGallery": [
+    {
+      "image": "media/comunidad.jpeg",
+      "title": "Trabajo Comunitario",
+      "description": "Dorina con líderes de la comunidad palenquera"
+    },
+    {
+      "image": "media/eventos-culturales.jpeg",
+      "title": "Eventos Culturales",
+      "description": "Participación en festivales y celebraciones palenqueras"
+    }
+  ],
+  "impactStatement": "Dorina no solo representa a Bolívar en el Congreso; representa la dignidad, la resistencia y la riqueza cultural de todo un pueblo que durante siglos ha preservado su identidad ancestral. Su voz es la voz de Palenque resonando en los pasillos del poder."
+}

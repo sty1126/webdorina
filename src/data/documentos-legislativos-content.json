@@ -1,0 +1,92 @@
+{
+  "documentos": [
+    {
+      "id": 1,
+      "titulo": "Proyecto de Ley 124 - Reconocimiento a Palenque",
+      "tipo": "Proyecto de Ley",
+      "estado": "En revisión",
+      "fecha": "2024-04-11",
+      "descripcion": "Proyecto de ley que busca el reconocimiento oficial del municipio de Palenque como patrimonio cultural de la humanidad y la implementación de políticas de preservación.",
+      "url": "#",
+      "autor": "Dorina Hernández",
+      "comision": "Comisión de Cultura"
+    },
+    {
+      "id": 2,
+      "titulo": "Proposición 045 - Fortalecimiento Educación Rural",
+      "tipo": "Proposición",
+      "estado": "Aprobado",
+      "fecha": "2024-03-28",
+      "descripcion": "Proposición para el fortalecimiento de la educación en zonas rurales mediante la implementación de programas de conectividad y dotación tecnológica.",
+      "url": "#",
+      "autor": "Dorina Hernández",
+      "comision": "Comisión de Educación"
+    },
+    {
+      "id": 3,
+      "titulo": "Moción 012 - Protección Ecosistemas Locales",
+      "tipo": "Moción",
+      "estado": "Presentado",
+      "fecha": "2024-03-15",
+      "descripcion": "Moción para la creación de un programa especial de protección de ecosistemas locales y promoción del ecoturismo sostenible en la región.",
+      "url": "#",
+      "autor": "Dorina Hernández",
+      "comision": "Comisión de Medio Ambiente"
+    },
+    {
+      "id": 4,
+      "titulo": "Citación 008 - Ministro de Salud",
+      "tipo": "Citación",
+      "estado": "En revisión",
+      "fecha": "2024-02-20",
+      "descripcion": "Citación al Ministro de Salud para explicar las deficiencias en la atención médica en municipios rurales y las medidas correctivas a implementar.",
+      "url": "#",
+      "autor": "Dorina Hernández",
+      "comision": "Comisión de Salud"
+    },
+    {
+      "id": 5,
+      "titulo": "Proyecto de Ley 089 - Desarrollo Económico Local",
+      "tipo": "Proyecto de Ley",
+      "estado": "Aprobado",
+      "fecha": "2024-01-30",
+      "descripcion": "Proyecto de ley para el fomento del desarrollo económico local mediante incentivos fiscales para pequeñas y medianas empresas rurales.",
+      "url": "#",
+      "autor": "Dorina Hernández",
+      "comision": "Comisión de Desarrollo Económico"
+    },
+    {
+      "id": 6,
+      "titulo": "Proposición 032 - Mejoramiento Vial Rural",
+      "tipo": "Proposición",
+      "estado": "En revisión",
+      "fecha": "2024-01-15",
+      "descripcion": "Proposición para la asignación de recursos especiales destinados al mejoramiento de la infraestructura vial en sectores rurales del departamento.",
+      "url": "#",
+      "autor": "Dorina Hernández",
+      "comision": "Comisión de Infraestructura"
+    },
+    {
+      "id": 7,
+      "titulo": "Moción 005 - Apoyo Mujeres Rurales",
+      "tipo": "Moción",
+      "estado": "Aprobado",
+      "fecha": "2023-12-10",
+      "descripcion": "Moción para la creación de programas de apoyo y empoderamiento económico dirigidos específicamente a mujeres en zonas rurales.",
+      "url": "#",
+      "autor": "Dorina Hernández",
+      "comision": "Comisión de Equidad de Género"
+    },
+    {
+      "id": 8,
+      "titulo": "Proyecto de Ley 067 - Seguridad Alimentaria",
+      "tipo": "Proyecto de Ley",
+      "estado": "Archivado",
+      "fecha": "2023-11-22",
+      "descripcion": "Proyecto de ley para garantizar la seguridad alimentaria en comunidades rurales mediante programas de agricultura sostenible y soberanía alimentaria.",
+      "url": "#",
+      "autor": "Dorina Hernández",
+      "comision": "Comisión de Agricultura"
+    }
+  ]
+}
